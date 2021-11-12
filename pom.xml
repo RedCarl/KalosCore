@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>kim.pokemon</groupId>
+    <artifactId>KimCore</artifactId>
+    <version>1.1</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>bukiit</groupId>
+            <artifactId>bukiit</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/bukkit-1.12.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>CatServer</groupId>
+            <artifactId>CatServer</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/CatServerSRG-11c12cd.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>Pixelmon</groupId>
+            <artifactId>Pixelmon</artifactId>
+            <version>8.3.1c</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/Pixelmon-1.12.2-8.3.3-server.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>pokeluck</groupId>
+            <artifactId>pokeluck</artifactId>
+            <version>1.1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/pokelucky-1.1.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>spigot</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/Spigot-1.12-596221b_d00c057-20170726-0522.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerArgument>-parameters</compilerArgument>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>

@@ -1,0 +1,7 @@
+main: kim.pokemon.Main
+name: KimCore
+version: ${project.version}
+authors:
+  - Red_Carl
+  - 85
+website: "https://github.com/RedCarl/KimCore"
