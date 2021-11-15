@@ -10,13 +10,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>bukiit</groupId>
-            <artifactId>bukiit</artifactId>
-            <version>1.12.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/bukkit-1.12.2.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>CatServer</groupId>
             <artifactId>CatServer</artifactId>
             <version>1.12.2</version>
@@ -38,11 +31,65 @@
             <systemPath>${project.basedir}/libs/pokelucky-1.1.0.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>spigot</groupId>
-            <artifactId>spigot</artifactId>
+            <groupId>minecraft</groupId>
+            <artifactId>minecraft</artifactId>
             <version>1.12.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/Spigot-1.12-596221b_d00c057-20170726-0522.jar</systemPath>
+            <systemPath>${project.basedir}/libs/minecraft_server.1.12.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>Vault</groupId>
+            <artifactId>Vault-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/Vault.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>Placeholder</groupId>
+            <artifactId>Placeholder-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/PlaceholderAPI-2.10.10.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>ProtocolLib</groupId>
+            <artifactId>ProtocolLib-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/ProtocolLib.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>NBTAPI</groupId>
+            <artifactId>NBTAPI-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/item-nbt-api-plugin-2.8.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>PlotSquared</groupId>
+            <artifactId>PlotSquared-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/PlotSquared-Bukkit-3.823.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>PlayerPoints</groupId>
+            <artifactId>PlayerPoints-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/PlayerPoints-3.0.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>TConstruct</groupId>
+            <artifactId>TConstruct-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/TConstruct-1.12.2-2.13.0.183.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>22.0.0</version>
         </dependency>
     </dependencies>
 

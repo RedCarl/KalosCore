@@ -1,0 +1,10 @@
+mysql:
+  DRIVER: 'com.mysql.jdbc.Driver'
+  URL: 'localhost'
+  PORT: '3306'
+  DATABASE: 'pokemondata_b?useSSL=false'
+  USER: 'pokemondata_b'
+  PASS: 'pokemondata_b'
+  ##不要更改
+  GLAZED_PAY_DATA: 'ranks'
+  POKEMON_BAN_DATA: 'BanPokemonMap'

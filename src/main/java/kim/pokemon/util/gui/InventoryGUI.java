@@ -31,6 +31,9 @@ public class InventoryGUI {
    }
 
    public Button getButton(int index) {
+      if (index>53||index<0){
+         return null;
+      }
       return this.buttons[index];
    }
 
@@ -40,6 +43,9 @@ public class InventoryGUI {
    }
 
    public Slot getSlot(int index) {
+      if (index>53||index<0){
+         return null;
+      }
       return this.slots[index];
    }
 

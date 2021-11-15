@@ -1,7 +1,40 @@
 main: kim.pokemon.Main
 name: KimCore
 version: ${project.version}
+depend: [Vault,PlaceholderAPI,ProtocolLib,PlayerPoints]
 authors:
   - Red_Carl
   - 85
 website: "https://github.com/RedCarl/KimCore"
+commands:
+  Core:
+    aliases:
+      - core
+    description: "玩家管理系统。"
+  Vote:
+    aliases:
+      - vote
+    description: "赞助系统。"
+  Group:
+    aliases:
+      - group
+    description: "群组系统。"
+  Rank:
+    aliases:
+      - rank
+    description: "等级系统，特殊玩法。"
+  Menu:
+    aliases:
+      - menu
+      - cd
+    description: "主菜单，可通过蹲下+F打开菜单。"
+  BanPokemon:
+    aliases:
+      - banpokemon
+      - bp
+    description: "禁止该宝可梦在本服中出现。"
+  BanItem:
+    aliases:
+      - banitem
+      - bi
+    description: "禁止该物品在服务器中使用。"
