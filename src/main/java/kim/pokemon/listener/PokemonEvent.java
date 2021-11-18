@@ -2,6 +2,7 @@ package kim.pokemon.listener;
 
 import catserver.api.bukkit.event.ForgeEvent;
 import com.pixelmonmod.pixelmon.api.events.spawning.SpawnEvent;
+import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -15,6 +16,9 @@ public class PokemonEvent implements Listener {
                 case "plot":
                 case "lobby":
                     event.setCanceled(true);
+                    break;
+                default:
+
                     break;
             }
         }

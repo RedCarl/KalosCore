@@ -16,4 +16,7 @@ public class Data {
 
     public static final String GLAZED_PAY_DATA  = mysqlConfig.getString("GLAZED_PAY_DATA");
     public static final String POKEMON_BAN_DATA  = mysqlConfig.getString("POKEMON_BAN_DATA");
+
+    //ARMOURERS_PATH
+    public static final String ARMOURERS_PATH = "/home/kim/SkinData";
 }

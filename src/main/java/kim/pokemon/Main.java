@@ -2,14 +2,17 @@ package kim.pokemon;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import kim.pokemon.command.CrazyAuctions.CrazyAuctionsCommand;
 import kim.pokemon.command.MenuCommand;
 import kim.pokemon.command.PokemonBan.BanItemCommand;
 import kim.pokemon.command.PokemonBan.BanPokemonCommand;
 import kim.pokemon.database.GlazedPayDataSQLReader;
 import kim.pokemon.database.PokemonBanDataSQLReader;
 import kim.pokemon.database.SQLConnection;
-import kim.pokemon.kim.PokemonBan;
-import kim.pokemon.kim.PokemonSpawnTime;
+import kim.pokemon.kimexpand.PokemonBan;
+import kim.pokemon.kimexpand.PokemonSpawnTime;
+import kim.pokemon.kimexpand.armourers.listener.ArmourersUpdateListener;
+import kim.pokemon.kimexpand.crazyauctions.CrazyAuctions;
 import kim.pokemon.listener.CommandEvent;
 import kim.pokemon.listener.PlayerEvent;
 import kim.pokemon.listener.PokemonEvent;
@@ -18,15 +21,19 @@ import kim.pokemon.packetlistener.MessageAdapter;
 import kim.pokemon.placeholder.TitlePlaceholderAPI;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.gui.listener.ButtonClickListener;
+import kim.pokemon.util.mojang.Mojang;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
 
 public class Main extends JavaPlugin {
     private static Main instance;
@@ -35,6 +42,7 @@ public class Main extends JavaPlugin {
     public static Plugin getInstance(){
         return instance;
     }
+    public static HashMap<Player,String> players = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -96,6 +104,7 @@ public class Main extends JavaPlugin {
         regListener(new PokemonEvent());
         regListener(new PokemonSpawnTime());
         regListener(new PokemonBan());
+        regListener(new ArmourersUpdateListener());
 
         log("启动传奇宝可梦监控系统...");
         PokemonSpawnTime.start();
@@ -107,11 +116,21 @@ public class Main extends JavaPlugin {
         regCommand("Menu",new MenuCommand());
         regCommand("BanPokemon",new BanPokemonCommand());
         regCommand("BanItem",new BanItemCommand());
+        regCommand("Kim",new CrazyAuctionsCommand());
 
         log("正在启动数据库...");
         SQLConnection.initialize();
         GlazedPayDataSQLReader.selectTable();
         PokemonBanDataSQLReader.selectTable();
+
+        log("获取在线玩家信息...");
+        getAllPlayerInfo();
+
+        log("加载内置插件 CrazyAuctions 信息...");
+        Bukkit.getConsoleSender().sendMessage(ColorParser.parse("&c-------[ CrazyAuctions ]-------"));
+        CrazyAuctions crazyAuctions = new CrazyAuctions();
+        crazyAuctions.onEnable();
+        Bukkit.getConsoleSender().sendMessage(ColorParser.parse("&c-------------------------------"));
 
         log("加载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
@@ -128,6 +147,10 @@ public class Main extends JavaPlugin {
 
         log("正在关闭数据库...");
         SQLConnection.close();
+
+        log("卸载内置插件 CrazyAuctions 信息...");
+        CrazyAuctions crazyAuctions = new CrazyAuctions();
+        crazyAuctions.onDisable();
 
         log("卸载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
@@ -182,5 +205,18 @@ public class Main extends JavaPlugin {
         }
         econ = rsp.getProvider();
         return true;
+    }
+
+    /**
+     * 获取所有在线玩家的正版UUID
+     */
+    public static void getAllPlayerInfo(){
+        new Thread(()->{
+            for (Player player:Bukkit.getOnlinePlayers()) {
+                if (!players.containsKey(player)){
+                    players.put(player,Mojang.getSkinUrl(new Mojang().getUUIDOfUsername(player.getName())));
+                }
+            }
+        }).start();
     }
 }

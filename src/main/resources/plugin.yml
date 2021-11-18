@@ -1,7 +1,7 @@
 main: kim.pokemon.Main
 name: KimCore
 version: ${project.version}
-depend: [Vault,PlaceholderAPI,ProtocolLib,PlayerPoints]
+depend: [Vault,PlaceholderAPI,ProtocolLib,PlayerPoints,CMI,PlotSquared]
 authors:
   - Red_Carl
   - 85
@@ -38,3 +38,7 @@ commands:
       - banitem
       - bi
     description: "禁止该物品在服务器中使用。"
+  Kim:
+    aliases:
+      - kim
+    description: "全球市场。"

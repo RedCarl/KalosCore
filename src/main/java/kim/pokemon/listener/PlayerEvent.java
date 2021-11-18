@@ -1,7 +1,11 @@
 package kim.pokemon.listener;
 
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
+import kim.pokemon.Main;
 import kim.pokemon.ui.MainMenu;
 import kim.pokemon.util.ColorParser;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,17 +13,37 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 
 public class PlayerEvent implements Listener {
 
     HashMap<Player, Location> playerLocationHashMap = new HashMap<>();
+
+    /**
+     * 玩家进入游戏事件
+     * @param event
+     */
+    @EventHandler
+    public void PlayerJoin(PlayerJoinEvent event){
+        Main.getAllPlayerInfo();
+        Player player = event.getPlayer();
+
+        if (player.hasPlayedBefore()){
+            System.out.println("老玩家");
+        }else {
+            System.out.println("新玩家");
+        }
+    }
 
     /**
      * 蹲下+F 打开菜单
@@ -42,7 +66,7 @@ public class PlayerEvent implements Listener {
     public void PlayerInteractEvent(PlayerInteractEvent event){
 
         //修复大部分需要两人配合的刷物品BUG
-        if(event.getClickedBlock() != null){
+        if(event.getClickedBlock() != null&&event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
             if(event.getClickedBlock().getState() instanceof InventoryHolder){
                 if (!(event.getPlayer().isSneaking()&&event.getPlayer().getItemInHand() != null)){
                     Player player = event.getPlayer();

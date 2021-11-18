@@ -1,7 +1,7 @@
 package kim.pokemon.ui.banlist;
 
 import kim.pokemon.database.PokemonBanDataSQLReader;
-import kim.pokemon.kim.PokemonBan;
+import kim.pokemon.kimexpand.PokemonBan;
 import kim.pokemon.ui.MainMenu;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.gui.Button;

@@ -1,4 +1,4 @@
-package kim.pokemon.kim;
+package kim.pokemon.kimexpand;
 
 import com.pixelmonmod.pixelmon.api.spawning.AbstractSpawner;
 import com.pixelmonmod.pixelmon.spawning.LegendarySpawner;

@@ -6,7 +6,6 @@
 package kim.pokemon.command.PokemonBan;
 
 import kim.pokemon.database.PokemonBanDataSQLReader;
-import kim.pokemon.kim.PokemonBan;
 import kim.pokemon.util.ColorParser;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

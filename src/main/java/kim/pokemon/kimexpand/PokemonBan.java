@@ -1,4 +1,4 @@
-package kim.pokemon.kim;
+package kim.pokemon.kimexpand;
 
 import catserver.api.bukkit.event.ForgeEvent;
 import com.pixelmonmod.pixelmon.Pixelmon;
@@ -27,7 +27,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -9,6 +9,7 @@
     <version>1.1</version>
 
     <dependencies>
+        <!--Core-->
         <dependency>
             <groupId>CatServer</groupId>
             <artifactId>CatServer</artifactId>
@@ -17,26 +18,14 @@
             <systemPath>${project.basedir}/libs/CatServerSRG-11c12cd.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>Pixelmon</groupId>
-            <artifactId>Pixelmon</artifactId>
-            <version>8.3.1c</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/Pixelmon-1.12.2-8.3.3-server.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>pokeluck</groupId>
-            <artifactId>pokeluck</artifactId>
-            <version>1.1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/pokelucky-1.1.0.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>minecraft</groupId>
             <artifactId>minecraft</artifactId>
             <version>1.12.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/minecraft_server.1.12.2.jar</systemPath>
         </dependency>
+
+        <!--Plugins-->
         <dependency>
             <groupId>Vault</groupId>
             <artifactId>Vault-api</artifactId>
@@ -80,12 +69,45 @@
             <systemPath>${project.basedir}/libs/PlayerPoints-3.0.3.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>CMI</groupId>
+            <artifactId>CMI-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/CMI8.8.1.0.jar</systemPath>
+        </dependency>
+
+
+        <!--Mod-->
+        <dependency>
             <groupId>TConstruct</groupId>
             <artifactId>TConstruct-api</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/TConstruct-1.12.2-2.13.0.183.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>Pixelmon</groupId>
+            <artifactId>Pixelmon</artifactId>
+            <version>8.3.1c</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/Pixelmon-1.12.2-8.3.3-server.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>pokeluck</groupId>
+            <artifactId>pokeluck</artifactId>
+            <version>1.1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/pokelucky-1.1.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>DragonArmourers</groupId>
+            <artifactId>DragonArmourers</artifactId>
+            <version>4.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/Plugin-DragonArmourers4.2.jar</systemPath>
+        </dependency>
+
+        <!--IDEA Plugins-->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>

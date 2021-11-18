@@ -6,6 +6,10 @@ import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import de.tr7zw.nbtapi.NBTItem;
 import kim.pokemon.Main;
 import kim.pokemon.database.GlazedPayDataSQLReader;
+import kim.pokemon.kimexpand.armourers.guis.ArmourersGUI;
+import kim.pokemon.kimexpand.crazyauctions.api.Category;
+import kim.pokemon.kimexpand.crazyauctions.api.ShopType;
+import kim.pokemon.kimexpand.crazyauctions.controllers.GUI;
 import kim.pokemon.ui.banlist.BanList_A;
 import kim.pokemon.ui.plotadmin.PlotMenu;
 import kim.pokemon.ui.pokemoninfo.PokemonInfoMenu;
@@ -38,12 +42,20 @@ public class MainMenu extends InventoryGUI {
                     ColorParser.parse("&r  &e■ &7余额:"),
                     ColorParser.parse("&r      &3" + Main.econ.getBalance(player) + " &7萌币"),
                     ColorParser.parse("&r      &3" + Main.ppAPI.lookAsync(player.getUniqueId()).get() + ".0 &7萌点"),
-                    ColorParser.parse("&r  &e■ &7充值: &3" + GlazedPayDataSQLReader.getPlayer(player.getName()).getAmount() + " &7RMB")
+                    ColorParser.parse("&r  &e■ &7充值: &3" + GlazedPayDataSQLReader.getPlayer(player.getName()).getAmount() + " &7RMB"),
+                    ColorParser.parse("&r"),
+                    ColorParser.parse("&7&o您可以查看一些与您相关的信息.")
             );
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        this.setButton(10, new Button(PlayerInfo));
+        Button PlayerInfoButton = new Button(PlayerInfo, type -> {
+            if (type.isLeftClick()) {
+                ArmourersGUI armourersGUI = new ArmourersGUI(player);
+                armourersGUI.openInventory();
+            }
+        });
+        this.setButton(10, PlayerInfoButton);
 
         ItemStack Recharge = ItemFactoryAPI.getItemStack(Material.EMERALD,
                 ColorParser.parse("&f充值中心"),
@@ -92,8 +104,7 @@ public class MainMenu extends InventoryGUI {
         );
         Button SpyglassButton = new Button(Spyglass, type -> {
             if (type.isLeftClick()) {
-                player.closeInventory();
-                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，该功能还未启用."));
+                GUI.openShop(player, ShopType.SELL, Category.NONE, 1);
             }
         });
         this.setButton(12, SpyglassButton);

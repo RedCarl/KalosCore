@@ -2,6 +2,8 @@ package kim.pokemon.util.gui.inventory;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import kim.pokemon.Main;
+import kim.pokemon.util.mojang.Mojang;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -17,7 +19,6 @@ import java.util.UUID;
 
 public class SkullAPI {
    private static Field profile_field;
-   private static Method getProfile;
    private static Base64.Encoder encoder = Base64.getEncoder();
 
    static{
@@ -35,7 +36,7 @@ public class SkullAPI {
       SkullMeta meta = (SkullMeta)is.getItemMeta();
       meta.setDisplayName(name);
       meta.setLore(Arrays.asList(lores));
-      GameProfile profile = new GameProfile(UUID.randomUUID(), (String)null);
+      GameProfile profile = new GameProfile(UUID.randomUUID(), null);
       String before = "{\"textures\":{\"SKIN\":{\"url\":\"";
       String after = "\"}}}";
       url = before + url + after;
@@ -49,15 +50,7 @@ public class SkullAPI {
       return is;
    }
 
-   public static ItemStack getPlayerSkull(OfflinePlayer p, String name, String... lores){
-      Player pl  = null;
-//      pl.getWorld().re
-      ItemStack is = new ItemStack(Material.SKULL_ITEM, 1, (short)3);
-      SkullMeta meta = (SkullMeta)is.getItemMeta();
-      meta.setDisplayName(name);
-      meta.setLore(Arrays.asList(lores));
-      meta.setOwner(p.getName());
-      is.setItemMeta(meta);
-      return is;
+   public static ItemStack getPlayerSkull(Player p, String name, String... lores){
+      return getSkullItem(Main.players.get(p),name,lores);
    }
 }
