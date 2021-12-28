@@ -8,11 +8,6 @@ public class main {
     static ArrayList<String> players = new ArrayList<>();
 
     public static void main(String[] args) {
-        getAllPlayerInfo();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("输入玩家ID:");
-        scanner.nextInt();
-        System.out.println(players.get(0));
     }
 
     /**

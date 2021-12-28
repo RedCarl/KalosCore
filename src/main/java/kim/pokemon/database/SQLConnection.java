@@ -1,6 +1,6 @@
 package kim.pokemon.database;
 
-import kim.pokemon.configFile.GlazedPay.Data;
+import kim.pokemon.configFile.Data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,7 +1,7 @@
 main: kim.pokemon.Main
 name: KimCore
 version: ${project.version}
-depend: [Vault,PlaceholderAPI,ProtocolLib,PlayerPoints,CMI,PlotSquared]
+depend: [Vault,PlaceholderAPI,ProtocolLib,PlayerPoints,CMI,PlotSquared,LuckPerms]
 authors:
   - Red_Carl
   - 85
@@ -26,7 +26,6 @@ commands:
   Menu:
     aliases:
       - menu
-      - cd
     description: "主菜单，可通过蹲下+F打开菜单。"
   BanPokemon:
     aliases:
@@ -42,3 +41,11 @@ commands:
     aliases:
       - kim
     description: "全球市场。"
+  PokeAward:
+    aliases:
+      - pokeaward
+    description: "宝可梦形态。"
+  eb:
+    aliases:
+      - eb
+    description: "宝可梦BUG，退出战斗。"

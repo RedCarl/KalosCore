@@ -17,7 +17,7 @@ public enum CurrencyManager { // Currency Manager
      * @param name
      *            name of the Currency.
      */
-    private CurrencyManager(String pluginname, String name) {
+    CurrencyManager(String pluginname, String name) {
         this.pluginName = pluginname;
         this.name = name;
     }

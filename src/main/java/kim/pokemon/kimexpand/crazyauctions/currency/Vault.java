@@ -1,5 +1,6 @@
 package kim.pokemon.kimexpand.crazyauctions.currency;
 
+import kim.pokemon.Main;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -7,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class Vault {
     
-    public static Economy econ = null;
+    public static Economy econ = Main.econ;
     public static EconomyResponse r;
     
     public static Long getMoney(Player player) {

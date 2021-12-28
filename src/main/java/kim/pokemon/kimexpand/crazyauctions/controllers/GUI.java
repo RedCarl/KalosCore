@@ -1,5 +1,7 @@
 package kim.pokemon.kimexpand.crazyauctions.controllers;
 
+import kim.pokemon.Main;
+import kim.pokemon.configFile.Data;
 import kim.pokemon.kimexpand.crazyauctions.Methods;
 import kim.pokemon.kimexpand.crazyauctions.api.*;
 import kim.pokemon.kimexpand.crazyauctions.api.FileManager.Files;
@@ -40,7 +42,7 @@ public class GUI implements Listener {
 	private static HashMap<Player, List<Integer>> List = new HashMap<>();
 	private static HashMap<Player, String> IDs = new HashMap<>();
 	private static CrazyAuctions crazyAuctions = CrazyAuctions.getInstance();
-	private static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyAuctions");
+	private static Plugin plugin = Main.getInstance();
 	private static List<OfflinePlayer> offlinePlayers = Lists.newArrayList();
 
 	public GUI() {
@@ -143,13 +145,20 @@ public class GUI implements Listener {
 		int maxPage = Methods.getMaxPage(items);
 		for (; page > maxPage; page--)
 			;
-		Inventory inv = Bukkit.createInventory(null, 54,
-				Methods.color(config.getString("Settings.GUIName") + " #" + page));
-
-		for (int i = 0; i < 18; i++) {
-			ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));
-			inv.setItem(36+i,Line);
+		Inventory inv = Bukkit.createInventory(null, 54, Methods.color(config.getString("Settings.GUIName") + " #" + page));
+		if (sell.equals(ShopType.SELL)){
+			for (int i = 0; i < 18; i++) {
+				ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));
+				inv.setItem(36+i,Line);
+			}
+		}else {
+			for (int i = 0; i < 18; i++) {
+				ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)14, ColorParser.parse("&r"));
+				inv.setItem(36+i,Line);
+			}
 		}
+
+
 
 		List<String> options = new ArrayList<>();
 		options.add("SellingItems");

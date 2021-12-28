@@ -1,6 +1,5 @@
 package kim.pokemon.ui.module;
 
-import kim.pokemon.ui.plotadmin.PlotMenu;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.gui.Button;
 import kim.pokemon.util.gui.InventoryGUI;
@@ -20,7 +19,7 @@ public class ConfirmUI extends InventoryGUI {
             this.setButton(i, new Button(Line));
         }
 
-        ItemStack YES = ItemFactoryAPI.getItemStack(Material.BARRIER,ColorParser.parse("&a确 认"));
+        ItemStack YES = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)5,ColorParser.parse("&a确 认"));
         Button YESButton = new Button(YES, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
@@ -30,7 +29,7 @@ public class ConfirmUI extends InventoryGUI {
         });
         this.setButton(2, YESButton);
 
-        ItemStack NO = ItemFactoryAPI.getItemStack(Material.BARRIER,ColorParser.parse("&c取 消"));
+        ItemStack NO = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short) 14,ColorParser.parse("&c取 消"));
         Button NOButton = new Button(NO, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();

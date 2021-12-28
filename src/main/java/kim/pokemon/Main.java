@@ -2,15 +2,20 @@ package kim.pokemon;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.pixelmonmod.pixelmon.Pixelmon;
+import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import kim.pokemon.command.CrazyAuctions.CrazyAuctionsCommand;
 import kim.pokemon.command.MenuCommand;
+import kim.pokemon.command.PokeAward.PokeFormCommand;
 import kim.pokemon.command.PokemonBan.BanItemCommand;
 import kim.pokemon.command.PokemonBan.BanPokemonCommand;
-import kim.pokemon.database.GlazedPayDataSQLReader;
-import kim.pokemon.database.PokemonBanDataSQLReader;
-import kim.pokemon.database.SQLConnection;
-import kim.pokemon.kimexpand.PokemonBan;
-import kim.pokemon.kimexpand.PokemonSpawnTime;
+import kim.pokemon.configFile.Data;
+import kim.pokemon.database.*;
+import kim.pokemon.kimexpand.autobroadcast.BroadCastMessage;
+import kim.pokemon.kimexpand.npc.NpcEntityEvent;
+import kim.pokemon.kimexpand.onlinereward.PlayerOnlineReward;
+import kim.pokemon.kimexpand.pokeban.PokemonBan;
+import kim.pokemon.kimexpand.pokespawn.SpawnTime;
 import kim.pokemon.kimexpand.armourers.listener.ArmourersUpdateListener;
 import kim.pokemon.kimexpand.crazyauctions.CrazyAuctions;
 import kim.pokemon.listener.CommandEvent;
@@ -22,6 +27,7 @@ import kim.pokemon.placeholder.TitlePlaceholderAPI;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.gui.listener.ButtonClickListener;
 import kim.pokemon.util.mojang.Mojang;
+import net.luckperms.api.LuckPerms;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
@@ -32,6 +38,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 
@@ -39,13 +46,18 @@ public class Main extends JavaPlugin {
     private static Main instance;
     public static Economy econ = null;
     public static PlayerPointsAPI ppAPI;
+    public static LuckPerms luckPerms;
     public static Plugin getInstance(){
         return instance;
     }
+    //玩家皮肤ID数据
     public static HashMap<Player,String> players = new HashMap<>();
+    //玩家累计充值数量数据
+    public static HashMap<Player, Double> GlazedPayData = new HashMap<>();
 
     @Override
     public void onEnable() {
+
         instance = this;
         this.saveDefaultConfig();
         this.getConfig();
@@ -97,17 +109,29 @@ public class Main extends JavaPlugin {
             log("若您想使用全部功能，请安装ProtocolLib！");
         }
 
+        //LuckPerms
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            log("正在注册 LuckPerms 权限管理...");
+            luckPerms = provider.getProvider();
+        }else {
+            log("未安装 LuckPerms 不进行数据包注册...");
+            log("若您想使用全部功能，请安装LuckPerms！");
+        }
+
+
         log("正在注册监听器...");
         regListener(new ButtonClickListener());
         regListener(new CommandEvent());
         regListener(new PlayerEvent());
         regListener(new PokemonEvent());
-        regListener(new PokemonSpawnTime());
+        regListener(new SpawnTime());
         regListener(new PokemonBan());
         regListener(new ArmourersUpdateListener());
+        regListener(new NpcEntityEvent());
 
         log("启动传奇宝可梦监控系统...");
-        PokemonSpawnTime.start();
+        SpawnTime.start();
 
         log("启动宝可梦封禁系统...");
         PokemonBan.rua();
@@ -117,20 +141,42 @@ public class Main extends JavaPlugin {
         regCommand("BanPokemon",new BanPokemonCommand());
         regCommand("BanItem",new BanItemCommand());
         regCommand("Kim",new CrazyAuctionsCommand());
+        regCommand("PokeAward",new PokeFormCommand());
 
         log("正在启动数据库...");
         SQLConnection.initialize();
         GlazedPayDataSQLReader.selectTable();
         PokemonBanDataSQLReader.selectTable();
+        PremiumPlayerDataSQLReader.selectTable();
+        PlayerEventDataSQLReader.selectTable();
 
         log("获取在线玩家信息...");
         getAllPlayerInfo();
+        getAllOnlinePlayerData();
+
+        log("关闭所有玩家的GUI界面...");
+        for (Player player:Bukkit.getOnlinePlayers()) {
+            if (player.getOpenInventory().getTitle().contains(Data.SERVER_NAME)){
+                player.closeInventory();
+            }
+        }
 
         log("加载内置插件 CrazyAuctions 信息...");
         Bukkit.getConsoleSender().sendMessage(ColorParser.parse("&c-------[ CrazyAuctions ]-------"));
         CrazyAuctions crazyAuctions = new CrazyAuctions();
         crazyAuctions.onEnable();
         Bukkit.getConsoleSender().sendMessage(ColorParser.parse("&c-------------------------------"));
+
+        log("加载NPC组件....");
+        if (Bukkit.getOnlinePlayers().size()>0){
+            NpcEntityEvent.NpcHologram(true);
+        }
+
+        log("加载公告组件....");
+        new BroadCastMessage(this);
+
+        log("加载在线奖励组件...");
+        new PlayerOnlineReward(this);
 
         log("加载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
@@ -151,6 +197,9 @@ public class Main extends JavaPlugin {
         log("卸载内置插件 CrazyAuctions 信息...");
         CrazyAuctions crazyAuctions = new CrazyAuctions();
         crazyAuctions.onDisable();
+
+        log("卸载NPC组件....");
+        NpcEntityEvent.NpcHologram(false);
 
         log("卸载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
@@ -212,11 +261,27 @@ public class Main extends JavaPlugin {
      */
     public static void getAllPlayerInfo(){
         new Thread(()->{
-            for (Player player:Bukkit.getOnlinePlayers()) {
-                if (!players.containsKey(player)){
-                    players.put(player,Mojang.getSkinUrl(new Mojang().getUUIDOfUsername(player.getName())));
+            try {
+                for (Player player:Bukkit.getOnlinePlayers()) {
+                    if (!players.containsKey(player)){
+                        players.put(player,Mojang.getSkinUrl(new Mojang().getUUIDOfUsername(player.getName())));
+                    }
+                }
+            }catch (NullPointerException ignored){}
+        }).start();
+    }
+
+    /**
+     * 获取玩家的累计充值数量
+     */
+    public static void getAllOnlinePlayerData(){
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player player:Bukkit.getOnlinePlayers()) {
+                    GlazedPayData.put(player,GlazedPayDataSQLReader.getPlayer(player.getName()).getAmount());
                 }
             }
-        }).start();
+        }.runTaskTimer(Main.getInstance(),0,600);
     }
 }

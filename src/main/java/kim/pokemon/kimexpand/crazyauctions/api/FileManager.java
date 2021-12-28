@@ -58,6 +58,7 @@ public class FileManager {
                     }
                     File serverFile = new File(plugin.getDataFolder(), "/" + file.getFileLocation());
                     InputStream jarFile = getClass().getResourceAsStream("/" + fileLocation);
+                    assert jarFile != null;
                     copyFile(jarFile, serverFile);
                 } catch (Exception e) {
                     if (log) System.out.println("Failed to load " + file.getFileName());

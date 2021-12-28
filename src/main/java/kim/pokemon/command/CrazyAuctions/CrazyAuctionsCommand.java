@@ -1,11 +1,14 @@
 package kim.pokemon.command.CrazyAuctions;
 
+import kim.pokemon.database.PokemonBanDataSQLReader;
 import kim.pokemon.kimexpand.crazyauctions.Methods;
 import kim.pokemon.kimexpand.crazyauctions.api.*;
 import kim.pokemon.kimexpand.crazyauctions.api.events.AuctionListEvent;
 import kim.pokemon.kimexpand.crazyauctions.controllers.GUI;
+import kim.pokemon.util.ColorParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,8 +33,7 @@ public class CrazyAuctionsCommand implements CommandExecutor {
         if (commandLable.equalsIgnoreCase("kim")&&sender instanceof Player) {
             Player player = Bukkit.getPlayer(((Player) sender).getUniqueId());
                 if (args.length >1 && (args[0].equalsIgnoreCase("Sell")||args[0].equalsIgnoreCase("Bid"))) {
-                SellItem(sender,args);
-                return true;
+                return SellItem(sender,args);
             }else {
                 GUI.openShop(player, ShopType.SELL, Category.NONE, 1);
             }
@@ -145,6 +147,12 @@ public class CrazyAuctionsCommand implements CommandExecutor {
                 if (!Methods.hasPermission(player, "Bid")) return true;
             }
             ItemStack item = Methods.getItemInHand(player);
+            if (PokemonBanDataSQLReader.getBanDrops().contains(item.getType().name())) {
+                player.getInventory().remove(item);
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，该物品已经被服务器禁止使用。"));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                return true;
+            }
             int amount = item.getAmount();
             if (args.length >= 3) {
                 if (!Methods.isInt(args[2])) {

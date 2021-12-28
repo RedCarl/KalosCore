@@ -2,8 +2,8 @@ package kim.pokemon.database;
 
 
 import kim.pokemon.Main;
-import kim.pokemon.configFile.GlazedPay.Data;
-import kim.pokemon.entity.PlayerRecharge;
+import kim.pokemon.configFile.Data;
+import kim.pokemon.kimexpand.recharge.entity.PlayerRecharge;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

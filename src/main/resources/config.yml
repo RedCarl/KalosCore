@@ -1,6 +1,7 @@
+##CrazyAuctions
 Settings:
   Prefix: '&8[&a&l!&8] &7'
-  GUIName: '&0全球交易系统'
+  GUIName: '&0Kim / 全球市场'
   Players-Current-Items: '&0当前出售 &7&o(当前出售的商品)'
   Cancelled/Expired-Items: '&0收件箱 &7&o(购买的物品/下架的物品)'
   Buying-Item: '&0你将要购买这件物品: 是否确认购买?'
@@ -41,7 +42,7 @@ Settings:
     SellingItemLore: # 出售物品的lore
       - ''
       - '&7商品价格:'
-      - '&r     &c%Price% &7萌币'
+      - '&r     &c%Price% &7"+Data.SERVER_VAULT+"'
       - ''
       - '&7商品主人:'
       - '&r     &c%Seller%'
@@ -53,7 +54,7 @@ Settings:
     CurrentLore: # 你的出售物品
       - ''
       - '&7商品价格:'
-      - '&r     &c%Price% &7萌币'
+      - '&r     &c%Price% &7"+Data.SERVER_VAULT+"'
       - ''
       - '&7剩余时间:'
       - '&r     &c%Time%'
@@ -68,7 +69,7 @@ Settings:
     Bidding: # 拍卖物品
       - ''
       - '&7当前拍价:'
-      - '&r     &c%TopBid% &7萌币'
+      - '&r     &c%TopBid% &7"+Data.SERVER_VAULT+"'
       - ''
       - '&7商品主人:'
       - '&r     &c%Seller%'
@@ -129,7 +130,7 @@ Settings:
         Lore:
           - '&7&o这个分类包含了当前正在出售的其它物品'
       Pokemons:
-        Item: '4426'
+        Item: 'PIXELMON_MASTER_BALL'
         Toggle: true
         Slot: 20
         Name: '&6宝可梦'
@@ -139,7 +140,7 @@ Settings:
         Item: '166'
         Toggle: false
         Slot: 23
-        Name: '&6&lNone'
+        Name: '&6&l全部'
         Lore:
           - '&7This category contains all'
           - '&7items currently being sold.'
@@ -258,7 +259,7 @@ Settings:
           Lore:
             - '&7&o这里展示的是其它玩家出售/拍卖的商品'
         Categories:
-          Item: 'PIXELMON_MASTER_BALL'
+          Item: '340'
           Toggle: true
           Slot: 54
           Name: '&c[ 商品分类 ]'
@@ -309,9 +310,30 @@ mysql:
   DRIVER: 'com.mysql.jdbc.Driver'
   URL: 'localhost'
   PORT: '3306'
-  DATABASE: 'pokemondata_b?useSSL=false'
-  USER: 'pokemondata_b'
-  PASS: 'pokemondata_b'
+  DATABASE: 'kalos?useSSL=false'
+  USER: 'kalos'
+  PASS: 'kalos'
   ##不要更改
   GLAZED_PAY_DATA: 'ranks'
   POKEMON_BAN_DATA: 'BanPokemonMap'
+  PREMIUM_DATA: 'premium_data'
+  PLAYER_EVENT_DATA: 'PlayerEventData'
+kimcore:
+  SERVER_NAME: 'Kim'
+  SERVER_NAME_CN: '卡洛斯'
+  SERVER_VAULT: '卡洛币'
+  SERVER_POINTS: '卡点'
+  ARMOURERS_PATH: '/home/kalos/ArmourersData'
+
+#BreedLimit
+BreedLimit:
+  Ivs: 6
+  Ability: false
+  Pokemon:
+    - Ditto
+
+#PokeAward
+PokeAward:
+
+#KimArmourers
+KimArmourers:

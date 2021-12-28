@@ -1,5 +1,6 @@
 package kim.pokemon.kimexpand.crazyauctions;
 
+import kim.pokemon.Main;
 import kim.pokemon.kimexpand.crazyauctions.api.FileManager;
 import kim.pokemon.kimexpand.crazyauctions.api.FileManager.Files;
 import kim.pokemon.kimexpand.crazyauctions.api.Messages;
@@ -21,7 +22,7 @@ import java.util.regex.Pattern;
 
 public class Methods {
     
-    public static Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CrazyAuctions");
+    public static Plugin plugin = Main.getInstance();
     private static FileManager fileManager = FileManager.getInstance();
     
     public final static Pattern HEX_PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
@@ -283,7 +284,7 @@ public class Methods {
     public static List<ItemStack> getPage(List<ItemStack> list, Integer page) {
         List<ItemStack> items = new ArrayList<>();
         if (page <= 0) page = 1;
-        int max = 45;
+        int max = 36;
         int index = page * max - max;
         int endIndex = index >= list.size() ? list.size() - 1 : index + max;
         for (; index < endIndex; index++) {
@@ -303,7 +304,7 @@ public class Methods {
     public static List<Integer> getPageInts(List<Integer> list, Integer page) {
         List<Integer> items = new ArrayList<>();
         if (page <= 0) page = 1;
-        int max = 45;
+        int max = 36;
         int index = page * max - max;
         int endIndex = index >= list.size() ? list.size() - 1 : index + max;
         for (; index < endIndex; index++) {
@@ -323,7 +324,7 @@ public class Methods {
     public static int getMaxPage(List<ItemStack> list) {
         int maxPage = 1;
         int amount = list.size();
-        for (; amount > 45; amount -= 45, maxPage++) ;
+        for (; amount > 36; amount -= 36, maxPage++) ;
         return maxPage;
     }
     

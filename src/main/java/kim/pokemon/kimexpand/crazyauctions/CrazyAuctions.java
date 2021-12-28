@@ -40,7 +40,7 @@ public class CrazyAuctions implements Listener {
         final Player player = e.getPlayer();
         if (player.getName().equalsIgnoreCase("BadBones69")) {
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-                player.sendMessage(Methods.getPrefix() + Methods.color("&7Main.getInstance() server is running your Crazy Auctions Plugin. " + "&7It is running version &av" + Bukkit.getServer().getPluginManager().getPlugin("CrazyAuctions").getDescription().getVersion() + "&7."));
+                player.sendMessage(Methods.getPrefix() + Methods.color("&7Main.getInstance() server is running your Crazy Auctions Plugin. " + "&7It is running version &av" + Main.getInstance().getServer().getVersion() + "&7."));
             }, 40);
         }
     }

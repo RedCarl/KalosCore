@@ -13,6 +13,12 @@ public class ItemFactoryAPI {
       return is;
    }
 
+   public static ItemStack getItemStack(Material material,int amount) {
+      ItemStack is = new ItemStack(material);
+      is.setAmount(amount);
+      return is;
+   }
+
    public static ItemStack getItemStack(Material material, String name) {
       ItemStack is = new ItemStack(material);
       ItemMeta im = Bukkit.getItemFactory().getItemMeta(material);

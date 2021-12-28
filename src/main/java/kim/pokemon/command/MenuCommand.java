@@ -1,6 +1,6 @@
 package kim.pokemon.command;
 
-import kim.pokemon.ui.MainMenu;
+import kim.pokemon.kimexpand.menu.MainMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

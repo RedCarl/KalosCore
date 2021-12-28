@@ -22,11 +22,9 @@ import kim.pokemon.util.HttpClient;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.swing.text.html.parser.Parser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Mojang {
@@ -71,5 +69,10 @@ public class Mojang {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getBaseHead(String basehead){
+        JsonObject o = parser.parse(new String(Base64.decodeBase64(basehead))).getAsJsonObject();
+        return o.get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString();
     }
 }

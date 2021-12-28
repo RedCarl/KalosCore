@@ -1,17 +1,26 @@
 package kim.pokemon.listener;
 
 import kim.pokemon.Main;
+import kim.pokemon.kimexpand.menu.MainMenu;
 import kim.pokemon.util.ColorParser;
+import kim.pokemon.util.PokemonAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 
 public class CommandEvent implements Listener {
 
     @EventHandler
+    public void PlayerMessage(AsyncPlayerChatEvent asyncPlayerChatEvent){
+
+    }
+
+    @EventHandler
     public void PlayerOnCommand(PlayerCommandPreprocessEvent event){
+
         switch (event.getMessage().toLowerCase()){
             case "/version":
             case "/ver":
@@ -23,6 +32,23 @@ public class CommandEvent implements Listener {
                 getPlugins(event.getPlayer());
                 event.setCancelled(true);
                 break;
+            case "/cd":
+                MainMenu mainMenu = new MainMenu(event.getPlayer());
+                mainMenu.openInventory();
+                event.setCancelled(true);
+                break;
+        }
+
+        if (event.getMessage().toLowerCase().contains("sethome")){
+            if (event.getPlayer().getLocation().getWorld().getName().equals("spawn")){
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您不能在这个世界设置家."));
+            }
+        }
+
+        if ("/eb".equals(event.getMessage())) {
+            event.setCancelled(true);
+            PokemonAPI.endBattle(event.getPlayer());
         }
     }
 
