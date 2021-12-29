@@ -1,0 +1,1 @@
+mvn clean package && copy .\target\KimCore-1.1.jar F:\MinecraftServer\CatServer\plugins /y

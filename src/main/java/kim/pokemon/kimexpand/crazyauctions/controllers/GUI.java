@@ -11,12 +11,14 @@ import kim.pokemon.kimexpand.crazyauctions.api.events.AuctionCancelledEvent;
 import kim.pokemon.kimexpand.crazyauctions.api.events.AuctionNewBidEvent;
 import kim.pokemon.kimexpand.crazyauctions.currency.CurrencyManager;
 import kim.pokemon.util.ColorParser;
+import kim.pokemon.util.api.PokemonPhotoAPI;
 import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,6 +32,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.google.common.collect.Lists;
 
+import java.io.File;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -1006,7 +1009,7 @@ public class GUI implements Listener {
 										Player sell = Methods.getPlayer(seller);
 										sell.sendMessage(Messages.PLAYER_BOUGHT_ITEM.getMessage(placeholders));
 									}
-									player.getInventory().addItem(i);
+									addItem(player,i);
 									data.set("Items." + ID, null);
 									Files.DATA.saveFile();
 									playClick(player);
@@ -1127,7 +1130,7 @@ public class GUI implements Listener {
 													player.sendMessage(Messages.INVENTORY_FULL.getMessage());
 													break;
 												} else {
-													player.getInventory().addItem(
+													addItem(player,
 															data.getItemStack("OutOfTime/Cancelled." + i + ".Item"));
 													data.set("OutOfTime/Cancelled." + i, null);
 												}
@@ -1162,7 +1165,7 @@ public class GUI implements Listener {
 													player.sendMessage(Messages.GOT_ITEM_BACK.getMessage());
 													ItemStack IT = data
 															.getItemStack("OutOfTime/Cancelled." + i + ".Item");
-													player.getInventory().addItem(IT);
+													addItem(player,IT);
 													data.set("OutOfTime/Cancelled." + i, null);
 													Files.DATA.saveFile();
 													playClick(player);
@@ -1188,4 +1191,12 @@ public class GUI implements Listener {
 		}
 	}
 
+	public static void addItem(Player p,ItemStack it){
+		if(it.getType().name().equals("PIXELMON_PIXELMON_SPRITE")){
+			PokemonPhotoAPI.addPokemon(p,it);
+		}
+		else{
+			p.getInventory().addItem(it);
+		}
+	}
 }

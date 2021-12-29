@@ -1,11 +1,14 @@
 package kim.pokemon.command.CrazyAuctions;
 
+import com.pixelmonmod.pixelmon.Pixelmon;
+import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import kim.pokemon.database.PokemonBanDataSQLReader;
 import kim.pokemon.kimexpand.crazyauctions.Methods;
 import kim.pokemon.kimexpand.crazyauctions.api.*;
 import kim.pokemon.kimexpand.crazyauctions.api.events.AuctionListEvent;
 import kim.pokemon.kimexpand.crazyauctions.controllers.GUI;
 import kim.pokemon.util.ColorParser;
+import kim.pokemon.util.api.PokemonPhotoAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -25,21 +28,56 @@ public class CrazyAuctionsCommand implements CommandExecutor {
 
     public static kim.pokemon.kimexpand.crazyauctions.api.CrazyAuctions crazyAuctions = kim.pokemon.kimexpand.crazyauctions.api.CrazyAuctions.getInstance();
 
-    public CrazyAuctionsCommand(){}
+    public CrazyAuctionsCommand() {
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLable, String[] args) {
 
-        if (commandLable.equalsIgnoreCase("kim")&&sender instanceof Player) {
+        if (commandLable.equalsIgnoreCase("kim") && sender instanceof Player) {
             Player player = Bukkit.getPlayer(((Player) sender).getUniqueId());
-                if (args.length >1 && (args[0].equalsIgnoreCase("Sell")||args[0].equalsIgnoreCase("Bid"))) {
-                return SellItem(sender,args);
-            }else {
+            if (args.length > 1 && (args[0].equalsIgnoreCase("Sell") || args[0].equalsIgnoreCase("Bid"))) {
+                return SellItem(sender, args);
+            } else if (args.length == 3 && (args[0].equalsIgnoreCase("poke"))) {
+                String numStr = args[1];
+                String moneyStr = args[2];
+                int num = 0;
+                int money = 0;
+                try{
+                    num = Integer.parseInt(numStr);
+                    money = Integer.parseInt(moneyStr);
+                }
+                catch (Exception e) {
+                    player.sendMessage("参数错误");
+                    return false;
+                }
+                if(!(num>0 && num<7)){
+                    player.sendMessage("参数错误");
+                    return false;
+                }
+                if(money <= 0){
+                    player.sendMessage("参数错误");
+                    return false;
+                }
+                Pokemon pokemon = Pixelmon.storageManager.getParty(player.getUniqueId()).get(num-1);
+                if(pokemon == null){
+                    player.sendMessage("宝可梦不存在");
+                    return false;
+                }
+                if(Pixelmon.storageManager.getParty(player.getUniqueId()).getTeam().size()==1){
+                    player.sendMessage("背包中至少需要有1只宝可梦");
+                    return false;
+                }
+                ItemStack is = PokemonPhotoAPI.getPokeEggItem(pokemon,true,num-1,Pixelmon.storageManager.getParty(player.getUniqueId()));
+//                player.getInventory().addItem(is);
+                return SellPokemon(sender, new String[]{"sell",moneyStr},is);
+            } else {
                 GUI.openShop(player, ShopType.SELL, Category.NONE, 1);
             }
         }
         return false;
     }
+
     private ArrayList<Material> getDamageableItems() {
         ArrayList<Material> ma = new ArrayList<>();
         if (Version.isNewer(Version.v1_12_R1)) {
@@ -120,12 +158,195 @@ public class CrazyAuctionsCommand implements CommandExecutor {
             FileManager.Files.TEST_FILE.getFile().set("Test", item);
             FileManager.Files.TEST_FILE.saveFile();
             System.out.println("[Crazy Auctions] " + item.getType() + " has passed unicode checks.");
-            return ((BookMeta) item.getItemMeta()).getPages().stream().mapToInt(String :: length).sum() < 2000;
+            return ((BookMeta) item.getItemMeta()).getPages().stream().mapToInt(String::length).sum() < 2000;
         }
         return true;
     }
 
-    public boolean SellItem(CommandSender sender, String[] args){
+    public boolean SellPokemon(CommandSender sender, String[] args,ItemStack item) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(Messages.PLAYERS_ONLY.getMessage());
+            return true;
+        }
+        if (args.length >= 2) {
+            Player player = (Player) sender;
+            if (args[0].equalsIgnoreCase("Sell")) {
+                if (!crazyAuctions.isSellingEnabled()) {
+                    player.sendMessage(Messages.SELLING_DISABLED.getMessage());
+                    return true;
+                }
+                if (!Methods.hasPermission(player, "Sell")) return true;
+            }
+            if (args[0].equalsIgnoreCase("Bid")) {
+                if (!crazyAuctions.isBiddingEnabled()) {
+                    player.sendMessage(Messages.BIDDING_DISABLED.getMessage());
+                    return true;
+                }
+                if (!Methods.hasPermission(player, "Bid")) return true;
+            }
+            if (PokemonBanDataSQLReader.getBanDrops().contains(item.getType().name())) {
+                player.getInventory().remove(item);
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，该物品已经被服务器禁止使用。"));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                return true;
+            }
+            int amount = item.getAmount();
+            if (args.length >= 3) {
+                if (!Methods.isInt(args[2])) {
+                    HashMap<String, String> placeholders = new HashMap<>();
+                    placeholders.put("%Arg%", args[2]);
+                    placeholders.put("%arg%", args[2]);
+                    player.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+                    return true;
+                }
+                amount = Integer.parseInt(args[2]);
+                if (amount <= 0) amount = 1;
+                if (amount > item.getAmount()) amount = item.getAmount();
+            }
+            if (!Methods.isLong(args[1])) {
+                HashMap<String, String> placeholders = new HashMap<>();
+                placeholders.put("%Arg%", args[1]);
+                placeholders.put("%arg%", args[1]);
+                player.sendMessage(Messages.NOT_A_NUMBER.getMessage(placeholders));
+                return true;
+            }
+            long price = Long.parseLong(args[1]);
+            if (args[0].equalsIgnoreCase("Bid")) {
+                if (price < FileManager.Files.CONFIG.getFile().getLong("Settings.Minimum-Bid-Price")) {
+                    player.sendMessage(Messages.BID_PRICE_TO_LOW.getMessage());
+                    return true;
+                }
+                if (price > FileManager.Files.CONFIG.getFile().getLong("Settings.Max-Beginning-Bid-Price")) {
+                    player.sendMessage(Messages.BID_PRICE_TO_HIGH.getMessage());
+                    return true;
+                }
+            } else {
+                if (price < FileManager.Files.CONFIG.getFile().getLong("Settings.Minimum-Sell-Price")) {
+                    player.sendMessage(Messages.SELL_PRICE_TO_LOW.getMessage());
+                    return true;
+                }
+                if (price > FileManager.Files.CONFIG.getFile().getLong("Settings.Max-Beginning-Sell-Price")) {
+                    player.sendMessage(Messages.SELL_PRICE_TO_HIGH.getMessage());
+                    return true;
+                }
+            }
+            if (!player.hasPermission("crazyauctions.bypass")) {
+                int SellLimit = 0;
+                int BidLimit = 0;
+                for (PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
+                    String perm = permission.getPermission();
+                    if (perm.startsWith("crazyauctions.sell.")) {
+                        perm = perm.replace("crazyauctions.sell.", "");
+                        if (Methods.isInt(perm)) {
+                            if (Integer.parseInt(perm) > SellLimit) {
+                                SellLimit = Integer.parseInt(perm);
+                            }
+                        }
+                    }
+                    if (perm.startsWith("crazyauctions.bid.")) {
+                        perm = perm.replace("crazyauctions.bid.", "");
+                        if (Methods.isInt(perm)) {
+                            if (Integer.parseInt(perm) > BidLimit) {
+                                BidLimit = Integer.parseInt(perm);
+                            }
+                        }
+                    }
+                }
+                for (int i = 1; i < 100; i++) {
+                    if (SellLimit < i) {
+                        if (player.hasPermission("crazyauctions.sell." + i)) {
+                            SellLimit = i;
+                        }
+                    }
+                    if (BidLimit < i) {
+                        if (player.hasPermission("crazyauctions.bid." + i)) {
+                            BidLimit = i;
+                        }
+                    }
+                }
+                if (args[0].equalsIgnoreCase("Sell")) {
+                    if (crazyAuctions.getItems(player, ShopType.SELL).size() >= SellLimit) {
+                        player.sendMessage(Messages.MAX_ITEMS.getMessage());
+                        return true;
+                    }
+                }
+                if (args[0].equalsIgnoreCase("Bid")) {
+                    if (crazyAuctions.getItems(player, ShopType.BID).size() >= BidLimit) {
+                        player.sendMessage(Messages.MAX_ITEMS.getMessage());
+                        return true;
+                    }
+                }
+            }
+            for (String id : FileManager.Files.CONFIG.getFile().getStringList("Settings.BlackList")) {
+                if (item.getType() == Methods.makeItem(id, 1).getType()) {
+                    player.sendMessage(Messages.ITEM_BLACKLISTED.getMessage());
+                    return true;
+                }
+            }
+            if (!FileManager.Files.CONFIG.getFile().getBoolean("Settings.Allow-Damaged-Items")) {
+                for (Material i : getDamageableItems()) {
+                    if (item.getType() == i) {
+                        if (item.getDurability() > 0) {
+                            player.sendMessage(Messages.ITEM_DAMAGED.getMessage());
+                            return true;
+                        }
+                    }
+                }
+            }
+            if (!allowBook(item)) {
+                player.sendMessage(Messages.BOOK_NOT_ALLOWED.getMessage());
+                return true;
+            }
+            String seller = player.getName();
+            // For testing as another player
+            //String seller = "Test-Account";
+            int num = 1;
+            Random r = new Random();
+            for (; FileManager.Files.DATA.getFile().contains("Items." + num); num++) ;
+            FileManager.Files.DATA.getFile().set("Items." + num + ".Price", price);
+            FileManager.Files.DATA.getFile().set("Items." + num + ".Seller", seller);
+            if (args[0].equalsIgnoreCase("Bid")) {
+                FileManager.Files.DATA.getFile().set("Items." + num + ".Time-Till-Expire", Methods.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Bid-Time")));
+            } else {
+                FileManager.Files.DATA.getFile().set("Items." + num + ".Time-Till-Expire", Methods.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Sell-Time")));
+            }
+            FileManager.Files.DATA.getFile().set("Items." + num + ".Full-Time", Methods.convertToMill(FileManager.Files.CONFIG.getFile().getString("Settings.Full-Expire-Time")));
+            int id = r.nextInt(999999);
+            // Runs 3x to check for same ID.
+            for (String i : FileManager.Files.DATA.getFile().getConfigurationSection("Items").getKeys(false))
+                if (FileManager.Files.DATA.getFile().getInt("Items." + i + ".StoreID") == id)
+                    id = r.nextInt(Integer.MAX_VALUE);
+            for (String i : FileManager.Files.DATA.getFile().getConfigurationSection("Items").getKeys(false))
+                if (FileManager.Files.DATA.getFile().getInt("Items." + i + ".StoreID") == id)
+                    id = r.nextInt(Integer.MAX_VALUE);
+            for (String i : FileManager.Files.DATA.getFile().getConfigurationSection("Items").getKeys(false))
+                if (FileManager.Files.DATA.getFile().getInt("Items." + i + ".StoreID") == id)
+                    id = r.nextInt(Integer.MAX_VALUE);
+            FileManager.Files.DATA.getFile().set("Items." + num + ".StoreID", id);
+            ShopType type = ShopType.SELL;
+            if (args[0].equalsIgnoreCase("Bid")) {
+                FileManager.Files.DATA.getFile().set("Items." + num + ".Biddable", true);
+                type = ShopType.BID;
+            } else {
+                FileManager.Files.DATA.getFile().set("Items." + num + ".Biddable", false);
+            }
+            FileManager.Files.DATA.getFile().set("Items." + num + ".TopBidder", "None");
+            ItemStack I = item.clone();
+            I.setAmount(amount);
+            FileManager.Files.DATA.getFile().set("Items." + num + ".Item", I);
+            FileManager.Files.DATA.saveFile();
+            Bukkit.getPluginManager().callEvent(new AuctionListEvent(player, type, I, price));
+            HashMap<String, String> placeholders = new HashMap<>();
+            placeholders.put("%Price%", price + "");
+            placeholders.put("%price%", price + "");
+            player.sendMessage(Messages.ADDED_ITEM_TO_AUCTION.getMessage(placeholders));
+            return false;
+        }
+        return false;
+    }
+
+
+    public boolean SellItem(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(Messages.PLAYERS_ONLY.getMessage());
             return true;
@@ -150,7 +371,7 @@ public class CrazyAuctionsCommand implements CommandExecutor {
             if (PokemonBanDataSQLReader.getBanDrops().contains(item.getType().name())) {
                 player.getInventory().remove(item);
                 player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，该物品已经被服务器禁止使用。"));
-                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
                 return true;
             }
             int amount = item.getAmount();
@@ -281,11 +502,14 @@ public class CrazyAuctionsCommand implements CommandExecutor {
             int id = r.nextInt(999999);
             // Runs 3x to check for same ID.
             for (String i : FileManager.Files.DATA.getFile().getConfigurationSection("Items").getKeys(false))
-                if (FileManager.Files.DATA.getFile().getInt("Items." + i + ".StoreID") == id) id = r.nextInt(Integer.MAX_VALUE);
+                if (FileManager.Files.DATA.getFile().getInt("Items." + i + ".StoreID") == id)
+                    id = r.nextInt(Integer.MAX_VALUE);
             for (String i : FileManager.Files.DATA.getFile().getConfigurationSection("Items").getKeys(false))
-                if (FileManager.Files.DATA.getFile().getInt("Items." + i + ".StoreID") == id) id = r.nextInt(Integer.MAX_VALUE);
+                if (FileManager.Files.DATA.getFile().getInt("Items." + i + ".StoreID") == id)
+                    id = r.nextInt(Integer.MAX_VALUE);
             for (String i : FileManager.Files.DATA.getFile().getConfigurationSection("Items").getKeys(false))
-                if (FileManager.Files.DATA.getFile().getInt("Items." + i + ".StoreID") == id) id = r.nextInt(Integer.MAX_VALUE);
+                if (FileManager.Files.DATA.getFile().getInt("Items." + i + ".StoreID") == id)
+                    id = r.nextInt(Integer.MAX_VALUE);
             FileManager.Files.DATA.getFile().set("Items." + num + ".StoreID", id);
             ShopType type = ShopType.SELL;
             if (args[0].equalsIgnoreCase("Bid")) {
