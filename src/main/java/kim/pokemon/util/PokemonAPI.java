@@ -318,7 +318,6 @@ public class PokemonAPI {
             for (Pokemon p:playerPartyStorage.getAll()) {
                 if (p==null){
                     playerPartyStorage.add(pokemon);
-                    pokemon.getLocalizedName();
                     return;
                 }
             }

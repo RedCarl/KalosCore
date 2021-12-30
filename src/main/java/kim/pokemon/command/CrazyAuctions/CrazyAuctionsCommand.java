@@ -48,24 +48,29 @@ public class CrazyAuctionsCommand implements CommandExecutor {
                     money = Integer.parseInt(moneyStr);
                 }
                 catch (Exception e) {
-                    player.sendMessage("参数错误");
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您输入有误，请重新输入数字。"));
+                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                     return false;
                 }
                 if(!(num>0 && num<7)){
-                    player.sendMessage("参数错误");
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只能输入 &c1-6 &7之前的数字，对应背包内的宝可梦。"));
+                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                     return false;
                 }
                 if(money <= 0){
-                    player.sendMessage("参数错误");
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您出售的价格请大于 &c0 &7否则无法上架。"));
+                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                     return false;
                 }
                 Pokemon pokemon = Pixelmon.storageManager.getParty(player.getUniqueId()).get(num-1);
                 if(pokemon == null){
-                    player.sendMessage("宝可梦不存在");
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，该位置上并没有宝可梦，请重新输入。"));
+                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                     return false;
                 }
                 if(Pixelmon.storageManager.getParty(player.getUniqueId()).getTeam().size()==1){
-                    player.sendMessage("背包中至少需要有1只宝可梦");
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您背包内至少要拥有 &c1 &7只以上的宝可梦。"));
+                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                     return false;
                 }
                 ItemStack is = PokemonPhotoAPI.getPokeEggItem(pokemon,true,num-1,Pixelmon.storageManager.getParty(player.getUniqueId()));
