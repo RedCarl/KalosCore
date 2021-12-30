@@ -1193,7 +1193,7 @@ public class GUI implements Listener {
 
 	public static void addItem(Player p,ItemStack it){
 		if(it.getType().name().equals("PIXELMON_PIXELMON_SPRITE")){
-			PokemonPhotoAPI.addPokemon(p,it);
+			PokemonPhotoAPI.addPokemon(p,it,"PokeEggs");
 		}
 		else{
 			p.getInventory().addItem(it);

@@ -26,8 +26,17 @@ import java.util.UUID;
 
 public class PokemonPhotoAPI {
 
-    public static ItemStack getPokeEggItem(Pokemon pokemon, boolean remove, int slot, PlayerPartyStorage pps) {
-        createFolder();
+
+    /**
+     * 把玩家某个位置的宝可梦制作成相片并把数据放进对应文件夹
+     * @param pokemon: 宝可梦
+     * @param remove: 读取数据后，是否删除玩家对应位置的宝可梦
+     * @param slot: 位置
+     * @param pps: 玩家宝可梦背包
+     * @param path: 储存该数据的path，比如PokeEggs
+     * @return: 返回制作完成的相片
+     */
+    public static ItemStack getPokeEggItem(Pokemon pokemon, boolean remove, int slot, PlayerPartyStorage pps,String path) {
         ItemStack item = CraftItemStack.asBukkitCopy(ItemPixelmonSprite.getPhoto(pokemon));
         String localizedName = pokemon.getSpecies().getLocalizedName();
         ItemStack lores = getPhotoItem(pokemon,pps,slot);
@@ -42,7 +51,7 @@ public class PokemonPhotoAPI {
         }
         item.setItemMeta(itemMeta);
         UUID uuid = UUID.randomUUID();
-        File f = new File(Main.getInstance().getDataFolder() + "/PokeEggs/", uuid + ".pke");
+        File f = new File(getFolder(path), uuid + ".pke");
         PokeEgg pe = new PokeEgg(f, pokemon);
         net.minecraft.item.ItemStack nmsitem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound compound = nmsitem.func_77942_o() ? nmsitem.func_77978_p() : new NBTTagCompound();
@@ -55,7 +64,6 @@ public class PokemonPhotoAPI {
 
 
     public static ItemStack getPhotoItem(Pokemon pokemon,PlayerPartyStorage playerPartyStorage,int i){
-        createFolder();
         DecimalFormat df = new DecimalFormat("#0.##");
         int ivSum = pokemon.getIVs().getStat(StatsType.HP) + pokemon.getIVs().getStat(StatsType.Attack) + pokemon.getIVs().getStat(StatsType.Defence) +
                 pokemon.getIVs().getStat(StatsType.SpecialAttack) + pokemon.getIVs().getStat(StatsType.SpecialDefence) + pokemon.getIVs().getStat(StatsType.Speed);
@@ -100,9 +108,11 @@ public class PokemonPhotoAPI {
     }
 
 
-
-    public static void addPokemon(Player player,ItemStack item){
-        createFolder();
+    /**
+     * 把某相片代表的宝可梦发送给玩家，并且清除该相片的所有数据
+     * @param path: 储存该数据的path，比如PokeEggs
+     */
+    public static void addPokemon(Player player,ItemStack item,String path){
         net.minecraft.item.ItemStack nmsitem = CraftItemStack.asNMSCopy(item);
         if(!nmsitem.func_77942_o()){  //如果没有ItemTag
             return;
@@ -111,7 +121,7 @@ public class PokemonPhotoAPI {
         assert compound != null;
         if (compound.func_74764_b("PokeEggUUID")) {
             String uuid = compound.func_74779_i("PokeEggUUID");
-            File f = new File(Main.getInstance().getDataFolder() + "/PokeEggs/", uuid + ".pke");
+            File f = new File(getFolder(path), uuid + ".pke");
             PokeEgg pokeEgg = new PokeEgg(f);
             PlayerPartyStorage pps = Pixelmon.storageManager.getParty(player.getUniqueId());
             pps.add(pokeEgg.getPokemon());
@@ -119,8 +129,13 @@ public class PokemonPhotoAPI {
         }
     }
 
-    public static Pokemon getPokemon(ItemStack item){
-        createFolder();
+
+    /**
+     * 把某相片代表的宝可梦返回(注意：并不清除该宝可梦的数据)
+     * @param path: 储存该数据的path，比如PokeEggs
+     * @return: 返回宝可梦
+     */
+    public static Pokemon getPokemon(ItemStack item,String path){
         net.minecraft.item.ItemStack nmsitem = CraftItemStack.asNMSCopy(item);
         if(!nmsitem.func_77942_o()){  //如果没有ItemTag
             return null;
@@ -129,15 +144,18 @@ public class PokemonPhotoAPI {
         assert compound != null;
         if (compound.func_74764_b("PokeEggUUID")) {
             String uuid = compound.func_74779_i("PokeEggUUID");
-            File f = new File(Main.getInstance().getDataFolder() + "/PokeEggs/", uuid + ".pke");
+            File f = new File(getFolder(path), uuid + ".pke");
             PokeEgg pokeEgg = new PokeEgg(f);
             return pokeEgg.getPokemon();
         }
         return null;
     }
 
-    public static void deletePokemonFile(ItemStack item){
-        createFolder();
+    /**
+     * 删除相片代表的宝可梦数据
+     * @param path: 储存该数据的path，比如PokeEggs
+     */
+    public static void deletePokemonFile(ItemStack item,String path){
         net.minecraft.item.ItemStack nmsitem = CraftItemStack.asNMSCopy(item);
         if(!nmsitem.func_77942_o()){  //如果没有ItemTag
             return;
@@ -146,13 +164,14 @@ public class PokemonPhotoAPI {
         assert compound != null;
         if (compound.func_74764_b("PokeEggUUID")) {
             String uuid = compound.func_74779_i("PokeEggUUID");
-            File f = new File(Main.getInstance().getDataFolder() + "/PokeEggs/", uuid + ".pke");
+            File f = new File(getFolder(path), uuid + ".pke");
             f.delete();
         }
     }
 
-    public static void createFolder(){
-        File f = new File(Main.getInstance().getDataFolder() + "/PokeEggs/");
+    private static File getFolder(String path){
+        File f = new File(Main.getInstance().getDataFolder() + "/"+path+"/");
         f.mkdirs();
+        return f;
     }
 }
