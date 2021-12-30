@@ -2,6 +2,7 @@ package kim.pokemon.command.CrazyAuctions;
 
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import kim.pokemon.database.PokemonBanDataSQLReader;
 import kim.pokemon.kimexpand.crazyauctions.Methods;
 import kim.pokemon.kimexpand.crazyauctions.api.*;
@@ -74,8 +75,12 @@ public class CrazyAuctionsCommand implements CommandExecutor {
                     return false;
                 }
                 ItemStack is = PokemonPhotoAPI.getPokeEggItem(pokemon,true,num-1,Pixelmon.storageManager.getParty(player.getUniqueId()));
-//                player.getInventory().addItem(is);
-                return SellPokemon(sender, new String[]{"sell",moneyStr},is);
+
+                if(SellPokemon(sender, new String[]{"sell",moneyStr},is)){
+                    PlayerPartyStorage pps = Pixelmon.storageManager.getParty(player.getUniqueId());
+                    pps.set(num-1,pokemon);
+                    PokemonPhotoAPI.deletePokemonFile(is);
+                }
             } else {
                 GUI.openShop(player, ShopType.SELL, Category.NONE, 1);
             }

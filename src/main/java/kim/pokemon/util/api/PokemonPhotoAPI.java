@@ -27,6 +27,7 @@ import java.util.UUID;
 public class PokemonPhotoAPI {
 
     public static ItemStack getPokeEggItem(Pokemon pokemon, boolean remove, int slot, PlayerPartyStorage pps) {
+        createFolder();
         ItemStack item = CraftItemStack.asBukkitCopy(ItemPixelmonSprite.getPhoto(pokemon));
         String localizedName = pokemon.getSpecies().getLocalizedName();
         ItemStack lores = getPhotoItem(pokemon,pps,slot);
@@ -54,6 +55,7 @@ public class PokemonPhotoAPI {
 
 
     public static ItemStack getPhotoItem(Pokemon pokemon,PlayerPartyStorage playerPartyStorage,int i){
+        createFolder();
         DecimalFormat df = new DecimalFormat("#0.##");
         int ivSum = pokemon.getIVs().getStat(StatsType.HP) + pokemon.getIVs().getStat(StatsType.Attack) + pokemon.getIVs().getStat(StatsType.Defence) +
                 pokemon.getIVs().getStat(StatsType.SpecialAttack) + pokemon.getIVs().getStat(StatsType.SpecialDefence) + pokemon.getIVs().getStat(StatsType.Speed);
@@ -100,6 +102,7 @@ public class PokemonPhotoAPI {
 
 
     public static void addPokemon(Player player,ItemStack item){
+        createFolder();
         net.minecraft.item.ItemStack nmsitem = CraftItemStack.asNMSCopy(item);
         if(!nmsitem.func_77942_o()){  //如果没有ItemTag
             return;
@@ -116,4 +119,40 @@ public class PokemonPhotoAPI {
         }
     }
 
+    public static Pokemon getPokemon(ItemStack item){
+        createFolder();
+        net.minecraft.item.ItemStack nmsitem = CraftItemStack.asNMSCopy(item);
+        if(!nmsitem.func_77942_o()){  //如果没有ItemTag
+            return null;
+        }
+        NBTTagCompound compound = nmsitem.func_77978_p();
+        assert compound != null;
+        if (compound.func_74764_b("PokeEggUUID")) {
+            String uuid = compound.func_74779_i("PokeEggUUID");
+            File f = new File(Main.getInstance().getDataFolder() + "/PokeEggs/", uuid + ".pke");
+            PokeEgg pokeEgg = new PokeEgg(f);
+            return pokeEgg.getPokemon();
+        }
+        return null;
+    }
+
+    public static void deletePokemonFile(ItemStack item){
+        createFolder();
+        net.minecraft.item.ItemStack nmsitem = CraftItemStack.asNMSCopy(item);
+        if(!nmsitem.func_77942_o()){  //如果没有ItemTag
+            return;
+        }
+        NBTTagCompound compound = nmsitem.func_77978_p();
+        assert compound != null;
+        if (compound.func_74764_b("PokeEggUUID")) {
+            String uuid = compound.func_74779_i("PokeEggUUID");
+            File f = new File(Main.getInstance().getDataFolder() + "/PokeEggs/", uuid + ".pke");
+            f.delete();
+        }
+    }
+
+    public static void createFolder(){
+        File f = new File(Main.getInstance().getDataFolder() + "/PokeEggs/");
+        f.mkdirs();
+    }
 }
