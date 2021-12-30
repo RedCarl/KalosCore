@@ -25,6 +25,7 @@ import kim.pokemon.packetlistener.AdvanceAdapter;
 import kim.pokemon.packetlistener.MessageAdapter;
 import kim.pokemon.placeholder.TitlePlaceholderAPI;
 import kim.pokemon.util.ColorParser;
+import kim.pokemon.util.api.PokemonPhotoAPI;
 import kim.pokemon.util.gui.listener.ButtonClickListener;
 import kim.pokemon.util.mojang.Mojang;
 import net.luckperms.api.LuckPerms;
@@ -163,6 +164,7 @@ public class Main extends JavaPlugin {
 
         log("加载内置插件 CrazyAuctions 信息...");
         Bukkit.getConsoleSender().sendMessage(ColorParser.parse("&c-------[ CrazyAuctions ]-------"));
+        PokemonPhotoAPI.getFolder("CrazyAuctions");
         CrazyAuctions crazyAuctions = new CrazyAuctions();
         crazyAuctions.onEnable();
         Bukkit.getConsoleSender().sendMessage(ColorParser.parse("&c-------------------------------"));

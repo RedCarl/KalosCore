@@ -21,7 +21,6 @@ public class FileManager {
     
     private static FileManager instance = new FileManager();
     private Plugin plugin;
-    private String prefix = "";
     private Boolean log = false;
     private HashMap<Files, File> files = new HashMap<>();
     private ArrayList<String> homeFolders = new ArrayList<>();
@@ -38,7 +37,6 @@ public class FileManager {
      * @param plugin The plugin this is getting loading for.
      */
     public FileManager setup(Plugin plugin) {
-        prefix = "[" + plugin.getName() + "] ";
         this.plugin = plugin;
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdirs();
@@ -290,19 +288,19 @@ public class FileManager {
     public enum Files {
         
         //ENUM_NAME("FileName.yml", "FilePath.yml"),
-        CONFIG("config.yml", "config.yml"),
-        DATA("Data.yml", "Data.yml"),
-        MESSAGES("Messages.yml", "Messages.yml"),
-        TEST_FILE("pokemons.yml", "pokemons.yml");
-        private String fileName;
-        private String fileLocation;
+        CONFIG("config.yml", "CrazyAuctions/config.yml"),
+        DATA("Data.yml", "CrazyAuctions/Data.yml"),
+        MESSAGES("Messages.yml", "CrazyAuctions/Messages.yml"),
+        TEST_FILE("pokemons.yml", "CrazyAuctions/pokemons.yml");
+        private final String fileName;
+        private final String fileLocation;
         
         /**
          * The files that the server will try and load.
          * @param fileName The file name that will be in the plugin's folder.
          * @param fileLocation The location the file is in while in the Jar.
          */
-        private Files(String fileName, String fileLocation) {
+        Files(String fileName, String fileLocation) {
             this.fileName = fileName;
             this.fileLocation = fileLocation;
         }

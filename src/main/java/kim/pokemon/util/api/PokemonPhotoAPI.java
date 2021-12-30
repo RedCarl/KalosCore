@@ -11,13 +11,12 @@ import kim.pokemon.kimexpand.pokemonEgg.PokeEgg;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.PokemonAPI;
 import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
-import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
@@ -38,12 +37,11 @@ public class PokemonPhotoAPI {
      */
     public static ItemStack getPokeEggItem(Pokemon pokemon, boolean remove, int slot, PlayerPartyStorage pps,String path) {
         ItemStack item = CraftItemStack.asBukkitCopy(ItemPixelmonSprite.getPhoto(pokemon));
-        String localizedName = pokemon.getSpecies().getLocalizedName();
         ItemStack lores = getPhotoItem(pokemon,pps,slot);
 
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setLore(lores.getItemMeta().getLore());
-        itemMeta.setDisplayName("§e" + localizedName);
+        itemMeta.setDisplayName(PokemonAPI.getPokemonName(pokemon));
                 item.setItemMeta(itemMeta);
         if (remove) {
             pps.retrieveAll();
@@ -56,7 +54,7 @@ public class PokemonPhotoAPI {
         net.minecraft.item.ItemStack nmsitem = CraftItemStack.asNMSCopy(item);
         NBTTagCompound compound = nmsitem.func_77942_o() ? nmsitem.func_77978_p() : new NBTTagCompound();
         assert compound != null;
-        compound.func_74782_a("PokeEggUUID", (NBTBase)new NBTTagString(uuid.toString()));
+        compound.func_74782_a("PokeEggUUID", new NBTTagString(uuid.toString()));
         nmsitem.func_77982_d(compound);
         item = CraftItemStack.asBukkitCopy(nmsitem);
         return item;
@@ -133,7 +131,7 @@ public class PokemonPhotoAPI {
     /**
      * 把某相片代表的宝可梦返回(注意：并不清除该宝可梦的数据)
      * @param path: 储存该数据的path，比如PokeEggs
-     * @return: 返回宝可梦
+     * @return 返回宝可梦
      */
     public static Pokemon getPokemon(ItemStack item,String path){
         net.minecraft.item.ItemStack nmsitem = CraftItemStack.asNMSCopy(item);
@@ -169,7 +167,7 @@ public class PokemonPhotoAPI {
         }
     }
 
-    private static File getFolder(String path){
+    public static File getFolder(String path){
         File f = new File(Main.getInstance().getDataFolder() + "/"+path+"/");
         f.mkdirs();
         return f;

@@ -6,6 +6,7 @@ import kim.pokemon.kimexpand.crazyauctions.api.FileManager.Files;
 import kim.pokemon.kimexpand.crazyauctions.api.Messages;
 import kim.pokemon.kimexpand.crazyauctions.controllers.GUI;
 import kim.pokemon.kimexpand.crazyauctions.controllers.Metrics;
+import kim.pokemon.util.api.PokemonPhotoAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,17 +33,6 @@ public class CrazyAuctions implements Listener {
         int file = 0;
         Bukkit.getScheduler().cancelTask(file);
         Files.DATA.saveFile();
-    }
-    
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        final Player player = e.getPlayer();
-        if (player.getName().equalsIgnoreCase("BadBones69")) {
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-                player.sendMessage(Methods.getPrefix() + Methods.color("&7Main.getInstance() server is running your Crazy Auctions Plugin. " + "&7It is running version &av" + Main.getInstance().getServer().getVersion() + "&7."));
-            }, 40);
-        }
     }
     
     private void startCheck() {

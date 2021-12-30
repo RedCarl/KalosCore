@@ -74,12 +74,12 @@ public class CrazyAuctionsCommand implements CommandExecutor {
                     player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                     return false;
                 }
-                ItemStack is = PokemonPhotoAPI.getPokeEggItem(pokemon,true,num-1,Pixelmon.storageManager.getParty(player.getUniqueId()),"PokeEggs");
+                ItemStack is = PokemonPhotoAPI.getPokeEggItem(pokemon,true,num-1,Pixelmon.storageManager.getParty(player.getUniqueId()),"CrazyAuctions/PokeEggs");
 
                 if(SellPokemon(sender, new String[]{"sell",moneyStr},is)){
                     PlayerPartyStorage pps = Pixelmon.storageManager.getParty(player.getUniqueId());
                     pps.set(num-1,pokemon);
-                    PokemonPhotoAPI.deletePokemonFile(is,"PokeEggs");
+                    PokemonPhotoAPI.deletePokemonFile(is,"CrazyAuctions/PokeEggs");
                 }
             } else {
                 GUI.openShop(player, ShopType.SELL, Category.NONE, 1);

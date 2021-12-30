@@ -12,8 +12,7 @@ import java.util.UUID;
 
 public class CrazyAuctions {
 
-    private static CrazyAuctions instance = new CrazyAuctions();
-    public FileManager fileManager = FileManager.getInstance();
+    private static final CrazyAuctions instance = new CrazyAuctions();
     private Boolean sellingEnabled;
     private Boolean biddingEnabled;
 
