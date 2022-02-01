@@ -1,4 +1,4 @@
-package kim.pokemon.kimexpand.pokemonEgg;
+package kim.pokemon.util.api;
 
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
@@ -21,8 +21,6 @@ public class PokeEgg {
             NBTTagCompound nbt = CompressedStreamTools.func_74794_a(dis);
             this.pokemon = Pixelmon.pokemonFactory.create(nbt);
             dis.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -30,10 +30,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
 
 public class PokemonBan implements Listener {
     //极具巢穴黑名单
@@ -85,16 +82,17 @@ public class PokemonBan implements Listener {
             RaidDropsEvent event = (RaidDropsEvent)e.getForgeEvent();
             ArrayList<net.minecraft.item.ItemStack> arrayList = event.getDrops();
             ArrayList<net.minecraft.item.ItemStack> itemStacks = event.getDrops();
-            for (net.minecraft.item.ItemStack item: arrayList) {
-                ItemStack is = CraftItemStack.asBukkitCopy(item);
-                Material material = is.getType();
-                String materialName = material.name().toUpperCase();
-                if (PokemonBanDataSQLReader.getBanDrops().contains(materialName)) {
-                    itemStacks.remove(item);
-                    System.out.println("====极具巢穴物品删除====");
-                    System.out.println(materialName);
+
+            try {
+                for (net.minecraft.item.ItemStack item: arrayList) {
+                    ItemStack is = CraftItemStack.asBukkitCopy(item);
+                    Material material = is.getType();
+                    String materialName = material.name().toUpperCase();
+                    if (PokemonBanDataSQLReader.getBanDrops().contains(materialName)) {
+                        itemStacks.remove(item);
+                    }
                 }
-            }
+            }catch (ConcurrentModificationException ignored){}
             event.setDrops(itemStacks);
         }
     }

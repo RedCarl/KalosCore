@@ -1,15 +1,18 @@
 package kim.pokemon.kimexpand.menu;
 
+import cn.asougi.pokemonquest.gui.pokemonQuest.QuestGUI;
+import cn.asougi.pokemonquest.quest.QuestType;
 import com.Zrips.CMI.CMI;
 import de.tr7zw.nbtapi.NBTItem;
 import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.database.GlazedPayDataSQLReader;
-import kim.pokemon.kimexpand.armourers.guis.ArmourersGUI;
 import kim.pokemon.kimexpand.crazyauctions.api.Category;
 import kim.pokemon.kimexpand.crazyauctions.api.ShopType;
 import kim.pokemon.kimexpand.crazyauctions.controllers.GUI;
 import kim.pokemon.kimexpand.homes.HomeMenu;
+import kim.pokemon.kimexpand.mysteriousstore.EeveeShop;
+import kim.pokemon.kimexpand.playerinfo.PlayerInfo;
 import kim.pokemon.kimexpand.plotadmin.gui.PlotMenu;
 import kim.pokemon.kimexpand.pokeban.gui.BanList_A;
 import kim.pokemon.kimexpand.pokeinfo.gui.PokemonInfoMenu;
@@ -66,8 +69,8 @@ public class MainMenu extends InventoryGUI {
         }
         Button PlayerInfoButton = new Button(PlayerInfo, type -> {
             if (type.isLeftClick()) {
-                ArmourersGUI armourersGUI = new ArmourersGUI(player);
-                armourersGUI.openInventory();
+                PlayerInfo playerInfo = new PlayerInfo(player);
+                playerInfo.openInventory();
             }
         });
         this.setButton(10, PlayerInfoButton);
@@ -254,7 +257,7 @@ public class MainMenu extends InventoryGUI {
         );
         Button VIPFlyButton = new Button(VIPFly, type -> {
             if (type.isLeftClick()) {
-                if (player.hasPermission("cmi.command.fly")){
+                if (player.hasPermission("cmi.command.fly")&&(!player.getLocation().getWorld().getName().equals("pvp"))){
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     Bukkit.dispatchCommand(player,"cmi fly");
                     player.closeInventory();
@@ -288,6 +291,51 @@ public class MainMenu extends InventoryGUI {
         });
         this.setButton(30, VIPCheckSpawnsButton);
 
+        ItemStack PokeRank = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_TRAINER_EDITOR"),
+                ColorParser.parse("&f排位系统 &c(Bate1.0)"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&r  &a■ &7使用教程:"),
+                ColorParser.parse("&r      &7   鼠标 &c左键 &7加入排位队伍 &c右键 &7取消匹配。"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o宝可梦竞标赛，来这里展示你的队伍.")
+        );
+        Button PokeRankButton = new Button(PokeRank, type -> {
+            if (type.isLeftClick()) {
+                Bukkit.dispatchCommand(player,"pokemonrank:rank");
+                player.closeInventory();
+            }
+            if (type.isRightClick()) {
+                Bukkit.dispatchCommand(player,"pokemonrank:rank cancel");
+                player.closeInventory();
+            }
+        });
+        this.setButton(49, PokeRankButton);
+
+        ItemStack Mission = ItemFactoryAPI.getItemStack(Material.LEASH,
+                ColorParser.parse("&f任务系统"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o丰富的任务系统，完成并获得奖励.")
+        );
+        Button MissionButton = new Button(Mission, type -> {
+            if (type.isLeftClick()) {
+                new QuestGUI(player, QuestType.DAILY).openInventory();
+            }
+        });
+        this.setButton(50, MissionButton);
+
+        ItemStack Mysterious = ItemFactoryAPI.getItemStack(Material.CHEST,
+                ColorParser.parse("&f神秘商店"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o各种丰富的商品，意想不到.")
+        );
+        Button MysteriousButton = new Button(Mysterious, type -> {
+            if (type.isLeftClick()) {
+                EeveeShop eeveeShop = new EeveeShop(player);
+                eeveeShop.openInventory();
+            }
+        });
+        this.setButton(51, MysteriousButton);
+
 
         ItemStack LiteSignIn = ItemFactoryAPI.getItemStack(Material.SIGN,
                 ColorParser.parse("&f签到系统"),
@@ -314,4 +362,5 @@ public class MainMenu extends InventoryGUI {
         });
         this.setButton(53, BanListButton);
     }
+
 }

@@ -15,11 +15,10 @@ import com.pixelmonmod.pixelmon.battles.controller.participants.BattleParticipan
 import com.pixelmonmod.pixelmon.battles.controller.participants.ParticipantType;
 import com.pixelmonmod.pixelmon.entities.pixelmon.EntityPixelmon;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
+import com.pixelmonmod.pixelmon.enums.EnumBossMode;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
-import kim.pokemon.database.PlayerEventDataSQLReader;
-import kim.pokemon.entity.PlayerEventData;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.PokemonAPI;
 import org.bukkit.Bukkit;
@@ -30,8 +29,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Random;
 
 public class PokemonEvent implements Listener {
     public static String[] PokeBlackList = new String[]{
@@ -100,9 +99,9 @@ public class PokemonEvent implements Listener {
 
             //数据记录
             if (legendary){
-                PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player,"SuccessfulCaptureLegendary",pokemon,new Timestamp(System.currentTimeMillis())));
+//                PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player,"SuccessfulCaptureLegendary",pokemon,new Timestamp(System.currentTimeMillis())));
             }else {
-                PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player,"SuccessfulCapture",pokemon,new Timestamp(System.currentTimeMillis())));
+//                PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player,"SuccessfulCapture",pokemon,new Timestamp(System.currentTimeMillis())));
             }
         }
 
@@ -142,10 +141,17 @@ public class PokemonEvent implements Listener {
                 player.closeInventory();
             }
         }
-        //获取牧场蛋
-        if (forgeEvent.getForgeEvent() instanceof BreedEvent.CollectEgg) {
-            BreedEvent.CollectEgg event = (BreedEvent.CollectEgg)forgeEvent.getForgeEvent();
+        //生蛋
+        if (forgeEvent.getForgeEvent() instanceof BreedEvent.MakeEgg) {
+            BreedEvent.MakeEgg event = (BreedEvent.MakeEgg)forgeEvent.getForgeEvent();
             Pokemon egg = event.getEgg();
+
+            //带有红线不对蛋进行操作
+            if (event.parent1.getHeldItem().field_151002_e!=null&&event.parent1.getHeldItem().field_151002_e.func_77658_a().equals("item.destiny_knot")){
+                return;
+            }else if (event.parent2.getHeldItem().field_151002_e!=null&&event.parent2.getHeldItem().field_151002_e.func_77658_a().equals("item.destiny_knot")){
+                return;
+            }
 
             int a = 0;
             for (int iv:egg.getIVs().getArray()) {
@@ -153,13 +159,35 @@ public class PokemonEvent implements Listener {
                     a++;
                 }
             }
-            if (a==6){
-                PokemonAPI.setIv(egg, 5);
+            switch (a){
+                case 6:
+                    PokemonAPI.setIv(egg, new Random().nextInt(3)+4);
+                    break;
+                case 5:
+                    PokemonAPI.setIv(egg, new Random().nextInt(6));
+                    break;
+                case 4:
+                    PokemonAPI.setIv(egg, new Random().nextInt(5));
+                    break;
+                case 3:
+                    PokemonAPI.setIv(egg, new Random().nextInt(4));
+                    break;
+                case 2:
+                    PokemonAPI.setIv(egg, new Random().nextInt(3));
+                    break;
+                case 1:
+                    PokemonAPI.setIv(egg, new Random().nextInt(2));
+                    break;
             }
             event.setEgg(egg);
         }
 
-            //精灵回收
+        //孵化蛋
+        if (forgeEvent.getForgeEvent() instanceof BreedEvent.CollectEgg) {
+
+        }
+
+        //精灵回收
         if (forgeEvent.getForgeEvent() instanceof PixelmonDeletedEvent) {
             PixelmonDeletedEvent event = (PixelmonDeletedEvent)forgeEvent.getForgeEvent();
             Player player = Bukkit.getPlayer(event.player.displayName);
@@ -170,31 +198,74 @@ public class PokemonEvent implements Listener {
             Main.econ.depositPlayer(player,money);
 
             //数据记录
-            PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player.getName(),"PokemonRecycle ",pokemon.getLocalizedName()+" "+money,new Timestamp(System.currentTimeMillis())));
+//            PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player.getName(),"PokemonRecycle ",pokemon.getLocalizedName()+" "+money,new Timestamp(System.currentTimeMillis())));
         }
 
         //战斗结束
         if (forgeEvent.getForgeEvent() instanceof BattleEndEvent){
             BattleEndEvent event = (BattleEndEvent) forgeEvent.getForgeEvent();
+
+
             //与野外的宝可梦战斗结束
             if ((event.getPlayers().size()==1)&&(!event.abnormal)){
                 if (event.results.size()<=2){
-                    Player player = Bukkit.getPlayer(event.getPlayers().get(0).getPersistentID());
                     Pokemon pokemon;
+                    Player player = Bukkit.getPlayer(event.getPlayers().get(0).getPersistentID());
                     if (!player.getLocation().getWorld().getName().equals("spawn")){
                         for (BattleParticipant battleParticipant: event.results.keySet()) {
                             if (battleParticipant.isDefeated){
                                 if (battleParticipant.checkPokemon()){
                                     if (battleParticipant.getType().equals(ParticipantType.WildPokemon)){
-                                        pokemon = PokemonSpec.from(battleParticipant.getDisplayName()).create();
-                                        PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player.getName(),"BattleEndEvent",pokemon.getLocalizedName(),new Timestamp(System.currentTimeMillis())));
+                                        EntityPixelmon pixelmon = (EntityPixelmon)battleParticipant.getEntity();
+                                        if (pixelmon!=null){
+                                            switch (pixelmon.getBossMode().name()){
+                                                case "NotBoss":
+                                                    PokemonAPI.getBills(player,9);
+                                                    break;
+                                                case "Uncommon":
+                                                    PokemonAPI.getBills(player,60);
+                                                    break;
+                                                case "Common":
+                                                    PokemonAPI.getBills(player,70);
+                                                    break;
+                                                case "Rare":
+                                                    PokemonAPI.getBills(player,80);
+                                                    break;
+                                                case "Epic":
+                                                    PokemonAPI.getBills(player,90);
+                                                    break;
+                                                case "Equal":
+                                                    PokemonAPI.getBills(player,95);
+                                                    break;
+                                                case "Legendary":
+                                                    PokemonAPI.getBills(player,100);
+                                                    break;
+                                                case "Ultimate":
+                                                    PokemonAPI.getBills(player,98);
+                                                    break;
+                                                case "Spooky":
+                                                    PokemonAPI.getBills(player,50);
+                                                    break;
+                                                case "Drowned":
+                                                    PokemonAPI.getBills(player,55);
+                                                    break;
+                                            }
+                                        }
+
+                                        //                                        PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player.getName(),"BattleEndEvent",pokemon.getLocalizedName(),new Timestamp(System.currentTimeMillis())));
                                     }
                                 }
                             }
                         }
                     }
+                    //会员专属战斗结束后恢复精灵状态
+                    if (player.hasPermission("group.pikanium")&&player.hasPermission("group.eevee")){
+                        PokemonAPI.setPokemonStater(player);
+                    }
                 }
             }
+
+
         }
     }
 }

@@ -7,7 +7,7 @@ import com.pixelmonmod.pixelmon.items.ItemPixelmonSprite;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import de.tr7zw.nbtapi.NBTItem;
 import kim.pokemon.Main;
-import kim.pokemon.kimexpand.pokemonEgg.PokeEgg;
+import kim.pokemon.configFile.Data;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.PokemonAPI;
 import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
@@ -28,12 +28,12 @@ public class PokemonPhotoAPI {
 
     /**
      * 把玩家某个位置的宝可梦制作成相片并把数据放进对应文件夹
-     * @param pokemon: 宝可梦
-     * @param remove: 读取数据后，是否删除玩家对应位置的宝可梦
-     * @param slot: 位置
-     * @param pps: 玩家宝可梦背包
-     * @param path: 储存该数据的path，比如PokeEggs
-     * @return: 返回制作完成的相片
+     * @param pokemon 宝可梦
+     * @param remove 读取数据后，是否删除玩家对应位置的宝可梦
+     * @param slot 位置
+     * @param pps 玩家宝可梦背包
+     * @param path 储存该数据的path，比如PokeEggs
+     * @return 返回制作完成的相片
      */
     public static ItemStack getPokeEggItem(Pokemon pokemon, boolean remove, int slot, PlayerPartyStorage pps,String path) {
         ItemStack item = CraftItemStack.asBukkitCopy(ItemPixelmonSprite.getPhoto(pokemon));
@@ -94,16 +94,39 @@ public class PokemonPhotoAPI {
 
 
         NBTItem nbtItem = new NBTItem(PokemonInfo);
-        nbtItem.setShort("ndex", (short) playerPartyStorage.get(i).getSpecies().getNationalPokedexInteger());
-        if (playerPartyStorage.get(i).isShiny()){
+        nbtItem.setShort("ndex", (short) pokemon.getSpecies().getNationalPokedexInteger());
+        if (pokemon.isShiny()){
             nbtItem.setByte("Shiny", (byte) 1);
         }else {
             nbtItem.setByte("Shiny", (byte) 0);
         }
 
-        nbtItem.setByte("form", playerPartyStorage.get(i).getFormEnum().getForm());
+        nbtItem.setByte("form", pokemon.getFormEnum().getForm());
         return nbtItem.getItem();
     }
+
+    public static ItemStack getPhotoItemC(Pokemon pokemon){
+        ItemStack PokemonInfo = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
+                ColorParser.parse(PokemonAPI.getPokemonName(pokemon)),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&r  &e■ &7售 价:"),
+                ColorParser.parse("&r      &7(左键) &c79 &7"+ Data.SERVER_POINTS+""),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o本次活动仅限购买一件商品，请三思而后行！")
+        );
+
+        NBTItem nbtItem = new NBTItem(PokemonInfo);
+        nbtItem.setShort("ndex", (short) pokemon.getSpecies().getNationalPokedexInteger());
+        if (pokemon.isShiny()){
+            nbtItem.setByte("Shiny", (byte) 1);
+        }else {
+            nbtItem.setByte("Shiny", (byte) 0);
+        }
+
+        nbtItem.setByte("form", pokemon.getFormEnum().getForm());
+        return nbtItem.getItem();
+    }
+
 
 
     /**

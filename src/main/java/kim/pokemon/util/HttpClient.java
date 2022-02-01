@@ -2,18 +2,19 @@ package kim.pokemon.util;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class HttpClient {
-    public static String doGet(String httpurl) {
+    public static String doGet(String httpUrl) {
         HttpURLConnection connection = null;
         InputStream is = null;
         BufferedReader br = null;
         String result = null;// 返回结果字符串
         try {
             // 创建远程url连接对象
-            URL url = new URL(httpurl);
+            URL url = new URL(httpUrl);
             // 通过远程url连接对象打开一个连接，强转成httpURLConnection类
             connection = (HttpURLConnection) url.openConnection();
             // 设置连接方式：get
@@ -28,18 +29,16 @@ public class HttpClient {
             if (connection.getResponseCode() == 200) {
                 is = connection.getInputStream();
                 // 封装输入流is，并指定字符集
-                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
                 // 存放数据
-                StringBuffer sbf = new StringBuffer();
-                String temp = null;
+                StringBuilder sbf = new StringBuilder();
+                String temp;
                 while ((temp = br.readLine()) != null) {
                     sbf.append(temp);
                     sbf.append("\r\n");
                 }
                 result = sbf.toString();
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -60,7 +59,7 @@ public class HttpClient {
                 }
             }
 
-            connection.disconnect();// 关闭远程连接
+            Objects.requireNonNull(connection).disconnect();// 关闭远程连接
         }
 
         return result;
@@ -101,10 +100,10 @@ public class HttpClient {
 
                 is = connection.getInputStream();
                 // 对输入流对象进行包装:charset根据工作项目组的要求来设置
-                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
-                StringBuffer sbf = new StringBuffer();
-                String temp = null;
+                StringBuilder sbf = new StringBuilder();
+                String temp;
                 // 循环遍历一行一行读取数据
                 while ((temp = br.readLine()) != null) {
                     sbf.append(temp);
@@ -112,8 +111,6 @@ public class HttpClient {
                 }
                 result = sbf.toString();
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -140,7 +137,7 @@ public class HttpClient {
                 }
             }
             // 断开与远程地址url的连接
-            connection.disconnect();
+            Objects.requireNonNull(connection).disconnect();
         }
         return result;
     }

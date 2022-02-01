@@ -1,13 +1,7 @@
 package kim.pokemon.kimexpand.recharge;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.api.spawning.AbstractSpawner;
-import com.pixelmonmod.pixelmon.api.spawning.SpawnInfo;
-import com.pixelmonmod.pixelmon.api.spawning.SpawnLocation;
-import com.pixelmonmod.pixelmon.api.spawning.SpawnerCoordinator;
-import com.pixelmonmod.pixelmon.api.spawning.archetypes.algorithms.checkspawns.LegendaryCheckSpawns;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
-import com.pixelmonmod.pixelmon.spawning.PixelmonSpawning;
 import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.kimexpand.menu.MainMenu;
@@ -22,7 +16,6 @@ import kim.pokemon.util.gui.Button;
 import kim.pokemon.util.gui.InventoryGUI;
 import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
 import kim.pokemon.util.gui.inventory.SkullAPI;
-import net.minecraft.command.ICommandSender;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -31,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
@@ -54,6 +46,7 @@ public class GiftPackShop extends InventoryGUI {
         Button RandomPseudoLegendaryButton = new Button(RandomPseudoLegendary, type -> {
             if (type.isLeftClick()) {
                 if (Main.econ.getBalance(player)>=RandomPseudoLegendaryMoney){
+                    Main.econ.withdrawPlayer(player,RandomPseudoLegendaryMoney);
                     player.closeInventory();
                     new Thread(()->{
                         for (int i = 0; i <= 50; i++) {
@@ -73,17 +66,15 @@ public class GiftPackShop extends InventoryGUI {
                                 }else if (i<=49){
                                     Thread.sleep(800);
                                 }else {
-                                    Main.econ.withdrawPlayer(player,RandomPseudoLegendaryMoney);
-
                                     Pokemon pokemon = PokemonAPI.getRandomPseudoLegendaryPokemon();
-                                    PokemonAPI.GivePokemon(player,false,0,0,false,pokemon);
+                                    PokemonAPI.GivePokemon(player,false,2,0,false,pokemon);
                                     player.sendTitle(ColorParser.parse("&b卡洛斯の伪传说宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f伪传说宝可梦."),0,60,0);
                                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                                 }
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                        }
+                        } 
                     }).start();
                 }else {
                     player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+Main.econ.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
@@ -93,7 +84,7 @@ public class GiftPackShop extends InventoryGUI {
             if (type.isRightClick()) {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=RandomPseudoLegendaryPrice){
-
+                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomPseudoLegendaryPrice);
                         player.closeInventory();
                         new Thread(()->{
                             for (int i = 0; i <= 50; i++) {
@@ -113,7 +104,6 @@ public class GiftPackShop extends InventoryGUI {
                                     }else if (i<=49){
                                         Thread.sleep(800);
                                     }else {
-                                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomPseudoLegendaryPrice);
                                         Pokemon pokemon = PokemonAPI.getRandomPseudoLegendaryPokemon();
                                         PokemonAPI.GivePokemon(player,false,0,0,false,pokemon);
                                         player.sendTitle(ColorParser.parse("&b卡洛斯の伪传说宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f伪传说宝可梦."),0,60,0);
@@ -151,6 +141,7 @@ public class GiftPackShop extends InventoryGUI {
         Button RandomLegendaryButton = new Button(RandomLegendary, type -> {
             if (type.isLeftClick()) {
                 if (Main.econ.getBalance(player)>=RandomLegendaryMoney){
+                    Main.econ.withdrawPlayer(player,RandomLegendaryMoney);
                     player.closeInventory();
                     new Thread(()->{
                         for (int i = 0; i <= 50; i++) {
@@ -170,8 +161,6 @@ public class GiftPackShop extends InventoryGUI {
                                 }else if (i<=49){
                                     Thread.sleep(800);
                                 }else {
-                                    Main.econ.withdrawPlayer(player,RandomLegendaryMoney);
-
                                     Pokemon pokemon = PokemonAPI.getRandomLegendaryPokemon();
                                     PokemonAPI.GivePokemon(player,false,3,0,false,pokemon);
                                     player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
@@ -198,6 +187,7 @@ public class GiftPackShop extends InventoryGUI {
             if (type.isRightClick()) {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=RandomLegendaryPrice){
+                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomLegendaryPrice);
                         player.closeInventory();
                         new Thread(()->{
                             for (int i = 0; i <= 50; i++) {
@@ -217,8 +207,6 @@ public class GiftPackShop extends InventoryGUI {
                                     }else if (i<=49){
                                         Thread.sleep(800);
                                     }else {
-                                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomLegendaryPrice);
-
                                         Pokemon pokemon = PokemonAPI.getRandomLegendaryPokemon();
                                         PokemonAPI.GivePokemon(player,false,3,0,false,pokemon);
                                         player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
@@ -264,6 +252,7 @@ public class GiftPackShop extends InventoryGUI {
         Button RandomLegendaryMaxButton = new Button(RandomLegendaryMax, type -> {
             if (type.isLeftClick()) {
                 if (Main.econ.getBalance(player)>=RandomLegendaryMaxMoney){
+                    Main.econ.withdrawPlayer(player,RandomLegendaryMaxMoney);
                     player.closeInventory();
                     new Thread(()->{
                         for (int i = 0; i <= 50; i++) {
@@ -283,8 +272,6 @@ public class GiftPackShop extends InventoryGUI {
                                 }else if (i<=49){
                                     Thread.sleep(800);
                                 }else {
-                                    Main.econ.withdrawPlayer(player,RandomLegendaryMaxMoney);
-
                                     Pokemon pokemon = PokemonAPI.getRandomLegendaryMaxPokemon();
                                     PokemonAPI.GivePokemon(player,false,3,0,false,pokemon);
                                     player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
@@ -311,6 +298,7 @@ public class GiftPackShop extends InventoryGUI {
             if (type.isRightClick()) {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=RandomLegendaryMaxPrice){
+                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomLegendaryMaxPrice);
                         player.closeInventory();
                         new Thread(()->{
                             for (int i = 0; i <= 50; i++) {
@@ -330,8 +318,6 @@ public class GiftPackShop extends InventoryGUI {
                                     }else if (i<=49){
                                         Thread.sleep(800);
                                     }else {
-                                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomLegendaryMaxPrice);
-
                                         Pokemon pokemon = PokemonAPI.getRandomLegendaryMaxPokemon();
                                         PokemonAPI.GivePokemon(player,false,3,0,false,pokemon);
                                         player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
@@ -416,6 +402,7 @@ public class GiftPackShop extends InventoryGUI {
             if (type.isRightClick()) {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=UltraBeastPrice){
+                        playerPointsAPI.takeAsync(player.getUniqueId(),UltraBeastPrice);
                         player.closeInventory();
                         new Thread(()->{
                             for (int i = 0; i <= 50; i++) {
@@ -435,7 +422,6 @@ public class GiftPackShop extends InventoryGUI {
                                     }else if (i<=49){
                                         Thread.sleep(800);
                                     }else {
-                                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomLegendaryPrice);
                                         Pokemon pokemon = PokemonAPI.getRandomUltraBeastPokemon();
                                         PokemonAPI.GivePokemon(player,false,0,0,false,pokemon);
                                         player.sendTitle(ColorParser.parse("&b卡洛斯の异兽宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f异兽宝可梦."),0,60,0);
@@ -560,7 +546,8 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("      &f签到 &7(额外的奖励)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a5%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a7&7)"),
-                    ColorParser.parse("      &f更多的地皮 &7(1 -> &a2&7)")
+                    ColorParser.parse("      &f更多的地皮 &7(1 -> &a2&7)"),
+                    ColorParser.parse("      &f战斗结束自动治疗 &7(被动)")
             );
             Button PikaniumButton = new Button(Pikanium, type -> {
                 if (type.isRightClick()) {
@@ -600,7 +587,9 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("      &f签到 &7(额外的奖励 幸运方块)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a5%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a7&7)"),
-                    ColorParser.parse("      &f更多的地皮 &7(1 -> &a2&7)"));
+                    ColorParser.parse("      &f更多的地皮 &7(1 -> &a2&7)"),
+                    ColorParser.parse("      &f战斗结束自动治疗 &7(被动)")
+            );
             Button PikaniumButton = new Button(Pikanium, type -> {
                 if (type.isRightClick()) {
                     try {
@@ -649,13 +638,14 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("&r      &7(续费) &c" + EeveePrice + " &7"+Data.SERVER_POINTS+""),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &c■ &7特 权:"),
-                    ColorParser.parse("      &f飞行 &7(使用: /fly)"),
+                    ColorParser.parse("      &f飞行 &7(菜单)"),
                     ColorParser.parse("      &f签到 &7(额外的奖励 幸运方块)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a15%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a21&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a4&7)"),
+                    ColorParser.parse("      &f独特的世界 &7(累计充值 2000 以上可以获得)"),
                     ColorParser.parse("      &f传说宝可梦查询 &7(菜单)"),
-                    ColorParser.parse("      &f独特的世界 &7(累计充值 2000 以上可以获得)")
+                    ColorParser.parse("      &f战斗结束自动治疗 &7(被动)")
             );
             Button EeveeButton = new Button(Eevee, type -> {
                 if (type.isRightClick()) {
@@ -696,8 +686,9 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a15%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a21&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a4&7)"),
+                    ColorParser.parse("      &f独特的世界 &7(累计充值 2000 以上可以获得)"),
                     ColorParser.parse("      &f传说宝可梦查询 &7(菜单)"),
-                    ColorParser.parse("      &f独特的世界 &7(累计充值 2000 以上可以获得)")
+                    ColorParser.parse("      &f战斗结束自动治疗 &7(被动)")
             );
             Button EeveeButton = new Button(Eevee, type -> {
                 if (type.isRightClick()) {

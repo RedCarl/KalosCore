@@ -37,8 +37,9 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ APrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c高级球*24"),
-                        ColorParser.parse("&r          &c幸运方块*1")),
+                        ColorParser.parse("&r          &c梦幻(3v)*1"),
+                        ColorParser.parse("&r          &c幸运方块*4")
+                ),
                 type -> {
             if (type.isLeftClick()) {
                 if (RMB>=APrice){
@@ -46,8 +47,8 @@ public class GrandTotal extends InventoryGUI {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+APermission+" true");
 
                         //奖励内容
-                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ULTRA_BALL"),24));
-                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY")));
+                        PokemonAPI.GivePokemon(player,false,3,0,false,PokemonAPI.SpawnPokemon("Mew"));
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),4));
 
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -67,7 +68,7 @@ public class GrandTotal extends InventoryGUI {
 
 
 
-        double BPrice = 30;
+        double BPrice = 28;
         String BPermission = "B";
         Button B = new Button(
                 SkullAPI.getSkullItem("http://textures.minecraft.net/texture/db80706f882e7762c11d5ab3cf190f828145dc30a64cb453c7f18842f0aa74d9",
@@ -76,7 +77,9 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ BPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c2V宝可梦*1 &7(所有宝可梦都有可能抽到)")),
+                        ColorParser.parse("&r          &c甲贺忍蛙(一般2 / 皮肤)*1"),
+                        ColorParser.parse("&r          &c幸运方块*6")
+                ),
                 type -> {
                     if (type.isLeftClick()) {
                         if (RMB>=BPrice){
@@ -84,7 +87,8 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+BPermission+" true");
 
                                 //奖励内容
-                                PokemonAPI.GivePokemon(player,false,2,0,false,PokemonAPI.getRandomPokemon());
+                                PokeFormCommand.addPokemonForm(player.getName(), "甲贺忍蛙","一般2",1);
+                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),6));
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -113,8 +117,9 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ CPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c高级求*64"),
-                        ColorParser.parse("&r          &c糖果*32")),
+                        ColorParser.parse("&r          &c伪传说宝可梦(抽奖)*1"),
+                        ColorParser.parse("&r          &c宝可梦进化石(抽奖)*1")
+                ),
                 type -> {
                     if (type.isLeftClick()) {
                         if (RMB>=CPrice){
@@ -122,8 +127,9 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+CPermission+" true");
 
                                 //奖励内容
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ULTRA_BALL"),64));
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),32));
+                                Pokemon pokemon = PokemonAPI.getRandomPseudoLegendaryPokemon();
+                                PokemonAPI.GivePokemon(player,false,2,0,false,pokemon);
+                                PokemonAPI.getRandomEvolution(player);
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -143,7 +149,7 @@ public class GrandTotal extends InventoryGUI {
 
 
 
-        double DPrice = 128;
+        double DPrice = 198;
         String DPermission = "D";
         Button D = new Button(
                 SkullAPI.getSkullItem("http://textures.minecraft.net/texture/5e8d16836e13786469a77bd17983b909ef59a33b4d4dd67d7a9d76ae810a09f5",
@@ -152,9 +158,10 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ DPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c随机进化石*1"),
-                        ColorParser.parse("&r          &c脱壳忍者皮肤*1"),
-                        ColorParser.parse("&r          &c牧场*1")),
+                        ColorParser.parse("&r          &c伪传说宝可梦(抽奖)*1"),
+                        ColorParser.parse("&r          &c幸运方块*18"),
+                        ColorParser.parse("&r          &c牧场*1")
+                ),
                 type -> {
                     if (type.isLeftClick()) {
                         if (RMB>=DPrice){
@@ -162,8 +169,9 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+DPermission+" true");
 
                                 //奖励内容
-                                PokemonAPI.getRandomEvolution(player);
-                                PokeFormCommand.addPokemonForm(player.getName(),"脱壳忍者","诅咒",1);
+                                Pokemon pokemon = PokemonAPI.getRandomPseudoLegendaryPokemon();
+                                PokemonAPI.GivePokemon(player,false,2,0,false,pokemon);
+                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),18));
                                 player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RANCH"),1));
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -184,7 +192,7 @@ public class GrandTotal extends InventoryGUI {
 
 
 
-        double EPrice = 248;
+        double EPrice = 398;
         String EPermission = "E";
         Button E = new Button(
                 SkullAPI.getSkullItem("http://textures.minecraft.net/texture/aeae6fe18f27bbb3b62a03e7c0da2a3d88d30b655098feb377a32f672e33b7f4",
@@ -193,9 +201,9 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ EPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c随机4v伪传奇宝可梦"),
-                        ColorParser.parse("&r          &c幸运方块*6"),
-                        ColorParser.parse("&r          &c牧场*1")),
+                        ColorParser.parse("&r          &c纸御剑(6v)*1"),
+                        ColorParser.parse("&r          &c时装碎片*32")
+                ),
                 type -> {
                     if (type.isLeftClick()) {
                         if (RMB>=EPrice){
@@ -203,10 +211,20 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+EPermission+" true");
 
                                 //奖励内容
-                                Pokemon pokemon = PokemonAPI.getRandomPseudoLegendaryPokemon();
-                                PokemonAPI.GivePokemon(player,false,4,0,false,pokemon);
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RANCH"),1));
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),6));
+                                PokemonAPI.GivePokemon(player,false,6,0,false,PokemonAPI.SpawnPokemon("Kartana"));
+                                long ArmourersMoney=-1;
+                                int ArmourersPrice=3;
+                                ItemStack Armourers = ItemFactoryAPI.getItemStack(Material.PAPER,
+                                        ColorParser.parse("&c"+Data.SERVER_NAME_CN+"の时装碎片"),
+                                        ColorParser.parse("&f范围: &a1~10 &f个"),
+                                        ColorParser.parse("&r"),
+                                        ColorParser.parse("&r  &e■ &7售 价:"),
+                                        ColorParser.parse("&r      &7(左键) &c" + ArmourersMoney + " &7"+Data.SERVER_VAULT+""),
+                                        ColorParser.parse("&r      &7(右键) &c" + ArmourersPrice + " &7"+Data.SERVER_POINTS+""),
+                                        ColorParser.parse("&r"),
+                                        ColorParser.parse("&7&o时装碎片可以去兑换时装，需要非常多哦!"));
+                                Armourers.setAmount(32);
+                                player.getInventory().addItem(Armourers);
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -226,7 +244,7 @@ public class GrandTotal extends InventoryGUI {
 
 
 
-        double FPrice = 398;
+        double FPrice = 598;
         String FPermission = "F";
         Button F = new Button(
                 SkullAPI.getSkullItem("http://textures.minecraft.net/texture/7984814a53275ddc5a21d2415b7ca50c05e3d2edceb001ca384878bf3171aaf6",
@@ -235,9 +253,9 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ FPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c随机5v伪传奇宝可梦*1"),
-                        ColorParser.parse("&r          &c随机进化石*1"),
-                        ColorParser.parse("&r          &c糖果*42")),
+                        ColorParser.parse("&r          &c初始圣杯(装饰品)*1"),
+                        ColorParser.parse("&r          &c卡点*50")
+                ),
                 type -> {
                     if (type.isLeftClick()) {
                         if (RMB>=FPrice){
@@ -245,10 +263,8 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+FPermission+" true");
 
                                 //奖励内容
-                                Pokemon pokemon = PokemonAPI.getRandomPseudoLegendaryPokemon();
-                                PokemonAPI.GivePokemon(player,false,5,0,false,pokemon);
-                                PokemonAPI.getRandomEvolution(player);
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),42));
+                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PLATEHOLDER"),1));
+                                Main.ppAPI.giveAsync(player.getUniqueId(),50);
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -268,7 +284,7 @@ public class GrandTotal extends InventoryGUI {
 
 
 
-        double GPrice = 648;
+        double GPrice = 999;
         String GPermission = "G";
         Button G = new Button(
                 SkullAPI.getSkullItem("http://textures.minecraft.net/texture/b38ecd20aec9f9c95f5f97dd3d25bc419e2a721456a50b38167930cda60c948f",
@@ -277,11 +293,12 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ GPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c随机6v伪传奇宝可梦*1"),
-                        ColorParser.parse("&r          &c随机进化石*1"),
-                        ColorParser.parse("&r          &c幸运方块*6"),
-                        ColorParser.parse("&r          &c卡点*68"),
-                        ColorParser.parse("&r          &c糖果*42")),
+                        ColorParser.parse("&r          &c铁火辉夜(闪光 6v)*1"),
+                        ColorParser.parse("&r          &c极具化糖果*64"),
+                        ColorParser.parse("&r          &c极具化汤*5"),
+                        ColorParser.parse("&r          &c牧场*3"),
+                        ColorParser.parse("&r          &c卡点*50")
+                ),
                 type -> {
                     if (type.isLeftClick()) {
                         if (RMB>=GPrice){
@@ -289,12 +306,11 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+GPermission+" true");
 
                                 //奖励内容
-                                Pokemon pokemon = PokemonAPI.getRandomPseudoLegendaryPokemon();
-                                PokemonAPI.GivePokemon(player,false,6,0,false,pokemon);
-                                PokemonAPI.getRandomEvolution(player);
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),6));
-                                Main.ppAPI.giveAsync(player.getUniqueId(),68);
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),42));
+                                PokemonAPI.GivePokemon(player,true,6,0,false,PokemonAPI.SpawnPokemon("Celesteela"));
+                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_DYNAMAX_CANDY"),64));
+                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MAX_SOUP"),5));
+                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RANCH"),3));
+                                Main.ppAPI.giveAsync(player.getUniqueId(),50);
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -314,7 +330,7 @@ public class GrandTotal extends InventoryGUI {
 
 
 
-        double HPrice = 998;
+        double HPrice = 1388;
         String HPermission = "H";
         Button H = new Button(
                 SkullAPI.getSkullItem("http://textures.minecraft.net/texture/e097014ae1420ac74b3c7f8d5d1d175e49646b59f756cdcd30d1aa880b75238e",
@@ -323,11 +339,10 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ HPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c随机顶级传说宝可*1"),
-                        ColorParser.parse("&r          &c时装碎片*50"),
-                        ColorParser.parse("&r          &c幸运方块*12"),
-                        ColorParser.parse("&r          &c卡点*50"),
-                        ColorParser.parse("&r          &c糖果*64")),
+                        ColorParser.parse("&r          &c哲尔尼亚斯(创造者 / 皮肤)*1"),
+                        ColorParser.parse("&r          &c皮卡丘(摇滚皮卡丘 / 皮肤)*1"),
+                        ColorParser.parse("&r          &c卡点*50")
+                ),
                 type -> {
                     if (type.isLeftClick()) {
                         if (RMB>=HPrice){
@@ -335,25 +350,9 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+HPermission+" true");
 
                                 //奖励内容
-                                PokemonAPI.GivePokemon(player,false,0,0,false,PokemonAPI.getRandomLegendaryMaxPokemon());
-
-                                long ArmourersMoney=-1;
-                                int ArmourersPrice=3;
-                                ItemStack Armourers = ItemFactoryAPI.getItemStack(Material.PAPER,
-                                        ColorParser.parse("&c"+Data.SERVER_NAME_CN+"の时装碎片"),
-                                        ColorParser.parse("&f范围: &a1~10 &f个"),
-                                        ColorParser.parse("&r"),
-                                        ColorParser.parse("&r  &e■ &7售 价:"),
-                                        ColorParser.parse("&r      &7(左键) &c" + ArmourersMoney + " &7"+Data.SERVER_VAULT+""),
-                                        ColorParser.parse("&r      &7(右键) &c" + ArmourersPrice + " &7"+Data.SERVER_POINTS+""),
-                                        ColorParser.parse("&r"),
-                                        ColorParser.parse("&7&o时装碎片可以去兑换时装，需要非常多哦!"));
-                                Armourers.setAmount(50);
-                                player.getInventory().addItem(Armourers);
-
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),12));
+                                PokeFormCommand.addPokemonForm(player.getName(), "哲尔尼亚斯","创造者",1);
+                                PokeFormCommand.addPokemonForm(player.getName(), "皮卡丘","摇滚皮卡丘",1);
                                 Main.ppAPI.giveAsync(player.getUniqueId(),50);
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),64));
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -373,7 +372,7 @@ public class GrandTotal extends InventoryGUI {
 
 
 
-        double IPrice = 1280;
+        double IPrice = 1888;
         String IPermission = "I";
         Button I = new Button(
                 SkullAPI.getSkullItem("http://textures.minecraft.net/texture/df5f088abbefc244e35924c80023c25055af10257656bac4e84e74855ec12f2b",
@@ -382,10 +381,8 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ IPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c幸运方块*20"),
-                        ColorParser.parse("&r          &c卡洛币*5w"),
-                        ColorParser.parse("&r          &c公园球*5"),
-                        ColorParser.parse("&r          &c大师球*5")
+                        ColorParser.parse("&r          &c一级传说宝可梦(自选)*1"),
+                        ColorParser.parse("&r          &c烈空坐(诅咒 / 皮肤)*1")
                 ),
                 type -> {
                     if (type.isLeftClick()) {
@@ -394,10 +391,7 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+IPermission+" true");
 
                                 //奖励内容
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),20));
-                                Main.econ.depositPlayer(player,50000);
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PARK_BALL"),5));
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),5));
+                                PokeFormCommand.addPokemonForm(player.getName(), "烈空坐","诅咒",1);
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -417,7 +411,7 @@ public class GrandTotal extends InventoryGUI {
 
 
 
-        double JPrice = 1480;
+        double JPrice = 2388;
         String JPermission = "J";
         Button J = new Button(
                 SkullAPI.getSkullItem("http://textures.minecraft.net/texture/5726d9d0632e40bda5bcf65839ba2cc98a87bd619c53adf00310d6fc71f042b5",
@@ -426,13 +420,9 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ JPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c幸运方块*30"),
-                        ColorParser.parse("&r          &c卡洛币*10w"),
-                        ColorParser.parse("&r          &c高级球*380"),
-                        ColorParser.parse("&r          &c公园球*5"),
-                        ColorParser.parse("&r          &c大师球*10"),
-                        ColorParser.parse("&r          &c牧场*5")
-
+                        ColorParser.parse("&r          &c固拉多(地之魔物 皮肤)*1"),
+                        ColorParser.parse("&r          &c水银灯(时装)*1"),
+                        ColorParser.parse("&r          &c卡点*288")
                 ),
                 type -> {
                     if (type.isLeftClick()) {
@@ -441,12 +431,9 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+JPermission+" true");
 
                                 //奖励内容
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),30));
-                                Main.econ.depositPlayer(player,100000);
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ULTRA_BALL"),380));
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PARK_BALL"),5));
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),10));
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RANCH"),5));
+                                PokeFormCommand.addPokemonForm(player.getName(), "固拉多","地之魔物",1);
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set "+"kim.armourers.水银灯"+" true server="+Main.luckPerms.getServerName()+"");
+                                Main.ppAPI.giveAsync(player.getUniqueId(),288);
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -466,7 +453,7 @@ public class GrandTotal extends InventoryGUI {
 
 
 
-        double KPrice = 1680;
+        double KPrice = 3888;
         String KPermission = "K";
         Button K = new Button(
                 SkullAPI.getSkullItem("http://textures.minecraft.net/texture/1375061d08f1d7b317675aa7fa8800d6f2066e018d9f91ecddf9caf304e97e92",
@@ -475,13 +462,9 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ KPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c幸运方块*40"),
-                        ColorParser.parse("&r          &c皮肤碎片*68"),
-                        ColorParser.parse("&r          &c卡洛币*15w"),
-                        ColorParser.parse("&r          &c公园球*10"),
-                        ColorParser.parse("&r          &c大师球*10"),
-                        ColorParser.parse("&r          &c牧场*6")
-
+                        ColorParser.parse("&r          &c一级传说宝可梦(人工自选 6v)*1"),
+                        ColorParser.parse("&r          &c无极汰那(真实无极巨化 / 皮肤)*1"),
+                        ColorParser.parse("&r          &c卡点*398")
                 ),
                 type -> {
                     if (type.isLeftClick()) {
@@ -490,26 +473,9 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+KPermission+" true");
 
                                 //奖励内容
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),40));
-
-                                long ArmourersMoney=-1;
-                                int ArmourersPrice=3;
-                                ItemStack Armourers = ItemFactoryAPI.getItemStack(Material.PAPER,
-                                        ColorParser.parse("&c"+Data.SERVER_NAME_CN+"の时装碎片"),
-                                        ColorParser.parse("&f范围: &a1~10 &f个"),
-                                        ColorParser.parse("&r"),
-                                        ColorParser.parse("&r  &e■ &7售 价:"),
-                                        ColorParser.parse("&r      &7(左键) &c" + ArmourersMoney + " &7"+Data.SERVER_VAULT+""),
-                                        ColorParser.parse("&r      &7(右键) &c" + ArmourersPrice + " &7"+Data.SERVER_POINTS+""),
-                                        ColorParser.parse("&r"),
-                                        ColorParser.parse("&7&o时装碎片可以去兑换时装，需要非常多哦!"));
-                                Armourers.setAmount(68);
-                                player.getInventory().addItem(Armourers);
-
-                                Main.econ.depositPlayer(player,150000);
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PARK_BALL"),10));
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),10));
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RANCH"),6));
+                                //自选一级传说宝可梦
+                                PokeFormCommand.addPokemonForm(player.getName(), "无极汰那","真实无极巨化",1);
+                                Main.ppAPI.giveAsync(player.getUniqueId(),398);
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -529,7 +495,7 @@ public class GrandTotal extends InventoryGUI {
 
 
 
-        double LPrice = 1888;
+        double LPrice = 4999;
         String LPermission = "L";
         Button L = new Button(
                 SkullAPI.getSkullItem("http://textures.minecraft.net/texture/81e42e3725c2b4ae6900580c4e2a6b830f6eca0211f7a3641433fc67fbc43d3f",
@@ -538,11 +504,11 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r  &e■ &7当前进度:"),
                         ColorParser.parse("&r          &c"+ RMB +"&7/&f"+ LPrice +" &f元"),
                         ColorParser.parse("&r  &a■ &7礼包内容:"),
-                        ColorParser.parse("&r          &c卡点*88"),
-                        ColorParser.parse("&r          &c幸运方块*50"),
-                        ColorParser.parse("&r          &c水银灯(时装)*1"),
-                        ColorParser.parse("&r          &c固拉多(地之魔物)*1"),
-                        ColorParser.parse("&r          &c轰擂金刚猩(6V MT 闪光)*1")
+                        ColorParser.parse("&r          &c一级传说宝可梦(6v / 抽奖)*1"),
+                        ColorParser.parse("&r          &c传说宝可梦(6v / 抽奖)*1"),
+                        ColorParser.parse("&r          &c百变怪(MT 6v)*1"),
+                        ColorParser.parse("&r          &c专属特权(登录/特效/客服/特权)*1"),
+                        ColorParser.parse("&r          &c卡点*398")
                 ),
                 type -> {
                     if (type.isLeftClick()) {
@@ -551,11 +517,14 @@ public class GrandTotal extends InventoryGUI {
                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.grandtotal."+LPermission+" true");
 
                                 //奖励内容
-                                Main.ppAPI.giveAsync(player.getUniqueId(),88);
-                                player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),50));
-                                PokemonAPI.GivePokemon(player,true,6,0,true,PokemonAPI.SpawnPokemon("Rillaboom"));
-                                PokeFormCommand.addPokemonForm(player.getName(), "固拉多","地之魔物",1);
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set "+"kim.armourers.水银灯"+" true server="+Main.luckPerms.getServerName()+"");
+                                Pokemon pokemon = PokemonAPI.getRandomLegendaryPokemon();
+                                PokemonAPI.GivePokemon(player,false,6,0,false,pokemon);
+                                //-//
+                                Pokemon pokemons = PokemonAPI.getRandomLegendaryMaxPokemon();
+                                PokemonAPI.GivePokemon(player,false,6,0,false,pokemons);
+                                //-//
+                                PokemonAPI.GivePokemon(player,false,6,0,true,PokemonAPI.SpawnPokemon("Ditto"));
+                                Main.ppAPI.giveAsync(player.getUniqueId(),398);
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7礼包内容已经进入您的背包了，请注意查收!"));
@@ -572,11 +541,6 @@ public class GrandTotal extends InventoryGUI {
                     }
                 });
         this.setButton(11, L);
-
-
-
-
-
 
 
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));

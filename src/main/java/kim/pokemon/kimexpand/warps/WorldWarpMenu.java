@@ -3,6 +3,7 @@ package kim.pokemon.kimexpand.warps;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.kimexpand.menu.MainMenu;
 import kim.pokemon.util.ColorParser;
+import kim.pokemon.util.UnexpectedSpawn;
 import kim.pokemon.util.gui.Button;
 import kim.pokemon.util.gui.InventoryGUI;
 import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
@@ -10,6 +11,7 @@ import kim.pokemon.util.gui.inventory.SkullAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -25,7 +27,7 @@ public class WorldWarpMenu extends InventoryGUI {
         Button SpawnButton = new Button(Spawn, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
-                Location location = new Location(Bukkit.getWorld("spawn"),55,100,-83);
+                Location location = new Location(Bukkit.getWorld("spawn"),-20.5,10,47.5);
                 location.setYaw(90);
                 player.teleport(location);
             }
@@ -40,8 +42,9 @@ public class WorldWarpMenu extends InventoryGUI {
         Button TheOverworldButton = new Button(TheOverworld, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
-                Location location = new Location(Bukkit.getWorld("world"),-7956,65,6822);
-                player.teleport(location);
+                player.teleport(new UnexpectedSpawn().randomLocation(Bukkit.getWorld("world")));
+                player.sendTitle(ColorParser.parse("&aKalos &f// &a主世界"),ColorParser.parse("&f尽情的享受这个世界吧!"),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
             }
         });
         this.setButton(1, TheOverworldButton);
@@ -53,8 +56,9 @@ public class WorldWarpMenu extends InventoryGUI {
         Button TheNetherButton = new Button(TheNether, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
-                Location location = new Location(Bukkit.getWorld("DIM-1"),0,65,0);
-                player.teleport(location);
+                player.teleport(new UnexpectedSpawn().randomLocation(Bukkit.getWorld("DIM-1")));
+                player.sendTitle(ColorParser.parse("&cKalos &f// &c下届"),ColorParser.parse("&f这是一个可怕的世界."),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
             }
         });
         this.setButton(2, TheNetherButton);
@@ -66,10 +70,9 @@ public class WorldWarpMenu extends InventoryGUI {
         Button TheEndButton = new Button(TheEnd, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
-                Location location = new Location(Bukkit.getWorld("DIM1"),0,65,0);
-                player.teleport(location);
-                Vector vector = new Vector(1,1,1);
-                player.setVelocity(vector);
+                player.teleport(new Location(Bukkit.getWorld("DIM1"),0,70,0));
+                player.sendTitle(ColorParser.parse("&dKalos &f// &d末地"),ColorParser.parse("&f末影龙?"),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
             }
         });
         this.setButton(3, TheEndButton);
@@ -81,8 +84,9 @@ public class WorldWarpMenu extends InventoryGUI {
         Button UltraSpaceButton = new Button(UltraSpace, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
-                Location location = new Location(Bukkit.getWorld("DIM72"),0,98,0);
-                player.teleport(location);
+                player.teleport(new UnexpectedSpawn().randomLocation(Bukkit.getWorld("DIM72")));
+                player.sendTitle(ColorParser.parse("&6Kalos &f// &6究极世界"),ColorParser.parse("&f天空的颜色好像在变化着?"),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
             }
         });
         this.setButton(4, UltraSpaceButton);
@@ -94,12 +98,30 @@ public class WorldWarpMenu extends InventoryGUI {
         Button DrownedWorldButton = new Button(DrownedWorld, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
-                Location location = new Location(Bukkit.getWorld("spawn"),85,107,-370.5);
+                Location location = new Location(Bukkit.getWorld("spawn"),0.5,10,47.5);
                 location.setYaw(-90);
                 player.teleport(location);
+                player.sendTitle(ColorParser.parse("&3Kalos &f// &3宝可梦训练场"),ColorParser.parse("&f尽情的训练您的宝可梦去吧."),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
             }
         });
         this.setButton(5, DrownedWorldButton);
+
+        //训练场
+        ItemStack PVPWorld = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/3d1164f8ed8a89bee10a7fa2fec84ecc0221d85097ea60a4a70d378ca00b0241",ColorParser.parse("&c战斗世界 &f// &7PVP World"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o危险的世界，与其他玩家一决生死!"));
+        Button PVPWorldButton = new Button(PVPWorld, type -> {
+            if (type.isLeftClick()) {
+                player.closeInventory();
+                Location location = new Location(Bukkit.getWorld("pvp"), -120.5,88.5,-52.5);
+                location.setYaw(-90);
+                player.teleport(location);
+                player.sendTitle(ColorParser.parse("&cKalos &f// &c战斗世界"),ColorParser.parse("&f您进入了战斗世界，可以互相攻击."),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+            }
+        });
+        this.setButton(6, PVPWorldButton);
 
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));
         for (int i = 0; i < 9; i++) {

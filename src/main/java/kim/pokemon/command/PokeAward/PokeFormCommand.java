@@ -33,5 +33,6 @@ public class PokeFormCommand implements CommandExecutor {
 		int time = configuration.getInt("PokeAward."+playerName+"."+pokemon+"."+form);
 		time += addTime;
 		configuration.set("PokeAward."+playerName+"."+pokemon+"."+form,time);
+		Main.getInstance().saveConfig();
 	}
 }

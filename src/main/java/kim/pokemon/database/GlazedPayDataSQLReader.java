@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 处理竞技场数据
@@ -69,4 +71,79 @@ public class GlazedPayDataSQLReader {
             return new PlayerRecharge(name,-1);
         }
     }
+
+    /**
+     * 查询服务器总收益
+     * @return 充值信息
+     */
+    public static double getTotal() {
+        double amount = 0.0D;
+        try {
+            String select_data = "SELECT SUM(`amount`) FROM "+Data.GLAZED_PAY_DATA+";";
+            PreparedStatement select = conn.prepareStatement(select_data);
+            ResultSet set = select.executeQuery();
+
+            if (set.next()) {
+                amount = set.getDouble(1);
+            }
+
+            set.close();
+            return amount;
+        } catch (SQLException var5) {
+            var5.printStackTrace();
+            return amount;
+        }
+    }
+
+    /**
+     * 查询充值排行榜前十的玩家
+     * @return 玩家信息
+     */
+    public static List<PlayerRecharge> getTopPlayer() {
+        List<PlayerRecharge> playerRechargeList = new ArrayList<>();
+        try {
+            String select_data = "SELECT name,SUM(`amount`) amount from "+Data.GLAZED_PAY_DATA+"  WHERE `name` NOT IN('Red_Carl','鹤仙桥') group by name ORDER BY SUM(`amount`) DESC LIMIT 5;";
+            PreparedStatement select = conn.prepareStatement(select_data);
+            ResultSet set = select.executeQuery();
+
+            while (set.next()){
+                playerRechargeList.add(new PlayerRecharge(set.getString("name"),set.getDouble("amount")));
+            }
+
+            set.close();
+            return playerRechargeList;
+        } catch (SQLException var5) {
+            var5.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 查询玩家指定时间段充值数量
+     * @param onTime 开始
+     * @param endTime 结束
+     * @return 数额
+     */
+    public static PlayerRecharge getPlayerTime(String name,String onTime,String endTime) {
+        double amount = 0.0D;
+        try {
+            String select_data = "SELECT SUM(`amount`) FROM `ranks` WHERE time >= '"+onTime+"' AND time <= '"+endTime+"' AND `name` = ?;";
+            PreparedStatement select = conn.prepareStatement(select_data);
+            select.setString(1, name);
+            ResultSet set = select.executeQuery();
+
+            if (set.next()) {
+                amount = set.getDouble(1);
+            }
+
+            set.close();
+            return new PlayerRecharge(name, amount);
+        } catch (SQLException var5) {
+            var5.printStackTrace();
+            return new PlayerRecharge(name,-1);
+        }
+    }
+
+    //
+
 }

@@ -37,6 +37,13 @@
             <systemPath>${project.basedir}/libs/spigot.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>spigot</groupId>
+            <artifactId>PokemonQuest</artifactId>
+            <version>1.12.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/PokemonQuest-1.0.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>minecraft</groupId>
             <artifactId>minecraft</artifactId>
             <version>1.12.2</version>
@@ -107,6 +114,13 @@
             <version>1.0.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/LuckPerms-Bukkit-5.3.74.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>LiteSignIn</groupId>
+            <artifactId>LiteSignIn-api</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/LiteSignIn.jar</systemPath>
         </dependency>
 
         <!--Mod-->

@@ -1,9 +1,9 @@
 package kim.pokemon;
 
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Modules.TabList.TabListManager;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.pixelmonmod.pixelmon.Pixelmon;
-import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import kim.pokemon.command.CrazyAuctions.CrazyAuctionsCommand;
 import kim.pokemon.command.MenuCommand;
 import kim.pokemon.command.PokeAward.PokeFormCommand;
@@ -11,16 +11,18 @@ import kim.pokemon.command.PokemonBan.BanItemCommand;
 import kim.pokemon.command.PokemonBan.BanPokemonCommand;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.database.*;
+import kim.pokemon.kimexpand.armourers.listener.ArmourersUpdateListener;
 import kim.pokemon.kimexpand.autobroadcast.BroadCastMessage;
+import kim.pokemon.kimexpand.crazyauctions.CrazyAuctions;
+import kim.pokemon.kimexpand.kitpvp.PVPEvent;
 import kim.pokemon.kimexpand.npc.NpcEntityEvent;
 import kim.pokemon.kimexpand.onlinereward.PlayerOnlineReward;
 import kim.pokemon.kimexpand.pokeban.PokemonBan;
 import kim.pokemon.kimexpand.pokespawn.SpawnTime;
-import kim.pokemon.kimexpand.armourers.listener.ArmourersUpdateListener;
-import kim.pokemon.kimexpand.crazyauctions.CrazyAuctions;
 import kim.pokemon.listener.CommandEvent;
 import kim.pokemon.listener.PlayerEvent;
 import kim.pokemon.listener.PokemonEvent;
+import kim.pokemon.listener.WorldEvent;
 import kim.pokemon.packetlistener.AdvanceAdapter;
 import kim.pokemon.packetlistener.MessageAdapter;
 import kim.pokemon.placeholder.TitlePlaceholderAPI;
@@ -130,6 +132,8 @@ public class Main extends JavaPlugin {
         regListener(new PokemonBan());
         regListener(new ArmourersUpdateListener());
         regListener(new NpcEntityEvent());
+        regListener(new WorldEvent());
+        regListener(new PVPEvent());
 
         log("启动传奇宝可梦监控系统...");
         SpawnTime.start();
@@ -169,11 +173,6 @@ public class Main extends JavaPlugin {
         crazyAuctions.onEnable();
         Bukkit.getConsoleSender().sendMessage(ColorParser.parse("&c-------------------------------"));
 
-        log("加载NPC组件....");
-        if (Bukkit.getOnlinePlayers().size()>0){
-            NpcEntityEvent.NpcHologram(true);
-        }
-
         log("加载公告组件....");
         new BroadCastMessage(this);
 
@@ -199,9 +198,6 @@ public class Main extends JavaPlugin {
         log("卸载内置插件 CrazyAuctions 信息...");
         CrazyAuctions crazyAuctions = new CrazyAuctions();
         crazyAuctions.onDisable();
-
-        log("卸载NPC组件....");
-        NpcEntityEvent.NpcHologram(false);
 
         log("卸载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
@@ -238,8 +234,8 @@ public class Main extends JavaPlugin {
      * 作者信息
      */
     private void showAD() {
-        log("&7感谢您使用 &c&lKimMissionCore v" + getDescription().getVersion());
-        log("&7本插件由 &c&lKim Studios &7提供长期支持与维护。");
+        log("&7感谢您使用 &c&lKalosCore v" + getDescription().getVersion());
+        log("&7本插件由 &c&lKalos Studios &7提供长期支持与维护。");
     }
 
     /**

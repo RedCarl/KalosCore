@@ -13,6 +13,7 @@ import kim.pokemon.configFile.Data;
 import kim.pokemon.kimexpand.pokeinfo.gui.grouth.GrowthSelectGUI;
 import kim.pokemon.kimexpand.pokeinfo.gui.nature.NatureSelectGUI;
 import kim.pokemon.util.ColorParser;
+import kim.pokemon.util.PokemonAPI;
 import kim.pokemon.util.gui.Button;
 import kim.pokemon.util.gui.InventoryGUI;
 import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
@@ -320,7 +321,7 @@ public class PokeInfoUpdate extends InventoryGUI {
 
                 //闪光
                 long ShinyMoney = 30000;
-                int ShinyPoints = 10;
+                int ShinyPoints = 15;
                 if (p.isShiny()){
                     ItemStack Shiny = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_SHINY_CHARM"), ColorParser.parse("&e闪光"),
                             ColorParser.parse("&r"),
@@ -333,7 +334,7 @@ public class PokeInfoUpdate extends InventoryGUI {
                             ColorParser.parse("&r"),
                             ColorParser.parse("&7价格: &f"+ShinyMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+ShinyPoints+" &7"+Data.SERVER_POINTS+""),
                             ColorParser.parse("&r"),
-                            ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(50%)  &7右键"+Data.SERVER_POINTS+"&c(50%)"));
+                            ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(50%)  &7右键"+Data.SERVER_POINTS+"&c(100%)"));
                     Button ShinyButton = new Button(Shiny, type -> {
                         if (type.isLeftClick()) {
                             if (Main.econ.getBalance(player)>=ShinyMoney){
@@ -357,15 +358,10 @@ public class PokeInfoUpdate extends InventoryGUI {
                             try {
                                 if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=ShinyPoints){
                                     Main.ppAPI.takeAsync(player.getUniqueId(), ShinyPoints);
-                                    int value = new Random().nextInt(2);
-                                    if (value==1){
-                                        p.setShiny(true);
-                                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
-                                        PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,p);
-                                        pokeInfoUpdate.openInventory();
-                                    }else {
-                                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-                                    }
+                                    p.setShiny(true);
+                                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                                    PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,p);
+                                    pokeInfoUpdate.openInventory();
                                 }else {
                                     player.closeInventory();
                                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
@@ -419,6 +415,53 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                 });
                 this.setButton(16, GrowthButton);
+
+                //克隆
+                long CloneMoney = 2480000;
+                int ClonePoints = 248;
+                ItemStack Clone = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_CLONING_MACHINE") , ColorParser.parse("&d梦幻 &f> &c百变怪/超梦"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7&o将您的梦幻宝可梦克隆成百变怪或者超梦，概率事件~"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7价格: &f"+CloneMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+ClonePoints+" &7"+Data.SERVER_POINTS+""),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(50%)  &7右键"+Data.SERVER_POINTS+"&c(100%)"));
+                Button CloneButton = new Button(Clone, type -> {
+                    if (type.isLeftClick()) {
+                        if (Main.econ.getBalance(player)>=CloneMoney){
+                            Main.econ.withdrawPlayer(player, CloneMoney);
+
+                            PokemonAPI.getCloningMachine(player,playerPartyStorage,p, playerPartyStorage.getSlot(p.getUUID()),false);
+
+                            player.closeInventory();
+                        }else {
+                            player.closeInventory();
+                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您没有足够的 &c"+Data.SERVER_VAULT+" &7来进行本次的操作."));
+                        }
+                    }
+                    if (type.isRightClick()){
+                        try {
+                            if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=ClonePoints){
+                                Main.ppAPI.takeAsync(player.getUniqueId(),ClonePoints);
+
+                                PokemonAPI.getCloningMachine(player,playerPartyStorage,p, playerPartyStorage.getSlot(p.getUUID()),true);
+
+                                player.closeInventory();
+                            }else {
+                                player.closeInventory();
+                                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您没有足够的 &c"+Data.SERVER_POINTS+" &7来进行本次的操作."));
+                            }
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                if (p.getLocalizedName().equals("梦幻")){
+                    this.setButton(17, CloneButton);
+                }
+
 
                 //性格
                 long NatureMoney = 3500;
@@ -542,6 +585,7 @@ public class PokeInfoUpdate extends InventoryGUI {
                         config.set("PokeAward."+player.getName()+"."+pokemon.getSpecies().getLocalizedName()+"."+form.getLocalizedName(),leftTime-1);
                         Main.getInstance().saveConfig();
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                        player.closeInventory();
                     }
                 });
                 setButton(27+i,PokeAwardButton);

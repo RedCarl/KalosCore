@@ -1,6 +1,7 @@
 package kim.pokemon.util;
 
 import com.pixelmonmod.pixelmon.Pixelmon;
+import com.pixelmonmod.pixelmon.api.events.blocks.CloningCompleteEvent;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.pokemon.PokemonSpec;
 import com.pixelmonmod.pixelmon.api.storage.PCStorage;
@@ -12,6 +13,8 @@ import com.pixelmonmod.pixelmon.battles.controller.participants.PlayerParticipan
 import com.pixelmonmod.pixelmon.comm.packetHandlers.OpenScreen;
 import com.pixelmonmod.pixelmon.comm.packetHandlers.clientStorage.newStorage.pc.ClientChangeOpenPC;
 import com.pixelmonmod.pixelmon.comm.packetHandlers.clientStorage.newStorage.pc.ClientInitializePC;
+import com.pixelmonmod.pixelmon.entities.pixelmon.stats.EVStore;
+import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.enums.EnumGuiScreen;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
@@ -23,6 +26,7 @@ import kim.pokemon.kimexpand.menu.MainMenu;
 import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import org.apache.commons.lang3.RandomUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -198,7 +202,6 @@ public class PokemonAPI {
                 "reshiram",
                 "kyurem"
         };
-        System.out.println(PokemonAPI.subString(pokemon.getUnlocalizedName().toLowerCase(),"pixelmon.",".name"));
         return Arrays.asList(PokeBlackList).contains(PokemonAPI.subString(pokemon.getUnlocalizedName().toLowerCase(),"pixelmon.",".name"));
     }
 
@@ -625,5 +628,162 @@ public class PokemonAPI {
             }
         }
         return itemStack;
+    }
+
+    /**
+     * 克隆机
+     * @param player 玩家
+     * @param playerPartyStorage 玩家宝可梦
+     * @param pokemon 宝可梦
+     * @param slot 位置
+     */
+    public static void getCloningMachine(Player player,PlayerPartyStorage playerPartyStorage,Pokemon pokemon,int slot,boolean isOn){
+
+        //宝可梦信息储存
+        EVStore evStore = Objects.requireNonNull(pokemon).getEVs();
+        IVStore ivStore= Objects.requireNonNull(pokemon).getIVs();
+        int level = Objects.requireNonNull(pokemon).getLevel();
+
+        //创建超梦并应用梦幻宝可梦属性
+        Pokemon Mewtwo = Pixelmon.pokemonFactory.create(EnumSpecies.Mewtwo);
+        Mewtwo.getEVs().setStat(StatsType.HP,evStore.getStat(StatsType.HP));
+        Mewtwo.getEVs().setStat(StatsType.Attack,evStore.getStat(StatsType.Attack));
+        Mewtwo.getEVs().setStat(StatsType.Defence,evStore.getStat(StatsType.Defence));
+        Mewtwo.getEVs().setStat(StatsType.Speed,evStore.getStat(StatsType.Speed));
+        Mewtwo.getEVs().setStat(StatsType.SpecialDefence,evStore.getStat(StatsType.SpecialDefence));
+        Mewtwo.getEVs().setStat(StatsType.SpecialAttack,evStore.getStat(StatsType.SpecialAttack));
+        Mewtwo.getIVs().setStat(StatsType.HP,ivStore.getStat(StatsType.HP));
+        Mewtwo.getIVs().setStat(StatsType.Attack,ivStore.getStat(StatsType.Attack));
+        Mewtwo.getIVs().setStat(StatsType.Defence,ivStore.getStat(StatsType.Defence));
+        Mewtwo.getIVs().setStat(StatsType.Speed,ivStore.getStat(StatsType.Speed));
+        Mewtwo.getIVs().setStat(StatsType.SpecialDefence,ivStore.getStat(StatsType.SpecialDefence));
+        Mewtwo.getIVs().setStat(StatsType.SpecialAttack,ivStore.getStat(StatsType.SpecialAttack));
+        Mewtwo.setLevel(level);
+
+        if (isOn){
+            playerPartyStorage.set(slot,Mewtwo);
+            player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"),ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &6超梦 &f宝可梦."),0,60,0);
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+        }else {
+            int i = new Random().nextInt(2);
+            if (i==1){
+                playerPartyStorage.set(slot,Mewtwo);
+                player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"),ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &6超梦 &f宝可梦."),0,60,0);
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+            }else {
+                playerPartyStorage.set(slot,SpawnPokemon("Ditto"));
+                player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"),ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &9百变怪 &f宝可梦."),0,60,0);
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+            }
+        }
+
+
+    }
+
+
+    /**
+     * 给玩家概率给一个福
+     * @param player 玩家
+     * @param probability 概率
+     */
+    public static void getBills(Player player,int probability){
+
+
+        ItemStack a = ItemFactoryAPI.getItemStack(Material.PAPER,
+                ColorParser.parse("&e&l✦ &c&l友 善 福 &e&l✦"),
+                ColorParser.parse("&8活动道具"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7该道具可以通过击败 BOSS 获得。"),
+                ColorParser.parse("&7可以在活动处兑换奖励，集齐五福更能瓜分"),
+                ColorParser.parse("&7众多的 卡点 快去收集吧！"),
+                ColorParser.parse("&7春节将至，卡洛斯祝您新年快乐！"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7福")
+                );
+        ItemStack b = ItemFactoryAPI.getItemStack(Material.PAPER,
+                ColorParser.parse("&e&l✦ &c&l富 强 福 &e&l✦"),
+                ColorParser.parse("&8活动道具"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7该道具可以通过击败 BOSS 获得。"),
+                ColorParser.parse("&7可以在活动处兑换奖励，集齐五福更能瓜分"),
+                ColorParser.parse("&7众多的 卡点 快去收集吧！"),
+                ColorParser.parse("&7春节将至，卡洛斯祝您新年快乐！"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7福")
+        );
+        ItemStack c = ItemFactoryAPI.getItemStack(Material.PAPER,
+                ColorParser.parse("&e&l✦ &c&l和 谐 福 &e&l✦"),
+                ColorParser.parse("&8活动道具"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7该道具可以通过击败 BOSS 获得。"),
+                ColorParser.parse("&7可以在活动处兑换奖励，集齐五福更能瓜分"),
+                ColorParser.parse("&7众多的 卡点 快去收集吧！"),
+                ColorParser.parse("&7春节将至，卡洛斯祝您新年快乐！"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7福")
+        );
+        ItemStack d = ItemFactoryAPI.getItemStack(Material.PAPER,
+                ColorParser.parse("&e&l✦ &c&l敬 业 福 &e&l✦"),
+                ColorParser.parse("&8活动道具"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7该道具可以通过击败 BOSS 获得。"),
+                ColorParser.parse("&7可以在活动处兑换奖励，集齐五福更能瓜分"),
+                ColorParser.parse("&7众多的 卡点 快去收集吧！"),
+                ColorParser.parse("&7春节将至，卡洛斯祝您新年快乐！"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7福")
+        );
+        ItemStack e = ItemFactoryAPI.getItemStack(Material.PAPER,
+                ColorParser.parse("&e&l✦ &c&l爱 国 福 &e&l✦"),
+                ColorParser.parse("&8活动道具"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7该道具可以通过击败 BOSS 获得。"),
+                ColorParser.parse("&7可以在活动处兑换奖励，集齐五福更能瓜分"),
+                ColorParser.parse("&7众多的 卡点 快去收集吧！"),
+                ColorParser.parse("&7春节将至，卡洛斯祝您新年快乐！"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7福")
+        );
+
+        int randomInt =  RandomUtils.nextInt(1,101);
+
+        // 多少概率会掉福
+        if(randomInt <= probability){
+            int random =  RandomUtils.nextInt(1,101);
+            //友善福 2%
+            if(random <= 2){
+                player.getInventory().addItem(a);
+                player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7恭喜您，掉落了一个 &c友善福 &7请注意查看背包！"));
+                player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                return;
+            }
+            //富强福 5%
+            if(random <= 5){
+                player.getInventory().addItem(b);
+                player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7恭喜您，掉落了一个 &c富强福 &7请注意查看背包！"));
+                player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                return;
+            }
+            //和谐福 8%
+            if(random <= 8){
+                player.getInventory().addItem(c);
+                player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7恭喜您，掉落了一个 &c和谐福 &7请注意查看背包！"));
+                player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                return;
+            }
+            //敬业福 15%
+            if(random <= 15){
+                player.getInventory().addItem(d);
+                player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7恭喜您，掉落了一个 &c敬业福 &7请注意查看背包！"));
+                player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                return;
+            }
+            //爱国福 50%
+            if(random <= 70){
+                player.getInventory().addItem(e);
+                player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7恭喜您，掉落了一个 &c爱国福 &7请注意查看背包！"));
+                player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+            }
+        }
     }
 }

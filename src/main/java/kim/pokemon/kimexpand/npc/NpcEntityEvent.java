@@ -5,8 +5,7 @@ import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 import kim.pokemon.kimexpand.crazyauctions.api.Category;
 import kim.pokemon.kimexpand.crazyauctions.api.ShopType;
 import kim.pokemon.kimexpand.crazyauctions.controllers.GUI;
-import kim.pokemon.kimexpand.mission.MissionGUI;
-import kim.pokemon.kimexpand.mysteriousstore.StoreGUI;
+import kim.pokemon.kimexpand.mysteriousstore.EeveeShop;
 import kim.pokemon.kimexpand.pokeinfo.gui.PokemonInfoMenu;
 import kim.pokemon.kimexpand.recharge.recharge.RechargeMenu;
 import org.bukkit.Bukkit;
@@ -29,7 +28,7 @@ public class NpcEntityEvent implements Listener {
 
         if (player.getLocation().getWorld().getName().equals("spawn")){
             if (player.hasPermission("kim.admin")){
-                System.out.println(entity.getUniqueId());
+
             }
             switch (entity.getUniqueId().toString()){
                 //花丝小姐 (商店)
@@ -41,8 +40,7 @@ public class NpcEntityEvent implements Listener {
                 //玛丽亚 (任务)
                 case "f632b0aa-0064-40e9-a8be-27b25df1a68b":
                     event.setCancelled(true);
-                    MissionGUI missionGUI = new MissionGUI(player,"DAY");
-                    missionGUI.openInventory();
+
                     break;
                 //蒂莉 (签到)
                 case "f6a4f7fd-db7f-4276-a63c-f01f30a78f9e":
@@ -56,7 +54,7 @@ public class NpcEntityEvent implements Listener {
                     break;
                 //萨曼莎 (萨曼莎的神秘商店)
                 case "2dcca6a8-96ef-474e-9292-e46aa4afa420":
-                    StoreGUI storeGUI = new StoreGUI(player);
+                    EeveeShop storeGUI = new EeveeShop(player);
                     storeGUI.openInventory();
                     event.setCancelled(true);
                     break;

@@ -2,6 +2,7 @@ package kim.pokemon.listener;
 
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
+import com.glazed7.glazedpay.bukkit.event.OrderShipEvent;
 import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.database.GlazedPayDataSQLReader;
@@ -12,6 +13,7 @@ import kim.pokemon.kimexpand.npc.NpcEntityEvent;
 import kim.pokemon.util.ColorParser;
 import org.black_ixx.playerpoints.event.PlayerPointsChangeEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -22,17 +24,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.*;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
 
 public class PlayerEvent implements Listener {
     HashMap<Player, Location> playerLocationHashMap = new HashMap<>();
-    HashMap<Player, String> onlinePlayer = new HashMap<>();
     /**
      * 玩家进入游戏事件
      * @param event
@@ -42,18 +40,20 @@ public class PlayerEvent implements Listener {
         Main.getAllPlayerInfo();
         Player player = event.getPlayer();
 
+        //修改玩家默认游戏模式
+        player.setGameMode(GameMode.SURVIVAL);
+
+        //玩家进入游戏提示
         if (player.hasPlayedBefore()){
-            //老玩家
+            if (player.hasPermission("kim.grandtotal.L")&&!(player.hasPermission("group.admin"))){
+                event.setJoinMessage(ColorParser.parse("&8[&c&l!&8] &7欢迎贵族玩家 &6"+player.getDisplayName()+" &7回到卡洛斯！"));
+                for (Player p: Bukkit.getOnlinePlayers()) {
+                    p.playSound(p.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                }
+            }
         }else {
-            //新玩家
-
+            event.setJoinMessage(ColorParser.parse("&8[&a&l!&8] &7欢迎新玩家 &f"+player.getName()+" &7加入卡洛斯！"));
         }
-
-        //记录玩家进入服务器
-        if (Bukkit.getOnlinePlayers().size()==0){
-            NpcEntityEvent.NpcHologram(true);
-        }
-        onlinePlayer.put(event.getPlayer(),event.getPlayer().getName());
 
         //设置管理员隐身状态
         if (player.hasPermission("group.admin")){
@@ -65,10 +65,7 @@ public class PlayerEvent implements Listener {
 
     @EventHandler
     public void PlayerQuit(PlayerQuitEvent event){
-        onlinePlayer.remove(event.getPlayer());
-        if (onlinePlayer.size()==0){
-            NpcEntityEvent.NpcHologram(false);
-        }
+
     }
 
     /**
@@ -90,16 +87,27 @@ public class PlayerEvent implements Listener {
      */
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent event){
+        Player player = event.getPlayer();
 
-        //禁止在地皮种植树果
-        if(event.getClickedBlock() != null&&event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
-            if (event.getPlayer().getItemInHand().getType().name().contains("_APRICORN")){
-                if (event.getPlayer().getLocation().getWorld().getName().equals("plot")){
-                    event.getPlayer().sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，为了服务器的流畅度，您无法在地皮种植树果."));
+        if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)||event.getAction().equals(Action.RIGHT_CLICK_AIR)){
+            //禁止在地皮种植树果
+            if (player.getLocation().getWorld().getName().equals("plot")){
+                if (player.getItemInHand().getType().name().contains("_APRICORN")){
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，为了服务器的流畅度，您无法在地皮种植树果."));
+                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                    event.setCancelled(true);
+                }
+            }
+            //禁止在主城使用 锅 和 钓鱼竿
+            if (player.getLocation().getWorld().getName().equals("spawn")){
+                if (player.getItemInHand().getType().name().contains("_ROD")||player.getItemInHand().getType().name().contains("FRYPAN")){
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，为了服务器的秩序，您无法在主城使用该物品."));
+                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                     event.setCancelled(true);
                 }
             }
         }
+
     }
 
     /**
@@ -137,14 +145,6 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void InventoryCloseEvent(InventoryCloseEvent event){
         playerLocationHashMap.remove(Bukkit.getPlayer(event.getPlayer().getName()));
-
-//        if (event.getPlayer().getName().equals("Red_Carl")){
-//            for (ItemStack itemStack:event.getInventory()) {
-//                if (itemStack!=null){
-//                    System.out.println(itemStack.getType().name()+","+ I);;
-//                }
-//            }
-//        }
     }
 
     /**
@@ -179,8 +179,27 @@ public class PlayerEvent implements Listener {
         //开启幸运方块
         if (event.getBlock().getType().toString().equals("POKELUCKY_POKE_LUCKY")){
             //数据记录
-            PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(event.getPlayer().getName(),event.getEventName(),"1",new Timestamp(System.currentTimeMillis())));
+//            PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(event.getPlayer().getName(),event.getEventName(),"1",new Timestamp(System.currentTimeMillis())));
         }
     }
 
+    //玩家移动事件
+    @EventHandler
+    public void Player(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+
+        //掉入虚空拉回
+        if (player.getLocation().getWorld().getName().equals("spawn")&&player.getLocation().getY()<=-1){
+            Location location = new Location(Bukkit.getWorld("spawn"),-20.5,10,47.5);
+            location.setYaw(90);
+            player.teleport(location);
+        }
+    }
+
+    @EventHandler
+    public void OrderShipEvent(OrderShipEvent event){
+        String name = String.valueOf(event.getOrderInfo().get("buyerName")).replace("\"","");
+        String money = String.valueOf(event.getOrderInfo().get("totalFee"));
+        PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(name,event.getEventName(),money,new Timestamp(System.currentTimeMillis())));
+    }
 }

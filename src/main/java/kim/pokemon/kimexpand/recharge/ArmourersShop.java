@@ -63,6 +63,7 @@ public class ArmourersShop extends InventoryGUI {
         stringIntegerHashMap.put("迪卢克",168);
         stringIntegerHashMap.put("钟离",35);
         stringIntegerHashMap.put("温迪",35);
+        stringIntegerHashMap.put("亚丝娜",79);
 
         File f = new File(Data.ARMOURERS_PATH);
         if(f.exists()) {
@@ -74,7 +75,7 @@ public class ArmourersShop extends InventoryGUI {
             List<ItemStack> is_list = Lists.newArrayList();
 
             for (int i = 0; i < name_list.size(); i++) {
-                if (name_list.get(i).equals("隐形时装不要删除")) {
+                if (name_list.get(i).equals("隐形时装不要删除")||name_list.get(i).equals("活动")) {
                     name_list.remove(i);
                     break;
                 }

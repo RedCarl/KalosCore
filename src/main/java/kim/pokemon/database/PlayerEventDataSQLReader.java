@@ -5,6 +5,7 @@ import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.entity.PlayerEventData;
 import kim.pokemon.kimexpand.premium.entity.PlayerVIP;
+import kim.pokemon.kimexpand.recharge.entity.PlayerRecharge;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -48,7 +49,43 @@ public class PlayerEventDataSQLReader {
             e.printStackTrace();
         }
     }
+    /**
+     * 查询玩家指定时间段事件
+     * @param onTime 开始
+     * @param endTime 结束
+     * @return 数额
+     */
+    public static List<PlayerEventData> getPlayerEventDataTime(String event,String server, String onTime, String endTime) {
+        List<PlayerEventData> list = new ArrayList<>();
+        try {
 
+            String select_data;
+            PreparedStatement select;
+
+            select_data = "SELECT * FROM "+Data.PLAYER_EVENT_DATA+" WHERE time >= '"+onTime+"' AND time <= '"+endTime+"' AND `event` = ? AND `server` = ?;";
+            select = conn.prepareStatement(select_data);
+            select.setString(1, event);
+            select.setString(2, server);
+
+            ResultSet set = select.executeQuery();
+
+            while (set.next()){
+                PlayerEventData playerEventData = new PlayerEventData();
+                playerEventData.setId(set.getInt("id"));
+                playerEventData.setName(set.getString("name"));
+                playerEventData.setEvent(set.getString("event"));
+                playerEventData.setValue(set.getString("value"));
+                playerEventData.setServer(set.getString("server"));
+                playerEventData.setTime(set.getTimestamp("time"));
+                list.add(playerEventData);
+            }
+            set.close();
+            return list;
+        } catch (SQLException var5) {
+            var5.printStackTrace();
+        }
+        return list;
+    }
     /**
      * 查询该玩家的所有事件
      * @param name 玩家ID

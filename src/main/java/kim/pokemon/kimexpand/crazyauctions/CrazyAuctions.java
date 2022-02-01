@@ -6,12 +6,8 @@ import kim.pokemon.kimexpand.crazyauctions.api.FileManager.Files;
 import kim.pokemon.kimexpand.crazyauctions.api.Messages;
 import kim.pokemon.kimexpand.crazyauctions.controllers.GUI;
 import kim.pokemon.kimexpand.crazyauctions.controllers.Metrics;
-import kim.pokemon.util.api.PokemonPhotoAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 public class CrazyAuctions implements Listener {
 
