@@ -122,6 +122,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/LiteSignIn.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>DragonCore</groupId>
+            <artifactId>DragonCore-api</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/DragonCore-2.5.3.jar</systemPath>
+        </dependency>
 
         <!--Mod-->
         <dependency>

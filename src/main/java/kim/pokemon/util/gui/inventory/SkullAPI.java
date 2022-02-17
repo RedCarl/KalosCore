@@ -51,6 +51,6 @@ public class SkullAPI {
    }
 
    public static ItemStack getPlayerSkull(Player p, String name, String... lores){
-      return getSkullItem(Main.players.get(p),name,lores);
+      return getSkullItem("http://textures.minecraft.net/texture/e65ac43ca13db2703afcede4e8fdc9bf7d1c65d154cea8e195de59d05c73da82",name,lores);
    }
 }

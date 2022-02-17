@@ -14,7 +14,7 @@ import kim.pokemon.kimexpand.homes.HomeMenu;
 import kim.pokemon.kimexpand.mysteriousstore.EeveeShop;
 import kim.pokemon.kimexpand.playerinfo.PlayerInfo;
 import kim.pokemon.kimexpand.plotadmin.gui.PlotMenu;
-import kim.pokemon.kimexpand.pokeban.gui.BanList_A;
+import kim.pokemon.kimexpand.pokeban.gui.BanList;
 import kim.pokemon.kimexpand.pokeinfo.gui.PokemonInfoMenu;
 import kim.pokemon.kimexpand.recharge.recharge.RechargeMenu;
 import kim.pokemon.kimexpand.warps.WorldWarpMenu;
@@ -356,7 +356,7 @@ public class MainMenu extends InventoryGUI {
         );
         Button BanListButton = new Button(BanList, type -> {
             if (type.isLeftClick()) {
-                BanList_A banMenu = new BanList_A(player);
+                kim.pokemon.kimexpand.pokeban.gui.BanList banMenu = new BanList(player,0);
                 banMenu.openInventory();
             }
         });

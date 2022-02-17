@@ -23,7 +23,7 @@ import java.util.List;
 public class RechargeMenu extends InventoryGUI {
     DecimalFormat df = new DecimalFormat("#0.##");
     public RechargeMenu(Player player) {
-        super(ColorParser.parse("&0Kim / 充值系统"), player, 6);
+        super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 充值系统"), player, 6);
 
         List<PlayerRecharge> rechargeList = GlazedPayDataSQLReader.getTopPlayer();
         double total =  GlazedPayDataSQLReader.getTotal();

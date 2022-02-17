@@ -24,14 +24,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ArmourersShop extends InventoryGUI {
-    PlayerPointsAPI playerPointsAPI = Main.ppAPI;
     HashMap<String, Integer> stringIntegerHashMap = new HashMap<>();
     public static HashMap<Player, Long> playerLongHashMap = new HashMap<>();
     
@@ -64,6 +60,8 @@ public class ArmourersShop extends InventoryGUI {
         stringIntegerHashMap.put("钟离",35);
         stringIntegerHashMap.put("温迪",35);
         stringIntegerHashMap.put("亚丝娜",79);
+        stringIntegerHashMap.put("伊蕾娜",79);
+        stringIntegerHashMap.put("胡桃",89);
 
         File f = new File(Data.ARMOURERS_PATH);
         if(f.exists()) {
@@ -74,12 +72,7 @@ public class ArmourersShop extends InventoryGUI {
                     .filter(name -> !player.hasPermission("kim.armourers." + name)).collect(Collectors.toList());
             List<ItemStack> is_list = Lists.newArrayList();
 
-            for (int i = 0; i < name_list.size(); i++) {
-                if (name_list.get(i).equals("隐形时装不要删除")||name_list.get(i).equals("活动")) {
-                    name_list.remove(i);
-                    break;
-                }
-            }
+            name_list.removeIf(value -> value.equals("隐形时装不要删除") || value.equals("活动"));
 
             for (String s : name_list) {
                 is_list.add(ItemFacAPI.getItemStack(Material.ENDER_CHEST, "§r" + s));

@@ -3,13 +3,16 @@ package kim.pokemon.listener;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Containers.CMIUser;
 import com.glazed7.glazedpay.bukkit.event.OrderShipEvent;
+import eos.moe.dragoncore.api.KeyPressEvent;
 import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.database.GlazedPayDataSQLReader;
 import kim.pokemon.database.PlayerEventDataSQLReader;
 import kim.pokemon.entity.PlayerEventData;
 import kim.pokemon.kimexpand.menu.MainMenu;
-import kim.pokemon.kimexpand.npc.NpcEntityEvent;
+import kim.pokemon.kimexpand.premium.VIPBuy;
+import kim.pokemon.kimexpand.premium.entity.PlayerVIP;
+import kim.pokemon.kimexpand.signin.Newbie;
 import kim.pokemon.util.ColorParser;
 import org.black_ixx.playerpoints.event.PlayerPointsChangeEvent;
 import org.bukkit.Bukkit;
@@ -25,9 +28,12 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
+import org.bukkit.scheduler.BukkitRunnable;
+import studio.trc.bukkit.litesignin.api.Storage;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class PlayerEvent implements Listener {
     HashMap<Player, Location> playerLocationHashMap = new HashMap<>();
@@ -37,7 +43,6 @@ public class PlayerEvent implements Listener {
      */
     @EventHandler
     public void PlayerJoin(PlayerJoinEvent event){
-        Main.getAllPlayerInfo();
         Player player = event.getPlayer();
 
         //修改玩家默认游戏模式
@@ -53,6 +58,33 @@ public class PlayerEvent implements Listener {
             }
         }else {
             event.setJoinMessage(ColorParser.parse("&8[&a&l!&8] &7欢迎新玩家 &f"+player.getName()+" &7加入卡洛斯！"));
+        }
+
+        //签到系统
+        if (!player.hasPermission("kim.newbie.G")){
+            Newbie newbie = new Newbie(player);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    newbie.openInventory();
+                    player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                }
+            }.runTaskLater(Main.getInstance(),60);
+        }else {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (player.hasPermission("group.eevee")){
+                        if (!Storage.getPlayer(player).alreadySignIn()){
+                            Storage.getPlayer(player).signIn();
+                            player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您是尊贵的 &6[伊布] &7会员玩家，已经自动帮您签到."));
+                        }
+                    }else {
+                        Bukkit.dispatchCommand(player,"LiteSignIn gui");
+                    }
+                    player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                }
+            }.runTaskLater(Main.getInstance(),60);
         }
 
         //设置管理员隐身状态
@@ -91,13 +123,13 @@ public class PlayerEvent implements Listener {
 
         if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)||event.getAction().equals(Action.RIGHT_CLICK_AIR)){
             //禁止在地皮种植树果
-            if (player.getLocation().getWorld().getName().equals("plot")){
-                if (player.getItemInHand().getType().name().contains("_APRICORN")){
-                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，为了服务器的流畅度，您无法在地皮种植树果."));
-                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                    event.setCancelled(true);
-                }
-            }
+//            if (player.getLocation().getWorld().getName().equals("plot")){
+//                if (player.getItemInHand().getType().name().contains("_APRICORN")){
+//                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，为了服务器的流畅度，您无法在地皮种植树果."));
+//                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+//                    event.setCancelled(true);
+//                }
+//            }
             //禁止在主城使用 锅 和 钓鱼竿
             if (player.getLocation().getWorld().getName().equals("spawn")){
                 if (player.getItemInHand().getType().name().contains("_ROD")||player.getItemInHand().getType().name().contains("FRYPAN")){
@@ -145,6 +177,11 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void InventoryCloseEvent(InventoryCloseEvent event){
         playerLocationHashMap.remove(Bukkit.getPlayer(event.getPlayer().getName()));
+//        if (event.getPlayer().getName().equals("Red_Carl")){
+//            for (ItemStack i: event.getInventory()) {
+//                System.out.println(i.getType());
+//            }
+//        }
     }
 
     /**
@@ -200,6 +237,64 @@ public class PlayerEvent implements Listener {
     public void OrderShipEvent(OrderShipEvent event){
         String name = String.valueOf(event.getOrderInfo().get("buyerName")).replace("\"","");
         String money = String.valueOf(event.getOrderInfo().get("totalFee"));
+        Player player = Bukkit.getPlayer(name);
+
+
         PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(name,event.getEventName(),money,new Timestamp(System.currentTimeMillis())));
+
+        //会员 充值/续费 取消发货
+        if (Objects.equals(money, "25.0") || Objects.equals(money, "45.0")){
+            PlayerVIP rank = new PlayerVIP();
+            switch (money){
+                case "25.0":
+                    PlayerVIP PikaniumVIP = VIPBuy.checkRank(player,"pikanium",Main.luckPerms.getServerName());
+                    rank.setName(player.getName());
+                    rank.setRank("pikanium");
+                    if (PikaniumVIP!=null){
+                        rank.setTime(new Timestamp(PikaniumVIP.getTime().getTime()+ 2592000000L));
+                        rank.setServer(Main.luckPerms.getServerName());
+                        VIPBuy.updateRank(rank);
+                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功续费了 &e卡洛斯の皮卡丘*30天 &7请注意查收."));
+                    }else {
+                        rank.setTime(new Timestamp(System.currentTimeMillis()+ 2592000000L));
+                        rank.setServer(Main.luckPerms.getServerName());
+                        VIPBuy.addRank(rank);
+                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 &e卡洛斯の皮卡丘*30天 &7请注意查收."));
+                    }
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                    break;
+                case "45.0":
+                    PlayerVIP EeveeVIP = VIPBuy.checkRank(player,"eevee",Main.luckPerms.getServerName());
+                    rank.setName(player.getName());
+                    rank.setRank("eevee");
+                    if (EeveeVIP!=null){
+                        rank.setTime(new Timestamp(EeveeVIP.getTime().getTime()+ 2592000000L));
+                        rank.setServer(Main.luckPerms.getServerName());
+                        VIPBuy.updateRank(rank);
+                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功续费了 &6卡洛斯の伊布*30天 &7请注意查收."));
+                    }else {
+                        rank.setTime(new Timestamp(System.currentTimeMillis()+ 2592000000L));
+                        rank.setServer(Main.luckPerms.getServerName());
+                        VIPBuy.addRank(rank);
+                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 &6卡洛斯の伊布*30天 &7请注意查收."));
+                    }
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                    break;
+            }
+            event.setCancelled(true);
+        }
+    }
+
+    //玩家案件事件(龙之核心)
+    @EventHandler
+    public void KeyPressEvent(KeyPressEvent event){
+        Player player = event.getPlayer();
+        String key = event.getKey();
+        switch (key){
+            case "G":
+                MainMenu mainMenu = new MainMenu(player);
+                mainMenu.openInventory();
+                break;
+        }
     }
 }

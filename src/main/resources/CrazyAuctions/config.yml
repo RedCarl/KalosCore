@@ -1,7 +1,7 @@
 ##CrazyAuctions
 Settings:
   Prefix: '&8[&a&l!&8] &7'
-  GUIName: '&0Kim / 全球市场'
+  GUIName: '&0Kalos / 全球市场'
   Players-Current-Items: '&0当前出售 &7&o(当前出售的商品)'
   Cancelled/Expired-Items: '&0收件箱 &7&o(购买的物品/下架的物品)'
   Buying-Item: '&0你将要购买这件物品: 是否确认购买?'

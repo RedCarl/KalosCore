@@ -1,5 +1,7 @@
 package kim.pokemon.kimexpand.recharge;
 
+import com.glazed7.glazedpay.bukkit.pay.PayManager;
+import com.glazed7.glazedpay.bukkit.pay.PaywayType;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import kim.pokemon.Main;
@@ -484,6 +486,46 @@ public class GiftPackShop extends InventoryGUI {
         });
         this.setButton(4, RandomEvolutionButton);
 
+        //皮肤宝箱
+        long RandomCustomSkinMoney=120000;
+        int RandomCustomSkinPrice=12;
+        ItemStack RandomCustomSkin = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/a5c6944593820d13d7d47db2abcfcbf683bb74a07e1a982db9f32e0a8b5dc466",
+                ColorParser.parse("&e宝可梦皮肤宝箱"),
+                ColorParser.parse("&f概率: &6宝可梦皮肤(100%)"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&r  &e■ &7售 价:"),
+                ColorParser.parse("&r      &7(左键) &c" + RandomCustomSkinMoney + " &7"+Data.SERVER_VAULT+""),
+                ColorParser.parse("&r      &7(右键) &c" + RandomCustomSkinPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o随机获取一个宝可梦的皮肤，完全随机哦."));
+        Button RandomCustomSkinButton = new Button(RandomCustomSkin, type -> {
+            if (type.isLeftClick()) {
+                if (Main.econ.getBalance(player)>=RandomCustomSkinMoney){
+                    Main.econ.withdrawPlayer(player,RandomCustomSkinMoney);
+                    String name = PokemonAPI.getRandomCustomSkin(player);
+                    player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过购买宝可梦皮肤宝箱获得了一个 &c"+name+" &7皮肤."));
+                }else {
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+Main.econ.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
+                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                }
+            }
+            if (type.isRightClick()) {
+                try {
+                    if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=RandomCustomSkinPrice){
+                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomCustomSkinPrice);
+                        String name = PokemonAPI.getRandomCustomSkin(player);
+                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过购买宝可梦皮肤宝箱获得了一个 &c"+name+" &7皮肤."));
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                    }else {
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
+                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        this.setButton(5, RandomCustomSkinButton);
 
 
 
@@ -551,26 +593,8 @@ public class GiftPackShop extends InventoryGUI {
             );
             Button PikaniumButton = new Button(Pikanium, type -> {
                 if (type.isRightClick()) {
-                    try {
-                        if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=PikaniumPrice){
-                            playerPointsAPI.takeAsync(player.getUniqueId(),PikaniumPrice);
-                            PlayerVIP rank = new PlayerVIP();
-                            rank.setName(player.getName());
-                            rank.setRank(PikaniumRanks);
-                            rank.setTime(new Timestamp(PikaniumVIP.getTime().getTime()+ 2592000000L));
-                            rank.setServer(Main.luckPerms.getServerName());
-                            VIPBuy.updateRank(rank);
-                            player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功续费了 "+PikaniumRankName+"*30天 &7请注意查收."));
-                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                            GiftPackShop giftPackShop = new GiftPackShop(player);
-                            giftPackShop.openInventory();
-                        }else {
-                            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
-                            player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                        }
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
-                    }
+                    player.closeInventory();
+                    PayManager.initiatePay(player,  PaywayType.ALIPAY, 25.0);
                 }
             });
             this.setButton(18, PikaniumButton);
@@ -592,35 +616,18 @@ public class GiftPackShop extends InventoryGUI {
             );
             Button PikaniumButton = new Button(Pikanium, type -> {
                 if (type.isRightClick()) {
-                    try {
-                        if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=PikaniumPrice){
-                            if (VIPBuy.checkRank(player,null,Main.luckPerms.getServerName())==null){
-                                playerPointsAPI.takeAsync(player.getUniqueId(),PikaniumPrice);
-                                PlayerVIP rank = new PlayerVIP();
-                                rank.setName(player.getName());
-                                rank.setRank(PikaniumRanks);
-                                rank.setTime(new Timestamp(System.currentTimeMillis()+ 2592000000L));
-                                rank.setServer(Main.luckPerms.getServerName());
-                                VIPBuy.addRank(rank);
-                                player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+PikaniumRankName+"*30天 &7请注意查收."));
-                                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                                GiftPackShop giftPackShop = new GiftPackShop(player);
-                                giftPackShop.openInventory();
-                            }else {
-                                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您还有其它的服务并未过期，请等待过期后再进行开通."));
-                                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                            }
-                        }else {
-                            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
-                            player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                        }
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
+                    if (VIPBuy.checkRank(player,null,Main.luckPerms.getServerName())==null){
+                        player.closeInventory();
+                        PayManager.initiatePay(player,  PaywayType.ALIPAY, 25.0);
+                    }else {
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您还有其它的服务并未过期，请等待过期后再进行开通."));
+                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                     }
                 }
             });
             this.setButton(18, PikaniumButton);
         }
+
         //伊布会员
         long EeveeMoney=-1;
         int EeveePrice=45;
@@ -640,6 +647,7 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("&r  &c■ &7特 权:"),
                     ColorParser.parse("      &f飞行 &7(菜单)"),
                     ColorParser.parse("      &f签到 &7(额外的奖励 幸运方块)"),
+                    ColorParser.parse("      &f自动签到 &7(进入服务器自动签到)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a15%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a21&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a4&7)"),
@@ -649,26 +657,8 @@ public class GiftPackShop extends InventoryGUI {
             );
             Button EeveeButton = new Button(Eevee, type -> {
                 if (type.isRightClick()) {
-                    try {
-                        if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=EeveePrice){
-                            playerPointsAPI.takeAsync(player.getUniqueId(),EeveePrice);
-                            PlayerVIP rank = new PlayerVIP();
-                            rank.setName(player.getName());
-                            rank.setRank(EeveeRanks);
-                            rank.setTime(new Timestamp(EeveeVIP.getTime().getTime()+ 2592000000L));
-                            rank.setServer(Main.luckPerms.getServerName());
-                            VIPBuy.updateRank(rank);
-                            player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功续费了 "+EeveeRankName+"*30天 &7请注意查收."));
-                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                            GiftPackShop giftPackShop = new GiftPackShop(player);
-                            giftPackShop.openInventory();
-                        }else {
-                            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
-                            player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                        }
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
-                    }
+                    player.closeInventory();
+                    PayManager.initiatePay(player,  PaywayType.ALIPAY, 45.0);
                 }
             });
             this.setButton(19, EeveeButton);
@@ -683,6 +673,7 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("&r  &c■ &7特 权:"),
                     ColorParser.parse("      &f飞行 &7(菜单)"),
                     ColorParser.parse("      &f签到 &7(额外的奖励 幸运方块)"),
+                    ColorParser.parse("      &f自动签到 &7(进入服务器自动签到)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a15%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a21&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a4&7)"),
@@ -692,30 +683,12 @@ public class GiftPackShop extends InventoryGUI {
             );
             Button EeveeButton = new Button(Eevee, type -> {
                 if (type.isRightClick()) {
-                    try {
-                        if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=EeveePrice){
-                            if (VIPBuy.checkRank(player,null,Main.luckPerms.getServerName())==null){
-                                playerPointsAPI.takeAsync(player.getUniqueId(),EeveePrice);
-                                PlayerVIP rank = new PlayerVIP();
-                                rank.setName(player.getName());
-                                rank.setRank(EeveeRanks);
-                                rank.setTime(new Timestamp(System.currentTimeMillis()+ 2592000000L));
-                                rank.setServer(Main.luckPerms.getServerName());
-                                VIPBuy.addRank(rank);
-                                player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+EeveeRankName+"*30天 &7请注意查收."));
-                                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                                GiftPackShop giftPackShop = new GiftPackShop(player);
-                                giftPackShop.openInventory();
-                            }else {
-                                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您还有其它的服务并未过期，请等待过期后再进行开通."));
-                                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                            }
-                        }else {
-                            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
-                            player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                        }
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
+                    if (VIPBuy.checkRank(player,null,Main.luckPerms.getServerName())==null){
+                        player.closeInventory();
+                        PayManager.initiatePay(player,  PaywayType.ALIPAY, 45.0);
+                    }else {
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您还有其它的服务并未过期，请等待过期后再进行开通."));
+                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                     }
                 }
             });

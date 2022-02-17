@@ -10,6 +10,7 @@ import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import de.tr7zw.nbtapi.NBTItem;
 import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
+import kim.pokemon.kimexpand.pokeinfo.entity.CustomEntity;
 import kim.pokemon.kimexpand.pokeinfo.gui.grouth.GrowthSelectGUI;
 import kim.pokemon.kimexpand.pokeinfo.gui.nature.NatureSelectGUI;
 import kim.pokemon.util.ColorParser;
@@ -20,11 +21,16 @@ import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 public class PokeInfoUpdate extends InventoryGUI {
@@ -555,42 +561,100 @@ public class PokeInfoUpdate extends InventoryGUI {
         }
 
 
-
-
-
         //宝可梦形态更改
+        File file = new File(Main.getInstance().getDataFolder(), "CustomSkin/data.yml");
+        //宝可梦原版皮肤
         List<IEnumForm> forms = pokemon.getSpecies().getPossibleForms(false);
-
-        for(int i=0;i<forms.size();i++){
-            IEnumForm form = forms.get(i);
-            Pokemon poke = Pixelmon.pokemonFactory.create(pokemon.getSpecies());
-            poke.setForm(form);
-            Configuration config = Main.getInstance().getConfig();
-            int leftTime = config.getInt("PokeAward."+player.getName()+"."+pokemon.getSpecies().getLocalizedName()+"."+form.getLocalizedName());
-            if (leftTime>0){
+        int a=0;
+        for (IEnumForm form : forms) {
+            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+            int leftTime = config.getInt("PokeAward." + player.getName() + "." + pokemon.getSpecies().getLocalizedName() + "." + form.getLocalizedName());
+            if (leftTime > 0) {
                 ItemStack PokeAward = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
-                        ColorParser.parse("&f"+form.getLocalizedName()),
+                        ColorParser.parse("&f" + form.getLocalizedName()),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7拥有数量: &a"+leftTime),
+                        ColorParser.parse("&7拥有数量: &a" + leftTime),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&c点击消耗一次数量进行更换"));
 
                 NBTItem nbtItem = new NBTItem(PokeAward);
-                nbtItem.setShort("ndex", (short) poke.getSpecies().getNationalPokedexInteger());
-                nbtItem.setByte("form", poke.getFormEnum().getForm());
+                nbtItem.setShort("ndex", (short) pokemon.getSpecies().getNationalPokedexInteger());
+                /*nbtItem.setByte("form", poke.getFormEnum().getForm());*/
 
-                Button PokeAwardButton = new Button(nbtItem.getItem(),(type)->{
-                    if (type.isLeftClick()){
-                        pokemon.setForm(form);
-                        config.set("PokeAward."+player.getName()+"."+pokemon.getSpecies().getLocalizedName()+"."+form.getLocalizedName(),leftTime-1);
-                        Main.getInstance().saveConfig();
-                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                Button PokeAwardButton = new Button(nbtItem.getItem(), (type) -> {
+                    if (type.isLeftClick()) {
+                        pokemon.setForm(form.getForm());
+                        config.set("PokeAward." + player.getName() + "." + pokemon.getSpecies().getLocalizedName() + "." + form.getLocalizedName(), leftTime - 1);
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
                         player.closeInventory();
+                        try {
+                            config.save(file);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
-                setButton(27+i,PokeAwardButton);
+                setButton(27 + a, PokeAwardButton);
+                a++;
             }
         }
+
+
+
+
+        //宝可梦自定义皮肤
+        File CustomFile = new File(Main.getInstance().getDataFolder(), "CustomSkin/config.yml");
+        FileConfiguration CustomConfig = YamlConfiguration.loadConfiguration(CustomFile);
+        //玩家拥有的皮肤
+        FileConfiguration PlayerConfig = YamlConfiguration.loadConfiguration(file);
+        try {
+            for (String s:PlayerConfig.getConfigurationSection("PokeAward."+player.getName()).getKeys(false)) {
+                if (pokemon.getLocalizedName().equals(s)){
+                    for (String sa:PlayerConfig.getConfigurationSection("PokeAward."+player.getName()+"."+s).getKeys(false)) {
+                        int amount = PlayerConfig.getInt("PokeAward." + player.getName() + "." + s + "." + sa);
+                        if (PlayerConfig.getInt("PokeAward." + player.getName() + "." + s + "." + sa)>0){
+                            if (Data.CUSTOM_SKIN.contains(sa+"·"+s)){
+                                ItemStack PokeAward = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
+                                        ColorParser.parse("&6" + sa+"·"+s),
+                                        ColorParser.parse("&r"),
+                                        ColorParser.parse("&7拥有数量: &a" + amount),
+                                        ColorParser.parse("&r"),
+                                        ColorParser.parse("&c点击消耗一次数量进行更换"));
+
+                                NBTItem nbtItem = new NBTItem(PokeAward);
+                                nbtItem.setShort("ndex", (short) pokemon.getSpecies().getNationalPokedexInteger());
+
+                                /*nbtItem.setByte("form", poke.getFormEnum().getForm());*/
+
+                                Button PokeAwardButton = new Button(nbtItem.getItem(), (type) -> {
+                                    if (type.isLeftClick()) {
+                                        pokemon.setNickname(ColorParser.parse("&6"+sa+" - "+s));
+                                        pokemon.setShiny(false);
+                                        pokemon.setForm(0);
+                                        pokemon.setCustomTexture(CustomConfig.getString("skins." + sa+"·"+s + "." + "texture"));
+                                        PlayerConfig.set("PokeAward." + player.getName() + "." + s + "." + sa, amount - 1);
+                                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
+                                        player.closeInventory();
+                                        try {
+                                            PlayerConfig.save(file);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                                setButton(27 + a, PokeAwardButton);
+                                a++;
+                            }
+                        }
+                    }
+                }
+            }
+        }catch (NullPointerException ignored){}
+
+
+
+
+
 
 
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));

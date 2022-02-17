@@ -44,7 +44,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>=RanchMoney){
                     economy.withdrawPlayer(player,RanchMoney);
-                    player.getInventory().addItem(Ranch);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RANCH")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Ranch.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -56,7 +56,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=RanchPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),RanchPrice);
-                        player.getInventory().addItem(Ranch);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RANCH")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Ranch.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -87,7 +87,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>=PokeLuckyMoney){
                     economy.withdrawPlayer(player,PokeLuckyMoney);
-                    player.getInventory().addItem(PokeLucky);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+PokeLucky.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -99,7 +99,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=PokeLuckyPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),PokeLuckyPrice);
-                        player.getInventory().addItem(PokeLucky);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+PokeLucky.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -130,7 +130,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=N_SolarizerPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),N_SolarizerPrice);
-                        player.getInventory().addItem(N_Solarizer);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_N_SOLARIZER")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+N_Solarizer.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -161,7 +161,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=N_LunarizerPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),N_LunarizerPrice);
-                        player.getInventory().addItem(N_Lunarizer);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_N_LUNARIZER")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+N_Lunarizer.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -192,7 +192,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Reins_Of_UnityPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Reins_Of_UnityPrice);
-                        player.getInventory().addItem(Reins_Of_Unity);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_REINS_OF_UNITY")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Reins_Of_Unity.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -223,7 +223,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Red_OrbPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Red_OrbPrice);
-                        player.getInventory().addItem(Red_Orb);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RED_ORB")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Red_Orb.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -254,7 +254,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Blue_OrbPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Blue_OrbPrice);
-                        player.getInventory().addItem(Blue_Orb);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_BLUE_ORB")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Blue_Orb.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -284,7 +284,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Ultra_BallMoney){
                     economy.withdrawPlayer(player,Ultra_BallMoney);
-                    player.getInventory().addItem(Ultra_Ball);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ULTRA_BALL")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Ultra_Ball.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -311,7 +311,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Master_BallMoney){
                     economy.withdrawPlayer(player,Master_BallMoney);
-                    player.getInventory().addItem(Master_Ball);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Master_Ball.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -323,7 +323,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Master_BallPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Master_BallPrice);
-                        player.getInventory().addItem(Master_Ball);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Master_Ball.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -353,7 +353,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>OrbMoney){
                     economy.withdrawPlayer(player,OrbMoney);
-                    player.getInventory().addItem(Orb);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ORB")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Orb.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -365,7 +365,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=OrbPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),OrbPrice);
-                        player.getInventory().addItem(Orb);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ORB")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Orb.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -394,7 +394,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Destiny_KnotMoney){
                     economy.withdrawPlayer(player,Destiny_KnotMoney);
-                    player.getInventory().addItem(Destiny_Knot);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_DESTINY_KNOT")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Destiny_Knot.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -406,7 +406,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Destiny_KnotPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Destiny_KnotPrice);
-                        player.getInventory().addItem(Destiny_Knot);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_DESTINY_KNOT")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Destiny_Knot.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -436,7 +436,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Hourglass_GoldMoney){
                     economy.withdrawPlayer(player,Hourglass_GoldMoney);
-                    player.getInventory().addItem(Hourglass_Gold);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_HOURGLASS_GOLD")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Hourglass_Gold.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -448,7 +448,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Hourglass_GoldPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Hourglass_GoldPrice);
-                        player.getInventory().addItem(Hourglass_Gold);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_HOURGLASS_GOLD")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Hourglass_Gold.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -479,7 +479,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Hourglass_SilverMoney){
                     economy.withdrawPlayer(player,Hourglass_SilverMoney);
-                    player.getInventory().addItem(Hourglass_Silver);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_HOURGLASS_SILVER")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Hourglass_Silver.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -491,7 +491,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Hourglass_SilverPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Hourglass_SilverPrice);
-                        player.getInventory().addItem(Hourglass_Silver);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_HOURGLASS_SILVER")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Hourglass_Silver.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -521,7 +521,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Mewtwonite_XMoney){
                     economy.withdrawPlayer(player,Mewtwonite_XMoney);
-                    player.getInventory().addItem(Mewtwonite_X);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MEWTWONITE_X")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Mewtwonite_X.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -533,7 +533,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Mewtwonite_XPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Mewtwonite_XPrice);
-                        player.getInventory().addItem(Mewtwonite_X);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MEWTWONITE_X")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Mewtwonite_X.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -563,7 +563,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Mewtwonite_YMoney){
                     economy.withdrawPlayer(player,Mewtwonite_YMoney);
-                    player.getInventory().addItem(Mewtwonite_Y);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MEWTWONITE_Y")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Mewtwonite_Y.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -575,7 +575,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Mewtwonite_YPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Mewtwonite_YPrice);
-                        player.getInventory().addItem(Mewtwonite_Y);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MEWTWONITE_Y")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Mewtwonite_Y.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -605,7 +605,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Rusted_SwordMoney){
                     economy.withdrawPlayer(player,Rusted_SwordMoney);
-                    player.getInventory().addItem(Rusted_Sword);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RUSTED_SWORD")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Rusted_Sword.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -617,7 +617,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Rusted_SwordPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Rusted_SwordPrice);
-                        player.getInventory().addItem(Rusted_Sword);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RUSTED_SWORD")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Rusted_Sword.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {
@@ -647,7 +647,7 @@ public class ItemBuy extends InventoryGUI {
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Rusted_ShieldMoney){
                     economy.withdrawPlayer(player,Rusted_ShieldMoney);
-                    player.getInventory().addItem(Rusted_Shield);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RUSTED_SHIELD")));
                     player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Rusted_Shield.getItemMeta().getDisplayName()+" &7请注意查收."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 }else {
@@ -659,7 +659,7 @@ public class ItemBuy extends InventoryGUI {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Rusted_ShieldPrice){
                         playerPointsAPI.takeAsync(player.getUniqueId(),Rusted_ShieldPrice);
-                        player.getInventory().addItem(Rusted_Shield);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RUSTED_SHIELD")));
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Rusted_Shield.getItemMeta().getDisplayName()+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                     }else {

@@ -4,7 +4,6 @@ package kim.pokemon.database;
 import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.kimexpand.premium.entity.PlayerVIP;
-import kim.pokemon.kimexpand.recharge.entity.PlayerRecharge;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;

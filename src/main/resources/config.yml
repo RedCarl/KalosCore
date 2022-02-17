@@ -3,7 +3,7 @@ mysql:
   DRIVER: 'com.mysql.jdbc.Driver'
   URL: 'localhost'
   PORT: '3306'
-  DATABASE: 'kalos?useSSL=false'
+  DATABASE: 'kalos?useSSL=false&characterEncoding=UTF-8&autoReconnect=true'
   USER: 'kalos'
   PASS: 'kalos'
   ##不要更改

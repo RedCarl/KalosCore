@@ -25,6 +25,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
@@ -152,6 +153,14 @@ public class PokemonBan implements Listener {
         }
         if (!event.getInventory().getTitle().contains(Data.SERVER_NAME)){
             this.onInventoryCheck(event.getInventory());
+        }
+    }
+
+    @EventHandler
+    public void CraftItemEvent(CraftItemEvent event){
+        ItemStack itemStack = event.getCurrentItem();
+        if (itemStack != null && PokemonBanDataSQLReader.getBanDrops().contains(itemStack.getType().name())) {
+            event.setCancelled(true);
         }
     }
 

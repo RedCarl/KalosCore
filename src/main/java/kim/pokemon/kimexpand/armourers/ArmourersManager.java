@@ -9,16 +9,19 @@ import kim.pokemon.kimexpand.recharge.ArmourersShop;
 import kim.pokemon.util.ColorParser;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ArmourersManager {
+    static File file = new File(Main.getInstance().getDataFolder(), "KimArmourers/config.yml");
 
     public static List<String> getArmourers(String path){ //获取对应文件夹下所有皮肤
         if(path == null){
@@ -33,21 +36,21 @@ public class ArmourersManager {
 
     public static List<String> getPlayerArmourers(Player p){
         String name = p.getName();
-        FileConfiguration cfg = Main.getInstance().getConfig();
+
+        FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
         String armourers = cfg.getString("KimArmourers."+name);
-        List<String> list = getArmourers(armourers);
-        if(p.hasPermission("kim.armourers."+armourers)){
-            return list;
-        }else{
-            return list;
-        }
+        return getArmourers(armourers);
     }
 
     public static void setPlayerArmourers(Player p,String skin){
         String name = p.getName();
-        FileConfiguration cfg = Main.getInstance().getConfig();
+        FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
         cfg.set("KimArmourers."+name,skin);
-        Main.getInstance().saveConfig();
+        try {
+            cfg.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void setPlayerTempArmourers(Player p,String skin,int temp){
@@ -62,9 +65,13 @@ public class ArmourersManager {
         new BukkitRunnable() {
             @Override
             public void run() {
-                FileConfiguration cfg = Main.getInstance().getConfig();
+                FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
                 cfg.set("KimArmourers."+name,null);
-                Main.getInstance().saveConfig();
+                try {
+                    cfg.save(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 DragonAPI.updatePlayerSkin(p);
                 ArmourersShop.playerLongHashMap.remove(p);
                 p.sendMessage(ColorParser.parse("&8[&c&l!&8] &7试穿已经结束,恢复默认状态."));

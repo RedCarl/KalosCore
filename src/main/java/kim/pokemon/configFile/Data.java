@@ -2,6 +2,13 @@ package kim.pokemon.configFile;
 
 import kim.pokemon.Main;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class Data {
     static ConfigurationSection mysqlConfig = Main.getInstance().getConfig().getConfigurationSection("mysql");
@@ -29,4 +36,8 @@ public class Data {
 
     //首次充值翻倍活动
     public static final boolean POINTS_ACTIVITY = false;
+
+    //自定义皮肤系统
+    public static List<String> CUSTOM_SKIN = new ArrayList<>();
+
 }

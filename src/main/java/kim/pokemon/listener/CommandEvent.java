@@ -45,20 +45,22 @@ public class CommandEvent implements Listener {
                 event.setCancelled(true);
                 break;
             case "/gpay income":
-                List<PlayerEventData> today = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),simpleDateFormat.format(System.currentTimeMillis()),simpleDateFormat.format(System.currentTimeMillis()+86400000L));
-                List<PlayerEventData> yesterday = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),simpleDateFormat.format(System.currentTimeMillis()-86400000L),simpleDateFormat.format(System.currentTimeMillis()));
-                List<PlayerEventData> this_month = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),this_month_head(),this_month_bottom());
-                List<PlayerEventData> last_month = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),last_month_head(),last_month_bottom());
+                if (player.hasPermission("kim.admin")){
+                    List<PlayerEventData> today = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),simpleDateFormat.format(System.currentTimeMillis()),simpleDateFormat.format(System.currentTimeMillis()+86400000L));
+                    List<PlayerEventData> yesterday = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),simpleDateFormat.format(System.currentTimeMillis()-86400000L),simpleDateFormat.format(System.currentTimeMillis()));
+                    List<PlayerEventData> this_month = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),this_month_head(),this_month_bottom());
+                    List<PlayerEventData> last_month = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),last_month_head(),last_month_bottom());
 
-                player.sendMessage(ColorParser.parse("&r"));
-                player.sendMessage(ColorParser.parse("&bKalos &f// &aRechargeSystem &7(1.0) "));
-                player.sendMessage(ColorParser.parse("&r"));
-                player.sendMessage(ColorParser.parse("&f# &c今日收益: &a"+getValue(today)+" &d/ &a"+getValue(today)*0.06+" &7[扣税]"));
-                player.sendMessage(ColorParser.parse("&f# &c本月收益: &6"+getValue(this_month)+" &d/ &6"+getValue(this_month)*0.06+" &7[扣税]"));
-                player.sendMessage(ColorParser.parse("&r"));
-                player.sendMessage(ColorParser.parse("&f# &4昨日收益: &b"+getValue(yesterday)+" &d/ &b"+getValue(yesterday)*0.06+" &7[扣税]"));
-                player.sendMessage(ColorParser.parse("&f# &4上月收益: &e"+getValue(last_month)+" &d/ &e"+getValue(last_month)*0.06+" &7[扣税]"));
-                player.sendMessage(ColorParser.parse("&r"));
+                    player.sendMessage(ColorParser.parse("&r"));
+                    player.sendMessage(ColorParser.parse("&bKalos &f// &aRechargeSystem &7(1.0) "));
+                    player.sendMessage(ColorParser.parse("&r"));
+                    player.sendMessage(ColorParser.parse("&f# &c今日收益: &a"+getValue(today)+" &d/ &a"+getValue(today)*0.06+" &7[扣税]"));
+                    player.sendMessage(ColorParser.parse("&f# &c本月收益: &6"+getValue(this_month)+" &d/ &6"+getValue(this_month)*0.06+" &7[扣税]"));
+                    player.sendMessage(ColorParser.parse("&r"));
+                    player.sendMessage(ColorParser.parse("&f# &4昨日收益: &b"+getValue(yesterday)+" &d/ &b"+getValue(yesterday)*0.06+" &7[扣税]"));
+                    player.sendMessage(ColorParser.parse("&f# &4上月收益: &e"+getValue(last_month)+" &d/ &e"+getValue(last_month)*0.06+" &7[扣税]"));
+                    player.sendMessage(ColorParser.parse("&r"));
+                }
                 event.setCancelled(true);
                 break;
         }

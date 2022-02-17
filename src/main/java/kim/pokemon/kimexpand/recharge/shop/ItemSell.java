@@ -71,7 +71,7 @@ public class ItemSell extends InventoryGUI {
                     }
                 }
                 if (type.isRightClick()) {
-                    if (player.getInventory().contains(Material.CARROT_ITEM)){
+                    if (player.getInventory().contains(ItemMaterial)){
                         player.getInventory().removeItem(ItemPlayer);
                         economy.depositPlayer(player,ItemPlayer.getAmount()*ItemMoney);
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功出售了 "+Item.getItemMeta().getDisplayName()+" &7获得了 &c"+decimalFormat.format(ItemPlayer.getAmount()*ItemMoney)+Data.SERVER_VAULT+" &7请注意查收."));

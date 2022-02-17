@@ -1,7 +1,7 @@
 main: kim.pokemon.Main
 name: KimCore
 version: ${project.version}
-depend: [Vault,PlaceholderAPI,ProtocolLib,PlayerPoints,CMI,PlotSquared,LuckPerms]
+depend: [Vault,PlaceholderAPI,ProtocolLib,PlayerPoints,CMI,PlotSquared,LuckPerms,DragonCore]
 authors:
   - Red_Carl
   - 85

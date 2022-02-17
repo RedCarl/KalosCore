@@ -56,20 +56,24 @@ public class PokemonEvent implements Listener {
             world = event.action.spawnLocation.location.world.func_72912_H().func_76065_j();
             entityPixelmon = ((SpawnActionPokemon)event.action).getOrCreateEntity();
 
+            //指定世界不刷新的宝可梦类型
             switch (world){
                 case "plot":
-                case "lobby":
-                    if (entityPixelmon.isLegendary()||entityPixelmon.isBossPokemon()){
+                case "spawn":
+                    if (entityPixelmon.isBossPokemon()){
                         event.setCanceled(true);
                     }
                     break;
             }
 
+            //禁止刷新封禁的宝可梦
             if (Arrays.asList(PokeBlackList).contains(entityPixelmon.getPokemonName())){
                 event.setCanceled(true);
             }
 
+            //野外闪光宝可梦
             entityPixelmon.getPokemonData().setShiny(false);
+            //野外特性宝可梦
             entityPixelmon.getPokemonData().setAbilitySlot(0);
         }
 
@@ -217,40 +221,41 @@ public class PokemonEvent implements Listener {
                                 if (battleParticipant.checkPokemon()){
                                     if (battleParticipant.getType().equals(ParticipantType.WildPokemon)){
                                         EntityPixelmon pixelmon = (EntityPixelmon)battleParticipant.getEntity();
-                                        if (pixelmon!=null){
-                                            switch (pixelmon.getBossMode().name()){
-                                                case "NotBoss":
-                                                    PokemonAPI.getBills(player,9);
-                                                    break;
-                                                case "Uncommon":
-                                                    PokemonAPI.getBills(player,60);
-                                                    break;
-                                                case "Common":
-                                                    PokemonAPI.getBills(player,70);
-                                                    break;
-                                                case "Rare":
-                                                    PokemonAPI.getBills(player,80);
-                                                    break;
-                                                case "Epic":
-                                                    PokemonAPI.getBills(player,90);
-                                                    break;
-                                                case "Equal":
-                                                    PokemonAPI.getBills(player,95);
-                                                    break;
-                                                case "Legendary":
-                                                    PokemonAPI.getBills(player,100);
-                                                    break;
-                                                case "Ultimate":
-                                                    PokemonAPI.getBills(player,98);
-                                                    break;
-                                                case "Spooky":
-                                                    PokemonAPI.getBills(player,50);
-                                                    break;
-                                                case "Drowned":
-                                                    PokemonAPI.getBills(player,55);
-                                                    break;
-                                            }
-                                        }
+                                        //春节掉福活动
+//                                        if (pixelmon!=null){
+//                                            switch (pixelmon.getBossMode().name()){
+//                                                case "NotBoss":
+//                                                    PokemonAPI.getBills(player,9);
+//                                                    break;
+//                                                case "Uncommon":
+//                                                    PokemonAPI.getBills(player,60);
+//                                                    break;
+//                                                case "Common":
+//                                                    PokemonAPI.getBills(player,70);
+//                                                    break;
+//                                                case "Rare":
+//                                                    PokemonAPI.getBills(player,80);
+//                                                    break;
+//                                                case "Epic":
+//                                                    PokemonAPI.getBills(player,90);
+//                                                    break;
+//                                                case "Equal":
+//                                                    PokemonAPI.getBills(player,95);
+//                                                    break;
+//                                                case "Legendary":
+//                                                    PokemonAPI.getBills(player,100);
+//                                                    break;
+//                                                case "Ultimate":
+//                                                    PokemonAPI.getBills(player,98);
+//                                                    break;
+//                                                case "Spooky":
+//                                                    PokemonAPI.getBills(player,50);
+//                                                    break;
+//                                                case "Drowned":
+//                                                    PokemonAPI.getBills(player,55);
+//                                                    break;
+//                                            }
+//                                        }
 
                                         //                                        PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player.getName(),"BattleEndEvent",pokemon.getLocalizedName(),new Timestamp(System.currentTimeMillis())));
                                     }
