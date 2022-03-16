@@ -41,7 +41,7 @@ public class PokemonBan implements Listener {
 
 
     public static void rua(){
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), PokemonBanDataSQLReader::refreshBan, 0);
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), Main.getInstance().getPokemonBanDataSQLReader()::refreshBan, 0);
 
         //删除极具巢穴内特定的宝可梦
         RaidSpawningRegistry.map.values().forEach((map) -> map.values().forEach((list) -> {
@@ -74,7 +74,7 @@ public class PokemonBan implements Listener {
                 ItemStack is = CraftItemStack.asBukkitCopy(item.itemStack);
                 Material material = is.getType();
                 String materialName = material.name().toUpperCase();
-                if (PokemonBanDataSQLReader.getBanDrops().contains(materialName)) {
+                if (Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(materialName)) {
                     event.removeDrop(item);
                 }
             });
@@ -89,7 +89,7 @@ public class PokemonBan implements Listener {
                     ItemStack is = CraftItemStack.asBukkitCopy(item);
                     Material material = is.getType();
                     String materialName = material.name().toUpperCase();
-                    if (PokemonBanDataSQLReader.getBanDrops().contains(materialName)) {
+                    if (Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(materialName)) {
                         itemStacks.remove(item);
                     }
                 }
@@ -115,7 +115,7 @@ public class PokemonBan implements Listener {
             if (Arrays.asList(PlayerWhiteList).contains(player.getName())){
                 return;
             }
-            if (itemStack != null && PokemonBanDataSQLReader.getBanDrops().contains(itemStack.getType().name())) {
+            if (itemStack != null && Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(itemStack.getType().name())) {
                 event.setCancelled(true);
                 event.getItem().remove();
                 showInfo(player);
@@ -159,7 +159,7 @@ public class PokemonBan implements Listener {
     @EventHandler
     public void CraftItemEvent(CraftItemEvent event){
         ItemStack itemStack = event.getCurrentItem();
-        if (itemStack != null && PokemonBanDataSQLReader.getBanDrops().contains(itemStack.getType().name())) {
+        if (itemStack != null && Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(itemStack.getType().name())) {
             event.setCancelled(true);
         }
     }
@@ -170,7 +170,7 @@ public class PokemonBan implements Listener {
             return;
         }
         if (event.getItem()!=null&&(event.getAction().equals(Action.RIGHT_CLICK_AIR)||event.getAction().equals(Action.RIGHT_CLICK_BLOCK))){
-            if (PokemonBanDataSQLReader.getBanDrops().contains(event.getItem().getType().name())){
+            if (Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(event.getItem().getType().name())){
                 event.setCancelled(true);
                 event.getPlayer().getInventory().removeItem(event.getItem());
                 showInfo(event.getPlayer());
@@ -186,7 +186,7 @@ public class PokemonBan implements Listener {
             PlayerPartyStorage pps = Pixelmon.storageManager.getParty(player.getUniqueId());
 
             for (Pokemon o : new ArrayList<>(pps.getTeam())) {
-                if (o != null && PokemonBanDataSQLReader.getBanPokemons().contains(o.getLocalizedName())) {
+                if (o != null && Main.getInstance().getPokemonBanDataSQLReader().getBanPokemons().contains(o.getLocalizedName())) {
                     pps.set(o.getPosition(), null);
                 }
             }
@@ -201,7 +201,7 @@ public class PokemonBan implements Listener {
         PCStorage pcStorage = Pixelmon.storageManager.getPCForPlayer(player.getUniqueId());
         Pokemon[] var3 = pcStorage.getAll();
         for (Pokemon p : var3) {
-            if (p != null && PokemonBanDataSQLReader.getBanPokemons().contains(p.getLocalizedName())) {
+            if (p != null && Main.getInstance().getPokemonBanDataSQLReader().getBanPokemons().contains(p.getLocalizedName())) {
                 pcStorage.set(p.getPosition(), null);
             }
         }
@@ -214,7 +214,7 @@ public class PokemonBan implements Listener {
         Inventory inventory = player.getInventory();
         ItemStack[] var3 = inventory.getContents();
         for (ItemStack i : var3) {
-            if (i != null && PokemonBanDataSQLReader.getBanDrops().contains(i.getType().name())) {
+            if (i != null && Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(i.getType().name())) {
                 player.getInventory().removeItem(i);
             }
         }
@@ -227,7 +227,7 @@ public class PokemonBan implements Listener {
         Inventory inventory = player.getEnderChest();
         ItemStack[] var3 = inventory.getContents();
         for (ItemStack i : var3) {
-            if (i != null && PokemonBanDataSQLReader.getBanDrops().contains(i.getType().name())) {
+            if (i != null && Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(i.getType().name())) {
                 player.getEnderChest().removeItem(i);
             }
         }
@@ -237,7 +237,7 @@ public class PokemonBan implements Listener {
         if (Arrays.asList(PlayerWhiteList).contains(player.getName())){
             return;
         }
-        if (itemStack != null && PokemonBanDataSQLReader.getBanDrops().contains(itemStack.getType().name())) {
+        if (itemStack != null && Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(itemStack.getType().name())) {
             player.getInventory().removeItem(itemStack);
             this.onPlayerInventoryCheck(player);
             this.onPlayerEnderChestCheck(player);
@@ -247,7 +247,7 @@ public class PokemonBan implements Listener {
 
     public void onInventoryCheck(Inventory inventory){
         for (ItemStack i:inventory) {
-            if (i != null && PokemonBanDataSQLReader.getBanDrops().contains(i.getType().name())) {
+            if (i != null && Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(i.getType().name())) {
                 inventory.removeItem(i);
             }
         }

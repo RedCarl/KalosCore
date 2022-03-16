@@ -42,6 +42,7 @@ public class AdminGui extends InventoryGUI {
         });
         this.setButton(45, ApplyButton);
 
+        //删除地皮
         ItemStack Delete = ItemFactoryAPI.getItemStack(Material.BARRIER,ColorParser.parse("&c删除地皮"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o删除这个地皮,这将会让地皮回到初始状态. &c(谨慎操作,不可逆转)"));
@@ -69,7 +70,7 @@ public class AdminGui extends InventoryGUI {
 
     private void getPlayerSkull(UUID uuid, int i,String identity){
         Player p = Bukkit.getPlayer(uuid);
-        ItemStack Member = SkullAPI.getPlayerSkull(p,
+        ItemStack Member = SkullAPI.getPlayerSkull(
                 ColorParser.parse("&f"+ p.getName() + identity)
         );
         Button MemberButton = new Button(Member, type -> {
@@ -79,6 +80,5 @@ public class AdminGui extends InventoryGUI {
             }
         });
         this.setButton(i, MemberButton);
-        i++;
     }
 }

@@ -25,7 +25,7 @@ public class GrandTotal extends InventoryGUI {
     public GrandTotal(Player player) {
         super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 累计充值"), player, 6);
 
-        double RMB = GlazedPayDataSQLReader.getPlayer(player.getName()).getAmount();
+        double RMB = Main.getInstance().getGlazedPayDataSQLReader().getPlayer(player.getName()).getAmount();
 
 
         double APrice = 6;
@@ -41,6 +41,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c幸运方块*4")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (RMB>=APrice){
                     if (!player.hasPermission("kim.grandtotal."+APermission)){
@@ -81,6 +94,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c幸运方块*6")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=BPrice){
                             if (!player.hasPermission("kim.grandtotal."+BPermission)){
@@ -121,6 +147,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c宝可梦进化石(抽奖)*1")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=CPrice){
                             if (!player.hasPermission("kim.grandtotal."+CPermission)){
@@ -163,6 +202,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c牧场*1")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=DPrice){
                             if (!player.hasPermission("kim.grandtotal."+DPermission)){
@@ -205,6 +257,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c时装碎片*32")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=EPrice){
                             if (!player.hasPermission("kim.grandtotal."+EPermission)){
@@ -219,8 +284,8 @@ public class GrandTotal extends InventoryGUI {
                                         ColorParser.parse("&f范围: &a1~10 &f个"),
                                         ColorParser.parse("&r"),
                                         ColorParser.parse("&r  &e■ &7售 价:"),
-                                        ColorParser.parse("&r      &7(左键) &c" + ArmourersMoney + " &7"+Data.SERVER_VAULT+""),
-                                        ColorParser.parse("&r      &7(右键) &c" + ArmourersPrice + " &7"+Data.SERVER_POINTS+""),
+                                        ColorParser.parse("&r      &7(左键) &c" + ArmourersMoney + " &7"+Data.SERVER_VAULT),
+                                        ColorParser.parse("&r      &7(右键) &c" + ArmourersPrice + " &7"+Data.SERVER_POINTS),
                                         ColorParser.parse("&r"),
                                         ColorParser.parse("&7&o时装碎片可以去兑换时装，需要非常多哦!"));
                                 Armourers.setAmount(32);
@@ -257,6 +322,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c卡点*50")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=FPrice){
                             if (!player.hasPermission("kim.grandtotal."+FPermission)){
@@ -300,6 +378,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c卡点*50")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=GPrice){
                             if (!player.hasPermission("kim.grandtotal."+GPermission)){
@@ -344,6 +435,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c卡点*50")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=HPrice){
                             if (!player.hasPermission("kim.grandtotal."+HPermission)){
@@ -385,6 +489,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c烈空坐(诅咒 / 皮肤)*1")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=IPrice){
                             if (!player.hasPermission("kim.grandtotal."+IPermission)){
@@ -425,6 +542,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c卡点*288")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=JPrice){
                             if (!player.hasPermission("kim.grandtotal."+JPermission)){
@@ -432,7 +562,7 @@ public class GrandTotal extends InventoryGUI {
 
                                 //奖励内容
                                 PokeFormCommand.addPokemonForm(player.getName(), "固拉多","地之魔物",1);
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set "+"kim.armourers.水银灯"+" true server="+Main.luckPerms.getServerName()+"");
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set "+"kim.armourers.水银灯"+" true server="+Main.luckPerms.getServerName());
                                 Main.ppAPI.giveAsync(player.getUniqueId(),288);
 
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -467,6 +597,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c卡点*398")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=KPrice){
                             if (!player.hasPermission("kim.grandtotal."+KPermission)){
@@ -511,6 +654,19 @@ public class GrandTotal extends InventoryGUI {
                         ColorParser.parse("&r          &c卡点*398")
                 ),
                 type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
                     if (type.isLeftClick()) {
                         if (RMB>=LPrice){
                             if (!player.hasPermission("kim.grandtotal."+LPermission)){
@@ -552,7 +708,7 @@ public class GrandTotal extends InventoryGUI {
         ItemStack Recharge = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/76c9c0b2b1e74b70847e551be14c81b58fc6011017f8922b5fe6f66a6dc77066",ColorParser.parse("&c"+Data.SERVER_POINTS+"充值"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o可以在这里进行赞助服务器."));
-        Button RechargeButton = new Button(Recharge, type -> {
+        Button RechargeButton = new Button(Recharge,type -> {
             if (type.isLeftClick()) {
                 RechargeMenu rechargeMenu = new RechargeMenu(player);
                 rechargeMenu.openInventory();
@@ -564,7 +720,7 @@ public class GrandTotal extends InventoryGUI {
         ItemStack GiftPackShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/b99dc01dcf28445576f2268882a77706fcb9353ab0c954f96045561a79244c1e",ColorParser.parse("&a礼包商店"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o可以购买一些商品，作为赞助的回报."));
-        Button GiftPackShopButton = new Button(GiftPackShop, type -> {
+        Button GiftPackShopButton = new Button(GiftPackShop,type -> {
             if (type.isLeftClick()) {
                 GiftPackShop giftPackShop = new GiftPackShop(player);
                 giftPackShop.openInventory();
@@ -576,7 +732,7 @@ public class GrandTotal extends InventoryGUI {
         ItemStack ItemBuy = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/786f6feb285b53e7a85f924dc032d2e5816f5042a4530eecc5c034bee17b1bd0",ColorParser.parse("&e道具出售"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o这里可以购买一些常用的物品道具."));
-        Button ItemBuyButton = new Button(ItemBuy, type -> {
+        Button ItemBuyButton = new Button(ItemBuy,type -> {
             if (type.isLeftClick()) {
                 kim.pokemon.kimexpand.recharge.shop.ItemBuy itemBuy = new ItemBuy(player);
                 itemBuy.openInventory();
@@ -588,7 +744,7 @@ public class GrandTotal extends InventoryGUI {
         ItemStack ItemSell = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/45a654f38302d245e59ec5f9f6cb46748c8342cb552d79653f1198a5faa0a468",ColorParser.parse("&9道具回收"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o这里可以回收一些不常用的物品道具."));
-        Button ItemSellButton = new Button(ItemSell, type -> {
+        Button ItemSellButton = new Button(ItemSell,type -> {
             if (type.isLeftClick()) {
                 kim.pokemon.kimexpand.recharge.shop.ItemSell itemSell = new ItemSell(player);
                 itemSell.openInventory();
@@ -600,7 +756,7 @@ public class GrandTotal extends InventoryGUI {
         ItemStack GrandTotal = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/13b08f083df8306fa86817dd08dfa024377b80e92c0800e91f292c2aba44ad3e",ColorParser.parse("&6累计充值"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o累计赞助到一定数额的额外奖励."));
-        Button GrandTotalButton = new Button(GrandTotal, type -> {
+        Button GrandTotalButton = new Button(GrandTotal,type -> {
             if (type.isLeftClick()) {
                 GrandTotal grandTotal = new GrandTotal(player);
                 grandTotal.openInventory();
@@ -611,8 +767,8 @@ public class GrandTotal extends InventoryGUI {
         //累计充值
         ItemStack ArmourersShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励."));
-        Button ArmourersShopButton = new Button(ArmourersShop, type -> {
+                ColorParser.parse("&7&o可以购买时装来进行穿戴."));
+        Button ArmourersShopButton = new Button(ArmourersShop,type -> {
             if (type.isLeftClick()) {
                 ArmourersShop armourersShop = new ArmourersShop(player);
                 armourersShop.openInventory();
@@ -624,7 +780,7 @@ public class GrandTotal extends InventoryGUI {
         ItemStack Close = ItemFactoryAPI.getItemStack(Material.BARRIER,ColorParser.parse("&c返回"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o返回至主菜单."));
-        Button CloseButton = new Button(Close, type -> {
+        Button CloseButton = new Button(Close,type -> {
             if (type.isLeftClick()) {
                 MainMenu mainMenu = new MainMenu(player);
                 mainMenu.openInventory();

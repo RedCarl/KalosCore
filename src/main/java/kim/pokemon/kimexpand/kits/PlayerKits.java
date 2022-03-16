@@ -39,7 +39,7 @@ public class PlayerKits  extends InventoryGUI {
                         ColorParser.parse("&7该礼包请在 2022年1月5日 之前领取,逾期作废,无法补领."),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &e■ &7礼包门槛:"),
-                        ColorParser.parse("&r          &c"+ GlazedPayDataSQLReader.getPlayer(player.getName()).getAmount() +"&7/&f6.0 &f元 &7(累计充值)"),
+                        ColorParser.parse("&r          &c"+ Main.getInstance().getGlazedPayDataSQLReader().getPlayer(player.getName()).getAmount() +"&7/&f6.0 &f元 &7(累计充值)"),
                         ColorParser.parse("&r          &c"+ cmiUser.getTotalPlayTime()/1000/60 +"&7/&f20 &f分钟 &7(累计在线)"),
                         ColorParser.parse("&r          &c"+ simpleDateFormat.format(player.getFirstPlayed()) +" &7(进服日期)"),
                         ColorParser.parse("&r"),
@@ -56,7 +56,7 @@ public class PlayerKits  extends InventoryGUI {
                 ),
                 type -> {
                     if (type.isLeftClick()) {
-                        if (GlazedPayDataSQLReader.getPlayer(player.getName()).getAmount()>=6){
+                        if (Main.getInstance().getGlazedPayDataSQLReader().getPlayer(player.getName()).getAmount()>=6){
                             if (cmiUser.getTotalPlayTime()/1000/60>=20){
                                 if (player.getFirstPlayed()<=1640880000000L){
                                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.tag.先锋 server="+ Main.luckPerms.getServerName());

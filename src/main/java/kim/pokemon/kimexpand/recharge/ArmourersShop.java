@@ -42,8 +42,8 @@ public class ArmourersShop extends InventoryGUI {
                 ColorParser.parse("&f范围: &a1~10 &f个"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + ArmourersMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + ArmourersPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + ArmourersMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + ArmourersPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o时装碎片可以去兑换时装，需要非常多哦!"));
 
@@ -199,7 +199,7 @@ public class ArmourersShop extends InventoryGUI {
         //累计充值
         ItemStack ArmourersShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励."));
+                ColorParser.parse("&7&o可以购买时装来进行穿戴."));
         Button ArmourersShopButton = new Button(ArmourersShop, type -> {
             if (type.isLeftClick()) {
                 ArmourersShop armourersShop = new ArmourersShop(player);

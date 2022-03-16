@@ -27,11 +27,12 @@ public class NatureSelectGUI extends InventoryGUI {
         for (EnumNature enumNature:EnumNature.values()) {
             ItemStack Nature = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RAGE_CANDY_BAR") , ColorParser.parse("&3"+enumNature.getLocalizedName()),
                     ColorParser.parse("&r"),
-                    ColorParser.parse("&7&o培养您宝可梦的性格,将 100% 培养该性格."),
+                    ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                     ColorParser.parse("&r"),
-                    ColorParser.parse("&7价格: &f"+NaturePoints+" &7"+Data.SERVER_POINTS+""),
-                    ColorParser.parse("&r"),
-                    ColorParser.parse("&c左键点击立即培养"));
+                    ColorParser.parse("&r  &e■ &7售 价:"),
+                    ColorParser.parse("&r      &7(右键 更改) &c" + NaturePoints + " &7"+Data.SERVER_POINTS),
+                    ColorParser.parse("&r")
+            );
             Button NatureButton = new Button(Nature, type -> {
                 if (type.isLeftClick()){
                     try {

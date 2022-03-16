@@ -5,10 +5,7 @@ import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.kimexpand.recharge.entity.PlayerRecharge;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +13,31 @@ import java.util.List;
  * 处理竞技场数据
  */
 public class GlazedPayDataSQLReader {
-    private static Connection conn;
+    private Connection conn;
+
+    public void initialize() {
+        try {
+
+            Class.forName(Data.DRIVER);
+            conn = DriverManager.getConnection("jdbc:mysql://" + Data.URL + ":" + Data.PORT + "/" + Data.DATABASE, Data.USER, Data.PASS);
+            selectTable();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void close(){
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 查询表
      */
-    public static void selectTable(){
-        conn = SQLConnection.conn;
+    public void selectTable(){
         try {
             String select_Table = "SELECT * FROM " + Data.GLAZED_PAY_DATA + "";
             PreparedStatement table = conn.prepareStatement(select_Table);
@@ -37,7 +53,7 @@ public class GlazedPayDataSQLReader {
     /**
      * 创建表
      */
-    public static void createTable(){
+    public void createTable(){
         try {
             String create_table = "CREATE TABLE IF NOT EXISTS " + Data.GLAZED_PAY_DATA + " (`id`  int UNSIGNED NOT NULL AUTO_INCREMENT ,`name`  varchar(40) NOT NULL ,`amount`  double NOT NULL ,`time`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,PRIMARY KEY (`id`),INDEX `name_key` (`name`) USING BTREE) DEFAULT CHARSET=utf8;";
             PreparedStatement create = conn.prepareStatement(create_table);
@@ -52,7 +68,7 @@ public class GlazedPayDataSQLReader {
      * @param name 玩家ID
      * @return 充值信息
      */
-    public static PlayerRecharge getPlayer(String name) {
+    public PlayerRecharge getPlayer(String name) {
         double amount = 0.0D;
         try {
             String select_data = "SELECT SUM(`amount`) FROM "+Data.GLAZED_PAY_DATA+" WHERE `name` = ?;";
@@ -76,7 +92,7 @@ public class GlazedPayDataSQLReader {
      * 查询服务器总收益
      * @return 充值信息
      */
-    public static double getTotal() {
+    public double getTotal() {
         double amount = 0.0D;
         try {
             String select_data = "SELECT SUM(`amount`) FROM "+Data.GLAZED_PAY_DATA+";";
@@ -99,7 +115,7 @@ public class GlazedPayDataSQLReader {
      * 查询充值排行榜前十的玩家
      * @return 玩家信息
      */
-    public static List<PlayerRecharge> getTopPlayer() {
+    public List<PlayerRecharge> getTopPlayer() {
         List<PlayerRecharge> playerRechargeList = new ArrayList<>();
         try {
             String select_data = "SELECT name,SUM(`amount`) amount from "+Data.GLAZED_PAY_DATA+"  WHERE `name` NOT IN('Red_Carl','鹤仙桥') group by name ORDER BY SUM(`amount`) DESC LIMIT 5;";
@@ -124,7 +140,7 @@ public class GlazedPayDataSQLReader {
      * @param endTime 结束
      * @return 数额
      */
-    public static PlayerRecharge getPlayerTime(String name,String onTime,String endTime) {
+    public PlayerRecharge getPlayerTime(String name,String onTime,String endTime) {
         double amount = 0.0D;
         try {
             String select_data = "SELECT SUM(`amount`) FROM `ranks` WHERE time >= '"+onTime+"' AND time <= '"+endTime+"' AND `name` = ?;";
@@ -143,7 +159,5 @@ public class GlazedPayDataSQLReader {
             return new PlayerRecharge(name,-1);
         }
     }
-
-    //
 
 }

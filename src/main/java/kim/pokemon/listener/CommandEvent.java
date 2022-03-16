@@ -6,6 +6,11 @@ import kim.pokemon.entity.PlayerEventData;
 import kim.pokemon.kimexpand.menu.MainMenu;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.PokemonAPI;
+import kim.pokemon.util.api.PokemonPhotoAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +18,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,38 +35,73 @@ public class CommandEvent implements Listener {
     @EventHandler
     public void PlayerOnCommand(PlayerCommandPreprocessEvent event){
         Player player = event.getPlayer();
+        MainMenu mainMenu = new MainMenu(event.getPlayer());
         switch (event.getMessage().toLowerCase()){
+            case "/tps":
+                Bukkit.dispatchCommand(player,"spark:tps");
+                event.setCancelled(true);
+                break;
+            case "/about":
             case "/version":
             case "/ver":
+            case "/bukkit:about":
+            case "/bukkit:version":
+            case "/bukkit:ver":
                 getVersion(event.getPlayer());
                 event.setCancelled(true);
                 break;
             case "/plugins":
             case "/pl":
+            case "/bukkit:plugins":
+            case "/bukkit:pl":
                 getPlugins(event.getPlayer());
                 event.setCancelled(true);
                 break;
+            case "/?":
+            case "/help":
+            case "/bukkit:?":
+            case "/bukkit:help":
             case "/cd":
-                MainMenu mainMenu = new MainMenu(event.getPlayer());
                 mainMenu.openInventory();
                 event.setCancelled(true);
                 break;
             case "/gpay income":
                 if (player.hasPermission("kim.admin")){
-                    List<PlayerEventData> today = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),simpleDateFormat.format(System.currentTimeMillis()),simpleDateFormat.format(System.currentTimeMillis()+86400000L));
-                    List<PlayerEventData> yesterday = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),simpleDateFormat.format(System.currentTimeMillis()-86400000L),simpleDateFormat.format(System.currentTimeMillis()));
-                    List<PlayerEventData> this_month = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),this_month_head(),this_month_bottom());
-                    List<PlayerEventData> last_month = PlayerEventDataSQLReader.getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),last_month_head(),last_month_bottom());
+                    List<PlayerEventData> today = Main.getInstance().getPlayerEventDataSQLReader().getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),simpleDateFormat.format(System.currentTimeMillis()),simpleDateFormat.format(System.currentTimeMillis()+86400000L));
+                    List<PlayerEventData> yesterday = Main.getInstance().getPlayerEventDataSQLReader().getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),simpleDateFormat.format(System.currentTimeMillis()-86400000L),simpleDateFormat.format(System.currentTimeMillis()));
+                    List<PlayerEventData> this_month = Main.getInstance().getPlayerEventDataSQLReader().getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),this_month_head(),this_month_bottom());
+                    List<PlayerEventData> last_month = Main.getInstance().getPlayerEventDataSQLReader().getPlayerEventDataTime("OrderShipEvent", Main.luckPerms.getServerName(),last_month_head(),last_month_bottom());
 
                     player.sendMessage(ColorParser.parse("&r"));
                     player.sendMessage(ColorParser.parse("&bKalos &f// &aRechargeSystem &7(1.0) "));
                     player.sendMessage(ColorParser.parse("&r"));
-                    player.sendMessage(ColorParser.parse("&f# &c今日收益: &a"+getValue(today)+" &d/ &a"+getValue(today)*0.06+" &7[扣税]"));
-                    player.sendMessage(ColorParser.parse("&f# &c本月收益: &6"+getValue(this_month)+" &d/ &6"+getValue(this_month)*0.06+" &7[扣税]"));
+                    player.sendMessage(ColorParser.parse("&f# &c今日收益: &a"+(getValue(today)-getValue(today)*0.1)+" &d/ &a"+(getValue(today)-getValue(today)*0.1)*0.06+" &7[扣税]"));
+                    player.sendMessage(ColorParser.parse("&f# &4昨日收益: &b"+(getValue(yesterday)-getValue(yesterday)*0.1)+" &d/ &b"+(getValue(yesterday)-getValue(yesterday)*0.1)*0.06+" &7[扣税]"));
                     player.sendMessage(ColorParser.parse("&r"));
-                    player.sendMessage(ColorParser.parse("&f# &4昨日收益: &b"+getValue(yesterday)+" &d/ &b"+getValue(yesterday)*0.06+" &7[扣税]"));
-                    player.sendMessage(ColorParser.parse("&f# &4上月收益: &e"+getValue(last_month)+" &d/ &e"+getValue(last_month)*0.06+" &7[扣税]"));
+                    player.sendMessage(ColorParser.parse("&f# &c本月收益: &6"+(getValue(this_month)-getValue(this_month)*0.1)+" &d/ &6"+(getValue(this_month)-getValue(this_month)*0.1)*0.06+" &7[扣税]"));
+                    player.sendMessage(ColorParser.parse("&f# &4上月收益: &e"+(getValue(last_month)-getValue(last_month)*0.1)+" &d/ &6"+(getValue(last_month)-getValue(last_month)*0.1)*0.06+" &7[扣税]"));
                     player.sendMessage(ColorParser.parse("&r"));
+                }
+                event.setCancelled(true);
+                break;
+            case "/g":
+                PokemonPhotoAPI.getFolder("KeyPressEvent/");
+                File file = new File(Main.getInstance().getDataFolder(), "KeyPressEvent/"+player.getName() + ".yml");
+                FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+                if (config.getBoolean("G")){
+                    config.set("G",false);
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您已经 &a开启 &7了 &cG &7键菜单功能."));
+                }else {
+                    config.set("G",true);
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您已经 &c关闭 &7了 &cG &7键菜单功能."));
+                }
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+
+                try {
+                    config.save(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 event.setCancelled(true);
                 break;

@@ -14,10 +14,13 @@ import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
 import kim.pokemon.util.gui.inventory.SkullAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.concurrent.ExecutionException;
 
@@ -36,11 +39,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&f范围: &a1~1 &f个"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + RanchMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + RanchPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + RanchMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + RanchPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o用于对宝可梦进行繁殖,无法繁殖 &c3v &7&o以上宝可梦!"));
         Button RanchButton = new Button(Ranch, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>=RanchMoney){
                     economy.withdrawPlayer(player,RanchMoney);
@@ -79,11 +95,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&f概率: &a普通(95%) &6传奇(5%)"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + PokeLuckyMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + PokeLuckyPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + PokeLuckyMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + PokeLuckyPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o来试试你是否真的幸运."));
         Button PokeLuckyButton = new Button(PokeLucky, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>=PokeLuckyMoney){
                     economy.withdrawPlayer(player,PokeLuckyMoney);
@@ -121,11 +150,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&6奈克洛索尔合体器"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + N_SolarizerMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + N_SolarizerPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + N_SolarizerMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + N_SolarizerPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o用来让需求光的奈克洛兹玛和索尔迦雷欧合体的机器."));
         Button N_SolarizerButton = new Button(N_Solarizer, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isRightClick()) {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=N_SolarizerPrice){
@@ -152,11 +194,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&b奈克洛露奈合体器"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + N_LunarizerMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + N_LunarizerPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + N_LunarizerMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + N_LunarizerPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o用来让需求光的奈克洛兹玛和露奈雅拉合体的机器."));
         Button N_LunarizerButton = new Button(N_Lunarizer, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isRightClick()) {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=N_LunarizerPrice){
@@ -183,11 +238,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&9牵绊缰绳"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Reins_Of_UnityMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Reins_Of_UnityPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Reins_Of_UnityMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Reins_Of_UnityPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o拿到光下即可生辉的布。人们曾经将其进献给丰饶之王以表感谢之意。"));
         Button Reins_Of_UnityButton = new Button(Reins_Of_Unity, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isRightClick()) {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Reins_Of_UnityPrice){
@@ -214,11 +282,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&c朱红色宝珠"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Red_OrbMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Red_OrbPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Red_OrbMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Red_OrbPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o散发着红色光辉的宝珠。据说和丰缘地区的传说渊源颇深。"));
         Button Red_OrbButton = new Button(Red_Orb, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isRightClick()) {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Red_OrbPrice){
@@ -245,11 +326,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&9靛蓝色宝珠"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Blue_OrbMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Blue_OrbPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Blue_OrbMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Blue_OrbPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o散发着蓝色光辉的宝珠。据说和丰缘地区的传说渊源颇深。"));
         Button Blue_OrbButton = new Button(Blue_Orb, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isRightClick()) {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Blue_OrbPrice){
@@ -276,11 +370,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&6高级球"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Ultra_BallMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Ultra_BallPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Ultra_BallMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Ultra_BallPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o比起超级球来更容易捉到宝可梦的，性能非常不错的球。"));
         Button Ultra_BallButton = new Button(Ultra_Ball, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Ultra_BallMoney){
                     economy.withdrawPlayer(player,Ultra_BallMoney);
@@ -303,11 +410,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&6高级球"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Master_BallMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Master_BallPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Master_BallMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Master_BallPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o比起超级球来更容易捉到宝可梦的，性能非常不错的球。"));
         Button Master_BallButton = new Button(Master_Ball, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Master_BallMoney){
                     economy.withdrawPlayer(player,Master_BallMoney);
@@ -345,11 +465,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&f纯净珠"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + OrbMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + OrbPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + OrbMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + OrbPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o用于召唤传说钟的闪电鸟。"));
         Button OrbButton = new Button(Orb, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>OrbMoney){
                     economy.withdrawPlayer(player,OrbMoney);
@@ -386,11 +519,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&c红线"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Destiny_KnotMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Destiny_KnotPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Destiny_KnotMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Destiny_KnotPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o长长的鲜红色细线。携带后，在自己着迷时能让对手也着迷。"));
         Button Destiny_KnotButton = new Button(Destiny_Knot, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Destiny_KnotMoney){
                     economy.withdrawPlayer(player,Destiny_KnotMoney);
@@ -428,11 +574,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&e金色沙漏"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Hourglass_GoldMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Hourglass_GoldPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Hourglass_GoldMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Hourglass_GoldPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o用于增加牧场宝可梦繁殖速度。"));
         Button Hourglass_GoldButton = new Button(Hourglass_Gold, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Hourglass_GoldMoney){
                     economy.withdrawPlayer(player,Hourglass_GoldMoney);
@@ -470,12 +629,26 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&f银色沙漏"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Hourglass_SilverMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Hourglass_SilverPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Hourglass_SilverMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Hourglass_SilverPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o用于增加牧场宝可梦繁殖速度。"));
         Hourglass_Silver.setAmount(2);
         Button Hourglass_SilverButton = new Button(Hourglass_Silver, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
+
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Hourglass_SilverMoney){
                     economy.withdrawPlayer(player,Hourglass_SilverMoney);
@@ -513,11 +686,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&3超梦进化石 X"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Mewtwonite_XMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Mewtwonite_XPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Mewtwonite_XMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Mewtwonite_XPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o让超梦携带后，在战斗时就能进行超级进化的一种神奇超级石。"));
         Button Mewtwonite_XButton = new Button(Mewtwonite_X, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Mewtwonite_XMoney){
                     economy.withdrawPlayer(player,Mewtwonite_XMoney);
@@ -555,11 +741,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&d超梦进化石 Y"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Mewtwonite_YMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Mewtwonite_YPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Mewtwonite_YMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Mewtwonite_YPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o让超梦携带后，在战斗时就能进行超级进化的一种神奇超级石。"));
         Button Mewtwonite_YButton = new Button(Mewtwonite_Y, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Mewtwonite_YMoney){
                     economy.withdrawPlayer(player,Mewtwonite_YMoney);
@@ -597,11 +796,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&c腐朽的剑"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Rusted_SwordMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Rusted_SwordPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Rusted_SwordMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Rusted_SwordPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o据说很久以前，英雄就是拿着这把剑驱走了灾厄。而现在早已变得锈迹斑斑。"));
         Button Rusted_SwordButton = new Button(Rusted_Sword, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Rusted_SwordMoney){
                     economy.withdrawPlayer(player,Rusted_SwordMoney);
@@ -639,11 +851,24 @@ public class ItemBuy extends InventoryGUI {
                 ColorParser.parse("&c腐朽的盾"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + Rusted_ShieldMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + Rusted_ShieldPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + Rusted_ShieldMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Rusted_ShieldPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o据说很久以前，英雄就是拿着这面盾驱走了灾厄。而现在早已变得锈迹斑斑。"));
         Button Rusted_ShieldButton = new Button(Rusted_Shield, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (economy.getBalance(player)>Rusted_ShieldMoney){
                     economy.withdrawPlayer(player,Rusted_ShieldMoney);
@@ -673,6 +898,142 @@ public class ItemBuy extends InventoryGUI {
         });
         this.setButton(16, Rusted_ShieldButton);
 
+        ///限时夜视药水
+        long Night_VisionMoney = 1000;
+        int Night_VisionPrice = 1;
+        ItemStack Night_Vision = ItemFactoryAPI.getItemStack(Material.POTION,
+                ColorParser.parse("&9夜视药水 &c(+60秒)"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&r  &e■ &7售 价:"),
+                ColorParser.parse("&r      &7(左键) &c" + Night_VisionMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + Night_VisionPrice + " &7"+Data.SERVER_POINTS),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o能让你在漆黑的夜晚也能看见光明。"));
+        Button Night_VisionButton = new Button(Night_Vision, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
+            if (type.isLeftClick()) {
+                if (economy.getBalance(player)>Night_VisionMoney){
+                    economy.withdrawPlayer(player,Night_VisionMoney);
+
+                    if (player.getPotionEffect(PotionEffectType.NIGHT_VISION)!=null){
+                        int i = (player.getPotionEffect(PotionEffectType.NIGHT_VISION).getDuration()+(20*60));
+                        player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,i,2));
+                    }else {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,(20*60),2));
+                    }
+
+                    player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Night_Vision.getItemMeta().getDisplayName()+" &7请注意查收."));
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                }else {
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+economy.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                }
+            }
+            if (type.isRightClick()) {
+                try {
+                    if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=Night_VisionPrice){
+                        playerPointsAPI.takeAsync(player.getUniqueId(),Night_VisionPrice);
+
+                        if (player.getPotionEffect(PotionEffectType.NIGHT_VISION)!=null){
+                            int i = (player.getPotionEffect(PotionEffectType.NIGHT_VISION).getDuration()+(20*60));
+                            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,i,2));
+                        }else {
+                            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION,(20*60),2));
+                        }
+
+                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Night_Vision.getItemMeta().getDisplayName()+" &7请注意查收."));
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                    }else {
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        this.setButton(17, Night_VisionButton);
+
+
+        ///限时夜视药水
+        long NickMoney = 1000;
+        int NickPrice = 1;
+        ItemStack nickItem = ItemFactoryAPI.getItemStack(Material.NAME_TAG,
+                ColorParser.parse("&6Kalos &f// &6改名卡"),
+                ColorParser.parse("&8消耗品 (右键使用)"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7可以更改自己的名字，但无法更改登录的ID。"),
+                ColorParser.parse("&7注意，登录和显示的名字不一样。")
+        );
+        ItemStack Nick = ItemFactoryAPI.getItemStack(Material.NAME_TAG,
+                ColorParser.parse("&6Kalos &f// &6改名卡"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&r  &e■ &7售 价:"),
+                ColorParser.parse("&r      &7(左键) &c" + NickMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + NickPrice + " &7"+Data.SERVER_POINTS),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7可以更改自己的名字，但无法更改登录的ID。"),
+                ColorParser.parse("&7注意，登录和显示的名字不一样。"));
+        Button NickButton = new Button(Nick, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
+            if (type.isLeftClick()) {
+                if (economy.getBalance(player)>NickMoney){
+                    economy.withdrawPlayer(player,NickMoney);
+
+                    player.getInventory().addItem(nickItem);
+
+                    player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Nick.getItemMeta().getDisplayName()+" &7请注意查收."));
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                }else {
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+economy.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                }
+            }
+            if (type.isRightClick()) {
+                try {
+                    if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=NickPrice){
+                        playerPointsAPI.takeAsync(player.getUniqueId(),NickPrice);
+
+                        player.getInventory().addItem(nickItem);
+
+                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+Nick.getItemMeta().getDisplayName()+" &7请注意查收."));
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                    }else {
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        this.setButton(18, NickButton);
 
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));
         for (int i = 0; i < 9; i++) {
@@ -742,7 +1103,7 @@ public class ItemBuy extends InventoryGUI {
         //累计充值
         ItemStack ArmourersShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励."));
+                ColorParser.parse("&7&o可以购买时装来进行穿戴."));
         Button ArmourersShopButton = new Button(ArmourersShop, type -> {
             if (type.isLeftClick()) {
                 kim.pokemon.kimexpand.recharge.ArmourersShop armourersShop = new ArmourersShop(player);

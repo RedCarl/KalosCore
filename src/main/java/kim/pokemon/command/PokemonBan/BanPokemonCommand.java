@@ -1,5 +1,6 @@
 package kim.pokemon.command.PokemonBan;
 
+import kim.pokemon.Main;
 import kim.pokemon.database.PokemonBanDataSQLReader;
 import kim.pokemon.util.ColorParser;
 import org.bukkit.command.Command;
@@ -14,12 +15,12 @@ public class BanPokemonCommand implements CommandExecutor {
         if (commandSender.hasPermission("kim.admin")){
             if (args.length == 2) {
                 if (args[0].equals("add")) {
-                    PokemonBanDataSQLReader.addPokemons(args[1]);
+                    Main.getInstance().getPokemonBanDataSQLReader().addPokemons(args[1]);
                     commandSender.sendMessage("封禁了宝可梦 " + args[1]);
                 }
 
                 if (args[0].equals("remove")) {
-                    PokemonBanDataSQLReader.removePokemons(args[1]);
+                    Main.getInstance().getPokemonBanDataSQLReader().removePokemons(args[1]);
                     commandSender.sendMessage("解封了宝可梦 " + args[1]);
                 }
             }

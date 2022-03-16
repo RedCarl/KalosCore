@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 public class GrowthSelectGUI extends InventoryGUI {
 
     public GrowthSelectGUI(Player player, Pokemon pokemon) {
-        super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 选择性格 &7("+pokemon.getLocalizedName()+"/"+pokemon.getGrowth().getLocalizedName()+")"), player, 6);
+        super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 选择体型 &7("+pokemon.getLocalizedName()+"/"+pokemon.getGrowth().getLocalizedName()+")"), player, 6);
 
         int GrowthPoints = 5;
 
@@ -27,11 +27,12 @@ public class GrowthSelectGUI extends InventoryGUI {
         for (EnumGrowth enumGrowth:EnumGrowth.values()) {
             ItemStack Growth = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_N_LUNARIZER") , ColorParser.parse("&3"+enumGrowth.getLocalizedName()),
                     ColorParser.parse("&r"),
-                    ColorParser.parse("&7&o培养您宝可梦的体型,将 100% 培养该体型."),
+                    ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                     ColorParser.parse("&r"),
-                    ColorParser.parse("&7价格: &f"+GrowthPoints+" &7"+Data.SERVER_POINTS+""),
-                    ColorParser.parse("&r"),
-                    ColorParser.parse("&c左键点击立即培养"));
+                    ColorParser.parse("&r  &e■ &7售 价:"),
+                    ColorParser.parse("&r      &7(右键 更改) &c" + GrowthPoints + " &7"+Data.SERVER_POINTS),
+                    ColorParser.parse("&r")
+            );
             Button GrowthButton = new Button(Growth, type -> {
                 if (type.isLeftClick()){
                     try {

@@ -6,21 +6,37 @@ import kim.pokemon.configFile.Data;
 import kim.pokemon.kimexpand.premium.entity.PlayerVIP;
 import org.bukkit.entity.Player;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * 处理竞技场数据
  */
 public class PremiumPlayerDataSQLReader {
-    private static Connection conn;
+    private Connection conn;
+
+    public void initialize() {
+        try {
+
+            Class.forName(Data.DRIVER);
+            conn = DriverManager.getConnection("jdbc:mysql://" + Data.URL + ":" + Data.PORT + "/" + Data.DATABASE, Data.USER, Data.PASS);
+            selectTable();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void close(){
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 查询表
      */
-    public static void selectTable(){
-        conn = SQLConnection.conn;
+    public void selectTable(){
+
         try {
             String select_Table = "SELECT * FROM " + Data.PREMIUM_DATA + "";
             PreparedStatement table = conn.prepareStatement(select_Table);
@@ -36,7 +52,7 @@ public class PremiumPlayerDataSQLReader {
     /**
      * 创建表
      */
-    public static void createTable(){
+    public void createTable(){
         try {
             String create_table = "CREATE TABLE IF NOT EXISTS " + Data.PREMIUM_DATA + " (`id`  int UNSIGNED NOT NULL AUTO_INCREMENT ,`name`  varchar(40) NOT NULL ,`rank`  varchar(40) NOT NULL ,`time`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,PRIMARY KEY (`id`) ,`server`  varchar(40) NOT NULL ,INDEX `name_key` (`name`) USING BTREE) DEFAULT CHARSET=utf8;";
             PreparedStatement create = conn.prepareStatement(create_table);
@@ -51,7 +67,7 @@ public class PremiumPlayerDataSQLReader {
      * @param name 玩家ID
      * @return 玩家Rank信息
      */
-    public static PlayerVIP getRank(String name,String rank,String server) {
+    public PlayerVIP getRank(String name,String rank,String server) {
         PlayerVIP playerVIP = new PlayerVIP();
         try {
 
@@ -96,10 +112,10 @@ public class PremiumPlayerDataSQLReader {
     }
 
     /**
-     * 查询玩家VIP到期时间
+     * 删除玩家Rank
      * @return 玩家Rank信息
      */
-    public static void deleteRank(Player player) {
+    public void deleteRank(Player player) {
         try {
             String select_data = "DELETE FROM "+Data.PREMIUM_DATA+" WHERE name=?";
             PreparedStatement select = conn.prepareStatement(select_data);
@@ -114,7 +130,7 @@ public class PremiumPlayerDataSQLReader {
      * 开通VIP项目
      * @param playerVIP 信息
      */
-    public static boolean addRank(PlayerVIP playerVIP) {
+    public boolean addRank(PlayerVIP playerVIP) {
         try {
             String select_data = "INSERT INTO " + Data.PREMIUM_DATA + "(name,rank,time,server) VALUES (?,?,?,?);";
             PreparedStatement select = conn.prepareStatement(select_data);
@@ -133,7 +149,7 @@ public class PremiumPlayerDataSQLReader {
      * 续费项目
      * @param playerVIP 信息
      */
-    public static boolean updateRank(PlayerVIP playerVIP) {
+    public boolean updateRank(PlayerVIP playerVIP) {
         try {
             String select_data = "UPDATE " + Data.PREMIUM_DATA + " SET rank=?,time=? WHERE name = ? AND server = ?";
             PreparedStatement select = conn.prepareStatement(select_data);

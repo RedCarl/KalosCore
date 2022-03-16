@@ -16,7 +16,7 @@ public class VIPBuy {
      * @param playerVIP 开通玩家
      */
     public static void addRank(PlayerVIP playerVIP){
-        PremiumPlayerDataSQLReader.addRank(playerVIP);
+        Main.getInstance().getPremiumPlayerDataSQLReader().addRank(playerVIP);
     }
 
     /**
@@ -24,14 +24,14 @@ public class VIPBuy {
      * @param playerVIP 续费玩家
      */
     public static void updateRank(PlayerVIP playerVIP){
-        PremiumPlayerDataSQLReader.updateRank(playerVIP);
+        Main.getInstance().getPremiumPlayerDataSQLReader().updateRank(playerVIP);
     }
 
     /**
      * 查询Rank
      */
     public static PlayerVIP checkRank(Player player,String rank,String server){
-        PlayerVIP vip = PremiumPlayerDataSQLReader.getRank(player.getName(),rank,server);
+        PlayerVIP vip = Main.getInstance().getPremiumPlayerDataSQLReader().getRank(player.getName(),rank,server);
         if (vip!=null){
             if (Objects.equals(server, vip.getServer())){
                 if (Objects.equals(rank, vip.getRank())){
@@ -58,7 +58,7 @@ public class VIPBuy {
      * 删除Rank
      */
     public static void deleteRank(Player player){
-        PremiumPlayerDataSQLReader.deleteRank(player);
+        Main.getInstance().getPremiumPlayerDataSQLReader().deleteRank(player);
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" parent clear server="+ Main.luckPerms.getServerName());
 
     }

@@ -5,10 +5,7 @@ import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.entity.PlayerEventData;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +13,31 @@ import java.util.List;
  * 处理竞技场数据
  */
 public class PlayerEventDataSQLReader {
-    private static Connection conn;
+    private Connection conn;
+
+    public void initialize() {
+        try {
+
+            Class.forName(Data.DRIVER);
+            conn = DriverManager.getConnection("jdbc:mysql://" + Data.URL + ":" + Data.PORT + "/" + Data.DATABASE, Data.USER, Data.PASS);
+            selectTable();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void close(){
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 查询表
      */
-    public static void selectTable(){
-        conn = SQLConnection.conn;
+    public void selectTable(){
+
         try {
             String select_Table = "SELECT * FROM " + Data.PLAYER_EVENT_DATA + "";
             PreparedStatement table = conn.prepareStatement(select_Table);
@@ -37,7 +53,7 @@ public class PlayerEventDataSQLReader {
     /**
      * 创建表
      */
-    public static void createTable(){
+    public void createTable(){
         try {
             String create_table = "CREATE TABLE IF NOT EXISTS " + Data.PLAYER_EVENT_DATA + " (`id`  int UNSIGNED NOT NULL AUTO_INCREMENT ,`name`  varchar(40) NOT NULL ,`event`  varchar(40) NOT NULL ,`value`  varchar(40) NOT NULL  ,`server`  varchar(40) NOT NULL ,`time`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,PRIMARY KEY (`id`) ,INDEX `name_key` (`name`) USING BTREE) DEFAULT CHARSET=utf8;";
             PreparedStatement create = conn.prepareStatement(create_table);
@@ -52,7 +68,7 @@ public class PlayerEventDataSQLReader {
      * @param endTime 结束
      * @return 数额
      */
-    public static List<PlayerEventData> getPlayerEventDataTime(String event,String server, String onTime, String endTime) {
+    public List<PlayerEventData> getPlayerEventDataTime(String event,String server, String onTime, String endTime) {
         List<PlayerEventData> list = new ArrayList<>();
         try {
 
@@ -88,7 +104,7 @@ public class PlayerEventDataSQLReader {
      * @param name 玩家ID
      * @return 玩家Rank信息
      */
-    public static List<PlayerEventData> getPlayerEventData(String name, String event, String server) {
+    public List<PlayerEventData> getPlayerEventData(String name, String event, String server) {
         List<PlayerEventData> list = new ArrayList<>();
         try {
 
@@ -131,7 +147,7 @@ public class PlayerEventDataSQLReader {
     /**
      * 添加玩家的事件
      */
-    public static boolean addPlayerEvent(PlayerEventData playerEventData) {
+    public boolean addPlayerEvent(PlayerEventData playerEventData) {
         try {
             String select_data = "INSERT INTO " + Data.PLAYER_EVENT_DATA + "(name,event,value,server,time) VALUES (?,?,?,?,?);";
             PreparedStatement select = conn.prepareStatement(select_data);

@@ -33,6 +33,8 @@ public class Data {
     public static final String SERVER_NAME_CN = kimConfig.getString("SERVER_NAME_CN");
     public static final String SERVER_VAULT = kimConfig.getString("SERVER_VAULT");
     public static final String SERVER_POINTS = kimConfig.getString("SERVER_POINTS");
+    public static final String SERVER_RMB = kimConfig.getString("SERVER_RMB");
+    public static final int LEGENDARY_SPAWN = Main.getInstance().getConfig().getInt("kimcore.LEGENDARY_SPAWN");
 
     //首次充值翻倍活动
     public static final boolean POINTS_ACTIVITY = false;

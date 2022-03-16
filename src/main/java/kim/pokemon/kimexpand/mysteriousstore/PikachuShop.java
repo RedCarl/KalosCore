@@ -23,7 +23,7 @@ public class PikachuShop extends InventoryGUI {
         super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 皮卡丘の宝藏"), player, 6);
 
 
-//        double RMB = GlazedPayDataSQLReader.getPlayerTime(player.getName(),"2022-01-30","2022-02-04").getAmount();
+//        double RMB = Main.getInstance().getGlazedPayDataSQLReader().getPlayerTime(player.getName(),"2022-01-30","2022-02-04").getAmount();
 //
 //
 //        double APrice = 6;

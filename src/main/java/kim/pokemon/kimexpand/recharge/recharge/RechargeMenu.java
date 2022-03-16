@@ -1,5 +1,9 @@
 package kim.pokemon.kimexpand.recharge.recharge;
 
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.PlayerManager;
+import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.database.GlazedPayDataSQLReader;
 import kim.pokemon.kimexpand.menu.MainMenu;
@@ -25,8 +29,8 @@ public class RechargeMenu extends InventoryGUI {
     public RechargeMenu(Player player) {
         super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 充值系统"), player, 6);
 
-        List<PlayerRecharge> rechargeList = GlazedPayDataSQLReader.getTopPlayer();
-        double total =  GlazedPayDataSQLReader.getTotal();
+        List<PlayerRecharge> rechargeList = Main.getInstance().getGlazedPayDataSQLReader().getTopPlayer();
+        double total =  Main.getInstance().getGlazedPayDataSQLReader().getTotal();
 
 //        HashMap<String,Double> rankTop = new HashMap<>();
 //        if (rechargeList != null){
@@ -35,16 +39,17 @@ public class RechargeMenu extends InventoryGUI {
 //            }
 //
 //        }
+        PlayerManager playerManager = CMI.getInstance().getPlayerManager();
         ItemStack Top = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/3821987b682663c26b0315cfd796898ce75ed3f0a8de6807599fe3f0173c9f63",
                 ColorParser.parse("&bKalosの玩家贡献排行榜"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&f#1 &c"+rechargeList.get(0).getPlayer()+" ( "+df.format((rechargeList.get(0).getAmount()/total)*100)+"% )"),
-                ColorParser.parse("&f#2 &6"+rechargeList.get(1).getPlayer()+" ( "+df.format((rechargeList.get(1).getAmount()/total)*100)+"% )"),
-                ColorParser.parse("&f#3 &e"+rechargeList.get(2).getPlayer()+" ( "+df.format((rechargeList.get(2).getAmount()/total)*100)+"% )"),
-                ColorParser.parse("&f#4 &a"+rechargeList.get(3).getPlayer()+" ( "+df.format((rechargeList.get(3).getAmount()/total)*100)+"% )"),
-                ColorParser.parse("&f#5 &a"+rechargeList.get(4).getPlayer()+" ( "+df.format((rechargeList.get(4).getAmount()/total)*100)+"% )"),
+                ColorParser.parse("&f#1 &c"+playerManager.getUser(rechargeList.get(0).getPlayer()).getDisplayName()+" ( "+df.format((rechargeList.get(0).getAmount()/total)*100)+"% )"),
+                ColorParser.parse("&f#2 &6"+playerManager.getUser(rechargeList.get(1).getPlayer()).getDisplayName()+" ( "+df.format((rechargeList.get(1).getAmount()/total)*100)+"% )"),
+                ColorParser.parse("&f#3 &e"+playerManager.getUser(rechargeList.get(2).getPlayer()).getDisplayName()+" ( "+df.format((rechargeList.get(2).getAmount()/total)*100)+"% )"),
+                ColorParser.parse("&f#4 &a"+playerManager.getUser(rechargeList.get(3).getPlayer()).getDisplayName()+" ( "+df.format((rechargeList.get(3).getAmount()/total)*100)+"% )"),
+                ColorParser.parse("&f#5 &a"+playerManager.getUser(rechargeList.get(4).getPlayer()).getDisplayName()+" ( "+df.format((rechargeList.get(4).getAmount()/total)*100)+"% )"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&f#? &9"+player.getName()+" ( "+df.format((GlazedPayDataSQLReader.getPlayer(player.getName()).getAmount()/total)*100)+"% )"),
+                ColorParser.parse("&f#? &9"+playerManager.getUser(player.getName()).getDisplayName()+" ( "+df.format((Main.getInstance().getGlazedPayDataSQLReader().getPlayer(player.getName()).getAmount()/total)*100)+"% )"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&c感谢所有充值的玩家,我们会努力做到更好!")
         );
@@ -54,7 +59,7 @@ public class RechargeMenu extends InventoryGUI {
 
         for (int i = 1; i <= 7; i++) {
             ItemStack Money = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/bb6aef7b520e27f60a5127300b47965ab7537477e69640e6513956a1c8a469ca",
-                    ColorParser.parse("&f充值 &a"+(double) (6*i)+" &f"+Data.SERVER_POINTS+""),
+                    ColorParser.parse("&f充值 &a"+(double) (6*i)+" &f"+Data.SERVER_POINTS),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&7&o您的赞助是对我们最大的支持."));
             Money.setAmount(i);
@@ -71,7 +76,7 @@ public class RechargeMenu extends InventoryGUI {
         int j = 0;
         for (int i = 10; i <= 70; i=i+10) {
             ItemStack Money = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/7095d0b895bd8b6f252534214d3f819b351e1987b52cbfc0afa424df1f00fa7a",
-                    ColorParser.parse("&f充值 &6"+(double) (6*i)+" &f"+ Data.SERVER_POINTS+""),
+                    ColorParser.parse("&f充值 &6"+(double) (6*i)+" &f"+ Data.SERVER_POINTS),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&7&o您的赞助是对我们最大的支持."));
             Money.setAmount(i);

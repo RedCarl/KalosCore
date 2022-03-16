@@ -1,32 +1,24 @@
-#KIM Core
 mysql:
-  DRIVER: 'com.mysql.jdbc.Driver'
-  URL: 'localhost'
+  DRIVER: com.mysql.jdbc.Driver
+  URL: localhost
   PORT: '3306'
-  DATABASE: 'kalos?useSSL=false&characterEncoding=UTF-8&autoReconnect=true'
-  USER: 'kalos'
-  PASS: 'kalos'
-  ##不要更改
-  GLAZED_PAY_DATA: 'ranks'
-  POKEMON_BAN_DATA: 'BanPokemonMap'
-  PREMIUM_DATA: 'premium_data'
-  PLAYER_EVENT_DATA: 'PlayerEventData'
+  DATABASE: kalos?useSSL=false&characterEncoding=UTF-8&autoReconnect=true
+  USER: kalos
+  PASS: kalos
+  GLAZED_PAY_DATA: ranks
+  POKEMON_BAN_DATA: BanPokemonMap
+  PREMIUM_DATA: premium_data
+  PLAYER_EVENT_DATA: PlayerEventData
 kimcore:
-  SERVER_NAME: 'Kim'
+  SERVER_NAME: 'Kalos'
   SERVER_NAME_CN: '卡洛斯'
   SERVER_VAULT: '卡洛币'
   SERVER_POINTS: '卡点'
-  ARMOURERS_PATH: '/home/kalos/ArmourersData'
-
-#BreedLimit
+  SERVER_RMB: 'RMB'
+  ARMOURERS_PATH: '/home/kalos/pokemon/ArmourersData'
+  LEGENDARY_SPAWN: 10800
 BreedLimit:
   Ivs: 6
   Ability: false
   Pokemon:
     - Ditto
-
-#PokeAward
-PokeAward:
-
-#KimArmourers
-KimArmourers:

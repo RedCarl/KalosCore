@@ -1,5 +1,8 @@
 package kim.pokemon.kimexpand.recharge.recharge;
 
+import com.glazed7.glazedpay.bukkit.api.GlazedPayAPI;
+import com.glazed7.glazedpay.bukkit.pay.PayManager;
+import com.glazed7.glazedpay.bukkit.pay.PaywayType;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.gui.Button;
@@ -18,7 +21,7 @@ public class RechargeSelect extends InventoryGUI {
         Button QQButton = new Button(QQ, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"gpay create Q "+money+" "+ player.getName());
+                PayManager.initiatePay(player, PaywayType.TENPAY,money);
             }
         });
         this.setButton(2, QQButton);
@@ -27,7 +30,7 @@ public class RechargeSelect extends InventoryGUI {
         Button WECHAT_JSButton = new Button(WECHAT_JS, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"gpay create W "+money+" "+ player.getName());
+                PayManager.initiatePay(player, PaywayType.WECHAT_JS,money);
             }
         });
         this.setButton(4, WECHAT_JSButton);
@@ -36,7 +39,7 @@ public class RechargeSelect extends InventoryGUI {
         Button ALIPAYButton = new Button(ALIPAY, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"gpay create A "+money+" "+ player.getName());
+                PayManager.initiatePay(player, PaywayType.ALIPAY,money);
             }
         });
         this.setButton(6, ALIPAYButton);

@@ -14,26 +14,33 @@ import kim.pokemon.kimexpand.premium.VIPBuy;
 import kim.pokemon.kimexpand.premium.entity.PlayerVIP;
 import kim.pokemon.kimexpand.signin.Newbie;
 import kim.pokemon.util.ColorParser;
+import kim.pokemon.util.api.PokemonPhotoAPI;
 import org.black_ixx.playerpoints.event.PlayerPointsChangeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import studio.trc.bukkit.litesignin.api.Storage;
+import studio.trc.bukkit.litesignin.event.custom.PlayerSignInEvent;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Random;
 
 public class PlayerEvent implements Listener {
     HashMap<Player, Location> playerLocationHashMap = new HashMap<>();
@@ -131,13 +138,21 @@ public class PlayerEvent implements Listener {
 //                }
 //            }
             //禁止在主城使用 锅 和 钓鱼竿
-            if (player.getLocation().getWorld().getName().equals("spawn")){
-                if (player.getItemInHand().getType().name().contains("_ROD")||player.getItemInHand().getType().name().contains("FRYPAN")){
-                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，为了服务器的秩序，您无法在主城使用该物品."));
-                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                    event.setCancelled(true);
+            if (!player.hasPermission("group.admin")){
+                if (player.getLocation().getWorld().getName().equals("spawn")){
+                    if (
+                            player.getItemInHand().getType().name().contains("_ROD")||
+                            player.getItemInHand().getType().name().contains("FRYPAN")||
+                                    player.getItemInHand().getType().name().contains("SAKURA")||
+                                    player.getItemInHand().getType().name().contains("TCONSTRUCT")
+                    ){
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，为了服务器的秩序，您无法在主城使用该物品."));
+                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                        event.setCancelled(true);
+                    }
                 }
             }
+
         }
 
     }
@@ -196,7 +211,7 @@ public class PlayerEvent implements Listener {
             if (player!=null){
                 int money = event.getChange();
                 if (money>0){
-                    if (GlazedPayDataSQLReader.getPlayer(player.getName()).getAmount()<1){
+                    if (Main.getInstance().getGlazedPayDataSQLReader().getPlayer(player.getName()).getAmount()<1){
                         event.setChange(money*2);
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7感谢您的支持,由于您是第一次赞助,本次充值到账的 &c"+Data.SERVER_POINTS+"x2 &7请注意查收."));
                     }
@@ -206,7 +221,7 @@ public class PlayerEvent implements Listener {
 
 
         //数据记录
-        PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(Bukkit.getPlayer(event.getPlayerId()).getName(),event.getEventName(),String.valueOf(event.getChange()),new Timestamp(System.currentTimeMillis())));
+        Main.getInstance().getPlayerEventDataSQLReader().addPlayerEvent(PlayerEventData.setPlayerEventData(Bukkit.getPlayer(event.getPlayerId()).getName(),event.getEventName(),String.valueOf(event.getChange()),new Timestamp(System.currentTimeMillis())));
     }
 
 
@@ -216,7 +231,7 @@ public class PlayerEvent implements Listener {
         //开启幸运方块
         if (event.getBlock().getType().toString().equals("POKELUCKY_POKE_LUCKY")){
             //数据记录
-//            PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(event.getPlayer().getName(),event.getEventName(),"1",new Timestamp(System.currentTimeMillis())));
+//            Main.getInstance().getPlayerEventDataSQLReader().addPlayerEvent(PlayerEventData.setPlayerEventData(event.getPlayer().getName(),event.getEventName(),"1",new Timestamp(System.currentTimeMillis())));
         }
     }
 
@@ -240,7 +255,7 @@ public class PlayerEvent implements Listener {
         Player player = Bukkit.getPlayer(name);
 
 
-        PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(name,event.getEventName(),money,new Timestamp(System.currentTimeMillis())));
+        Main.getInstance().getPlayerEventDataSQLReader().addPlayerEvent(PlayerEventData.setPlayerEventData(name,event.getEventName(),money,new Timestamp(System.currentTimeMillis())));
 
         //会员 充值/续费 取消发货
         if (Objects.equals(money, "25.0") || Objects.equals(money, "45.0")){
@@ -273,6 +288,7 @@ public class PlayerEvent implements Listener {
                         VIPBuy.updateRank(rank);
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功续费了 &6卡洛斯の伊布*30天 &7请注意查收."));
                     }else {
+                        VIPBuy.deleteRank(player);
                         rank.setTime(new Timestamp(System.currentTimeMillis()+ 2592000000L));
                         rank.setServer(Main.luckPerms.getServerName());
                         VIPBuy.addRank(rank);
@@ -290,11 +306,40 @@ public class PlayerEvent implements Listener {
     public void KeyPressEvent(KeyPressEvent event){
         Player player = event.getPlayer();
         String key = event.getKey();
+        PokemonPhotoAPI.getFolder("KeyPressEvent/");
+        File file = new File(Main.getInstance().getDataFolder(), "KeyPressEvent/"+player.getName() + ".yml");
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
         switch (key){
             case "G":
-                MainMenu mainMenu = new MainMenu(player);
-                mainMenu.openInventory();
+                if (!config.getBoolean("G")){
+                    MainMenu mainMenu = new MainMenu(player);
+                    mainMenu.openInventory();
+                }
                 break;
         }
+    }
+
+    //玩家签到事件
+    @EventHandler
+    public void PlayerSignInEvent(PlayerSignInEvent event){
+        Player player = event.getPlayer();
+
+        //月卡礼包
+        if (player.hasPermission("group.pikanium")){
+            Main.ppAPI.giveAsync(player.getUniqueId(),1);
+        }
+        if (player.hasPermission("group.eevee")){
+            Main.ppAPI.giveAsync(player.getUniqueId(),5);
+        }
+    }
+
+    //玩家死亡事件
+    @EventHandler
+    public void PlayerDeathEvent(PlayerDeathEvent event){
+        Player player = event.getEntity();
+
+        int money = new Random().nextInt(45);
+        Main.econ.withdrawPlayer(player,money);
+        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很遗憾您在探险的过程中失败了，您丢失了 &c"+money+" &7卡洛币，不要灰心。"));
     }
 }

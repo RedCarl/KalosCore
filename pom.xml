@@ -129,6 +129,27 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/DragonCore-2.5.3.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>GameCore</groupId>
+            <artifactId>GameCore-api</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/GameCore-1.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>DragonArmourers</groupId>
+            <artifactId>DragonArmourers</artifactId>
+            <version>4.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/Plugin-DragonArmourers4.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>spark</groupId>
+            <artifactId>spark</artifactId>
+            <version>4.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/spark.jar</systemPath>
+        </dependency>
 
         <!--Mod-->
         <dependency>
@@ -146,12 +167,13 @@
             <systemPath>${project.basedir}/libs/pokelucky-1.1.0.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>DragonArmourers</groupId>
-            <artifactId>DragonArmourers</artifactId>
-            <version>4.2</version>
+            <groupId>TravelersBackpack</groupId>
+            <artifactId>TravelersBackpack</artifactId>
+            <version>1.0.35</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/Plugin-DragonArmourers4.2.jar</systemPath>
+            <systemPath>${project.basedir}/libs/TravelersBackpack-1.12.2-1.0.35.jar</systemPath>
         </dependency>
+
 
         <!--IDEA Plugins-->
         <dependency>

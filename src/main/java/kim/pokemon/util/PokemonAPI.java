@@ -1,45 +1,38 @@
 package kim.pokemon.util;
 
 import com.pixelmonmod.pixelmon.Pixelmon;
-import com.pixelmonmod.pixelmon.api.events.blocks.CloningCompleteEvent;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.pokemon.PokemonSpec;
 import com.pixelmonmod.pixelmon.api.storage.PCStorage;
 import com.pixelmonmod.pixelmon.battles.BattleRegistry;
 import com.pixelmonmod.pixelmon.battles.attacks.Attack;
-import com.pixelmonmod.pixelmon.battles.controller.BattleControllerBase;
-import com.pixelmonmod.pixelmon.battles.controller.participants.PixelmonWrapper;
-import com.pixelmonmod.pixelmon.battles.controller.participants.PlayerParticipant;
 import com.pixelmonmod.pixelmon.comm.packetHandlers.OpenScreen;
 import com.pixelmonmod.pixelmon.comm.packetHandlers.clientStorage.newStorage.pc.ClientChangeOpenPC;
 import com.pixelmonmod.pixelmon.comm.packetHandlers.clientStorage.newStorage.pc.ClientInitializePC;
+import com.pixelmonmod.pixelmon.entities.pixelmon.EntityPixelmon;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.EVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.enums.EnumGuiScreen;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
-import com.pixelmonmod.pixelmon.enums.battle.EnumBattleEndCause;
 import com.pixelmonmod.pixelmon.enums.forms.IEnumForm;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import kim.pokemon.Main;
 import kim.pokemon.command.PokeAward.PokeFormCommand;
 import kim.pokemon.configFile.Data;
-import kim.pokemon.kimexpand.menu.MainMenu;
 import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
-import net.minecraft.entity.player.EntityPlayer;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.lang3.RandomUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
 import java.util.*;
 
 public class PokemonAPI {
@@ -111,7 +104,6 @@ public class PokemonAPI {
         PlayerPartyStorage playerPartyStorage = Pixelmon.storageManager.getParty(player.getUniqueId());
         playerPartyStorage.heal();
         //进入延迟状态
-        MainMenu.HealSleep.put(player,System.currentTimeMillis());
         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7哇，背包里的宝可梦们都恢复健康了!"));
     }
@@ -534,16 +526,13 @@ public class PokemonAPI {
 
         //传奇黑名单
         String[] LegendaryBlackList = new String[]{
-                "时拉比"
+                "时拉比",
         };
+
         //普通黑名单
         String[] PokemonBlackList = new String[]{
-                "小火马"
+                "小火马",
         };
-        //特性
-        if (pokemon.getAbilitySlot()==2){
-            money+=2500;
-        }
 
         //传奇
         if (pokemon.isLegendary()){
@@ -558,9 +547,10 @@ public class PokemonAPI {
         }
 
         //努力值估算
-//        for (int ev:pokemon.getEVs().getArray()) {
-//            money+=ev;
-//        }
+        for (int ev:pokemon.getEVs().getArray()) {
+            int a = ev/2;
+            money+=a;
+        }
 
         //个体值估算
         int a = 0;
@@ -603,6 +593,98 @@ public class PokemonAPI {
         //黑名单宝可梦
         if (Arrays.asList(PokemonBlackList).contains(pokemon.getLocalizedName())){
             money=10;
+        }
+
+        return money;
+    }
+
+    /**
+     * 计算宝可梦价值
+     * @param pokemon 宝可梦
+     * @return 价格
+     */
+    public static int getPokemonPoints(Pokemon pokemon){
+        int money = 0;
+
+        HashMap<String,Integer> hashMap = new HashMap<>();
+        hashMap.put("超梦",88);
+        hashMap.put("梦幻",2);
+        hashMap.put("洛奇亚",20);
+        hashMap.put("凤王",20);
+        hashMap.put("时拉比",5);
+        hashMap.put("雷吉洛克",10);
+        hashMap.put("雷吉艾斯",10);
+        hashMap.put("雷吉奇卡斯",25);
+        hashMap.put("拉帝亚斯",25);
+        hashMap.put("拉帝欧斯",25);
+        hashMap.put("盖欧卡",60);
+        hashMap.put("固拉多",60);
+        hashMap.put("烈空坐",60);
+        hashMap.put("基拉祈",5);
+        hashMap.put("由克希",3);
+        hashMap.put("艾姆利多",3);
+        hashMap.put("亚克诺姆",3);
+        hashMap.put("帝牙卢卡",45);
+        hashMap.put("帕路奇亚",45);
+        hashMap.put("席多蓝恩",20);
+        hashMap.put("骑拉帝纳",45);
+        hashMap.put("克雷色利亚",10);
+        hashMap.put("菲欧纳",5);
+        hashMap.put("玛纳霏",5);
+        hashMap.put("达克莱伊",25);
+        hashMap.put("谢米",10);
+        hashMap.put("阿尔宙斯",90);
+        hashMap.put("比克提尼",24);
+        hashMap.put("龙卷云",20);
+        hashMap.put("雷电云",15);
+        hashMap.put("莱希拉姆",20);
+        hashMap.put("捷克罗姆",20);
+        hashMap.put("土地云",25);
+        hashMap.put("酋雷姆",10);
+        hashMap.put("凯路迪欧",5);
+        hashMap.put("美洛耶塔",15);
+        hashMap.put("盖诺赛克特",10);
+        hashMap.put("基格尔德",80);
+        hashMap.put("蒂安希",15);
+        hashMap.put("胡帕",25);
+        hashMap.put("波尔凯尼恩",10);
+        hashMap.put("露奈雅拉",45);
+        hashMap.put("奈克洛兹玛",25);
+        hashMap.put("玛机雅娜",10);
+        hashMap.put("玛夏多",20);
+        hashMap.put("雷吉艾勒奇",15);
+        hashMap.put("雷电鸟",3);
+        hashMap.put("火焰鸟",3);
+        hashMap.put("急冻鸟",3);
+        hashMap.put("哲尔尼亚斯",45);
+        hashMap.put("伊裴尔塔尔",45);
+        hashMap.put("萨戮德",45);
+        hashMap.put("熊徒弟",45);
+        hashMap.put("武道熊师",45);
+        hashMap.put("卡璞·鸣鸣",15);
+        hashMap.put("卡璞·蝶蝶",15);
+        hashMap.put("卡璞·哞哞",15);
+        hashMap.put("卡璞·鳍鳍",15);
+        hashMap.put("索尔迦雷欧",25);
+        hashMap.put("无极汰那",60);
+        hashMap.put("苍响",32);
+        hashMap.put("藏玛然特",15);
+        hashMap.put("水君",5);
+        hashMap.put("炎帝",5);
+        hashMap.put("雷公",5);
+        hashMap.put("蕾冠王",44);
+        hashMap.put("灵幽马",20);
+        hashMap.put("代拉基翁",14);
+        hashMap.put("勾帕路翁",24);
+        hashMap.put("毕力吉翁",15);
+        hashMap.put("科斯莫姆",44);
+        hashMap.put("代欧奇希斯",24);
+        hashMap.put("雷吉斯奇鲁",14);
+        hashMap.put("雷吉铎拉戈",24);
+        hashMap.put("雪暴马",24);
+
+        if (hashMap.containsKey(pokemon.getLocalizedName())){
+            money = hashMap.get(pokemon.getLocalizedName());
         }
 
         return money;
@@ -721,10 +803,47 @@ public class PokemonAPI {
     /**
      * 给玩家概率给一个福
      * @param player 玩家
-     * @param probability 概率
+     * @param pixelmon 宝可梦
      */
-    public static void getBills(Player player,int probability){
-
+    public static void getBills(Player player, EntityPixelmon pixelmon){
+        int probability = 0;
+        if (pixelmon!=null){
+            switch (pixelmon.getBossMode().name()){
+                case "NotBoss":
+                    probability = 9;
+                    break;
+                case "Uncommon":
+                    probability = 60;
+                    break;
+                case "Common":
+                    probability = 70;
+                    break;
+                case "Rare":
+                    probability = 80;
+                    break;
+                case "Epic":
+                    probability = 90;
+                    break;
+                case "Equal":
+                    probability = 95;
+                    break;
+                case "Legendary":
+                    probability = 100;
+                    break;
+                case "Ultimate":
+                    probability = 98;
+                    break;
+                case "Spooky":
+                    probability = 50;
+                    break;
+                case "Drowned":
+                    probability = 55;
+                    break;
+            }
+        }
+        
+        
+        
         int randomInt =  RandomUtils.nextInt(1,101);
 
         // 多少概率会掉福
@@ -765,5 +884,79 @@ public class PokemonAPI {
                 player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
             }
         }
+    }
+
+
+
+    /**
+     * 查询神兽
+     * @param player 玩家
+     */
+    public static void check(Player player){
+        int money;
+
+        if (player.hasPermission("group.eevee")){
+            money = 0;
+        }else if (player.hasPermission("group.pikanium")){
+            money = 240;
+        }else {
+            money = 500;
+        }
+
+        if (Main.econ.getBalance(player)>=money){
+            Main.econ.withdrawPlayer(player,money);
+            player.sendMessage(ColorParser.parse("&r"));
+            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7正在为您查询这片区域的传说宝可梦..."));
+            Bukkit.dispatchCommand(player,"checkspawns legendary");
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+        }else {
+            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+Main.econ.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
+            player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+        }
+    }
+
+    public static MinecraftServer getServer() {
+        return FMLCommonHandler.instance().getMinecraftServerInstance();
+    }
+
+    /**
+     * 秒格式化
+     */
+    public static String getDate(Integer date){
+        if (date<60) {
+            return "&e"+date+" &7秒";
+        }else if (date>60&&date<3600) {
+            int m = date/60;
+            int s = date%60;
+            return "&e"+m+" &7分"+" &e"+s+" &7秒";
+        }else {
+            int h = date/3600;
+            int m = (date%3600)/60;
+            int s = (date%3600)%60;
+            return "&e"+h+" &7小时"+" &e"+m+" &7分"+" &e"+s+" &7秒";
+        }
+    }
+
+
+    public static void sendPlayerBaseComponent(List<String> message, List<String> hover){
+        List<BaseComponent> lores = new ArrayList<>();
+
+        for (String h : hover) {
+            lores.addAll(Arrays.asList(TextComponent.fromLegacyText(h)));
+        }
+        List<BaseComponent> texts = new ArrayList<>();
+
+        for (String m : message) {
+            BaseComponent[] tx = TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', m));
+
+            for (BaseComponent baseComponent : tx) {
+                HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, lores.toArray(new BaseComponent[0]));
+                baseComponent.setHoverEvent(hoverEvent);
+            }
+
+            texts.addAll(Arrays.asList(tx));
+        }
+
+        Bukkit.spigot().broadcast(texts.toArray(new BaseComponent[0]));
     }
 }

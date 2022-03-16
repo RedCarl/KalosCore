@@ -16,6 +16,7 @@ import kim.pokemon.kimexpand.playerinfo.PlayerInfo;
 import kim.pokemon.kimexpand.plotadmin.gui.PlotMenu;
 import kim.pokemon.kimexpand.pokeban.gui.BanList;
 import kim.pokemon.kimexpand.pokeinfo.gui.PokemonInfoMenu;
+import kim.pokemon.kimexpand.pokespawn.SpawnTime;
 import kim.pokemon.kimexpand.recharge.recharge.RechargeMenu;
 import kim.pokemon.kimexpand.warps.WorldWarpMenu;
 import kim.pokemon.util.ColorParser;
@@ -29,12 +30,14 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import red.kalos.ui.Menu;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 public class MainMenu extends InventoryGUI {
     public static HashMap<Player,Long> HealSleep = new HashMap<>();
+    public static HashMap<Player,Long> CheckSpawnsSleep = new HashMap<>();
 
     public MainMenu(Player player) {
         super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 菜单"), player, 6);
@@ -45,22 +48,22 @@ public class MainMenu extends InventoryGUI {
 
         ItemStack PlayerInfo = null;
         try {
-            PlayerInfo = SkullAPI.getPlayerSkull(player,
+            PlayerInfo = SkullAPI.getPlayerSkull(
                     ColorParser.parse("&b&l"+Data.SERVER_NAME_CN+"の宝可梦 &c(v"+Main.getInstance().getDescription().getVersion()+")"),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&3玩家信息:"),
-                    ColorParser.parse("&r  &a■ &7余额:"),
-                    ColorParser.parse("&r      &3" + CMI.getInstance().getPlayerManager().getUser(player).getBalance() + " &7"+Data.SERVER_VAULT+""),
-                    ColorParser.parse("&r      &3" + Main.ppAPI.lookAsync(player.getUniqueId()).get() + ".0 &7"+Data.SERVER_POINTS+""),
-                    ColorParser.parse("&r  &b■ &7累计充值: &3" + GlazedPayDataSQLReader.getPlayer(player.getName()).getAmount() + " &7RMB"),
+                    ColorParser.parse("&r  &b■ &7账号(用于登录游戏):"),
+                    ColorParser.parse("&r      &f" + player.getName()),
+                    ColorParser.parse("&r  &9■ &7昵称(用于游戏内显示):"),
+                    ColorParser.parse("&r      &f" + player.getDisplayName()),
+                    ColorParser.parse("&r  &c■ &7UUID(用于存储玩家数据):"),
+                    ColorParser.parse("&r      &f" + player.getUniqueId()),
                     ColorParser.parse("&r"),
-                    ColorParser.parse("&3世界信息:"),
-                    ColorParser.parse("&r  &c■ &7传说宝可梦:"),
-                    ColorParser.parse("&r      &315.3% &7概率"),
-                    ColorParser.parse("&r      &3216000tick &7周期"),
-                    ColorParser.parse("&r  &d■ &7BOSS可梦:"),
-                    ColorParser.parse("&r      &315.0% &7概率"),
-                    ColorParser.parse("&r      &310000tick &7周期"),
+                    ColorParser.parse("&r  &e■ &7游戏余额:"),
+                    ColorParser.parse("&r      &3" + CMI.getInstance().getPlayerManager().getUser(player).getBalance() + " &7"+Data.SERVER_VAULT),
+                    ColorParser.parse("&r      &3" + Main.ppAPI.lookAsync(player.getUniqueId()).get() + ".0 &7"+Data.SERVER_POINTS),
+                    ColorParser.parse("&r  &6■ &7累计充值: &3"),
+                    ColorParser.parse("&r      &3" + Main.getInstance().getGlazedPayDataSQLReader().getPlayer(player.getName()).getAmount() + " &7RMB"),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&7&o您可以查看一些与您相关的信息.")
             );
@@ -102,12 +105,16 @@ public class MainMenu extends InventoryGUI {
         this.setButton(28, TeleportationButton);
 
         ItemStack Clock = ItemFactoryAPI.getItemStack(Material.FIREWORK,
-                ColorParser.parse("&f活动事件"),
+                ColorParser.parse("&f娱乐活动"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o您可以看到本服务器所有的活动详情.")
+                ColorParser.parse("&7&o您可以看到本服务器所有的娱乐活动详情.")
         );
         Button ClockButton = new Button(Clock, type -> {
             if (type.isLeftClick()) {
+                if (Main.getInstance().getServer().getPluginManager().isPluginEnabled("GameCore")){
+                    Menu menu = new Menu(player);
+                    menu.openInventory();
+                }
             }
         });
         this.setButton(37, ClockButton);
@@ -199,20 +206,47 @@ public class MainMenu extends InventoryGUI {
         ItemStack Heal = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_HEALER"),
                 ColorParser.parse("&f治疗宝可梦"),
                 ColorParser.parse("&r"),
+                ColorParser.parse("&r  &a■ &7价 格:"),
+                ColorParser.parse("&r      &7   普通&f|&7玩家: &f"+50+" &7"+Data.SERVER_VAULT+"/次 (冷却10秒)"),
+                ColorParser.parse("&r      &e   皮卡&f|&7玩家: &f"+24+" &7"+Data.SERVER_VAULT+"/次 (冷却10秒)"),
+                ColorParser.parse("&r      &6   伊布&f|&7玩家: &f"+0+" &7"+Data.SERVER_VAULT+"/次 (冷却10秒)"),
+                ColorParser.parse("&r"),
                 ColorParser.parse("&7&o您可以就地对背包的 &a宝可梦 &7&o进行治疗.")
         );
         Button HealButton = new Button(Heal, type -> {
             if (type.isLeftClick()) {
                 player.closeInventory();
-                PokemonAPI.setPokemonStater(player);
                 if (HealSleep.containsKey(player)){
-                    if (System.currentTimeMillis()-HealSleep.get(player)>=120000){
-                        PokemonAPI.setPokemonStater(player);
+                    if (System.currentTimeMillis()-HealSleep.get(player)>=10000){
+                        if (player.hasPermission("group.eevee")){
+                            HealSleep.put(player,System.currentTimeMillis());
+                            PokemonAPI.setPokemonStater(player);
+                        }else if (player.hasPermission("group.pikanium")){
+                            if (Main.econ.getBalance(player)>=24){
+                                Main.econ.withdrawPlayer(player,24);
+                                HealSleep.put(player,System.currentTimeMillis());
+                                PokemonAPI.setPokemonStater(player);
+                            }else {
+                                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7抱歉，您需要花费 &c24 &7卡洛币来治疗宝可梦们."));
+                                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                            }
+                        }else {
+                            if (Main.econ.getBalance(player)>=50){
+                                Main.econ.withdrawPlayer(player,50);
+                                HealSleep.put(player,System.currentTimeMillis());
+                                PokemonAPI.setPokemonStater(player);
+                            }else {
+                                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7抱歉，您需要花费 &c50 &7卡洛币来治疗宝可梦们."));
+                                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                            }
+                        }
                     }else {
-                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7抱歉，您必须等待 &c2 &7分钟才能使用该功能."));
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7抱歉，您必须等待 &c10 &7秒才能使用该功能."));
                         player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
                     }
+
                 }else {
+                    HealSleep.put(player,System.currentTimeMillis());
                     PokemonAPI.setPokemonStater(player);
                 }
             }
@@ -224,7 +258,9 @@ public class MainMenu extends InventoryGUI {
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &a■ &7精灵回收:"),
                 ColorParser.parse("&r      &7   您可以在PC内将宝可梦拖入垃"),
-                ColorParser.parse("&r      &7圾桶,这样"+Data.SERVER_NAME_CN+"会给你报酬."),
+                ColorParser.parse("&r      &7圾桶,将会给你 &a"+Data.SERVER_VAULT+" &7作为报酬."),
+                ColorParser.parse("&r      &7   如果是传说宝可梦那么我们将"),
+                ColorParser.parse("&r      &7会给你 &6"+Data.SERVER_POINTS+" &7作为报酬."),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o快捷的远程打开 &a宝可梦电脑 &7&o对宝可梦进行管理.")
         );
@@ -270,23 +306,39 @@ public class MainMenu extends InventoryGUI {
         this.setButton(25, VIPFlyButton);
 
         ItemStack VIPCheckSpawns = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_POKEMON_EDITOR"),
-                ColorParser.parse("&f传说查询 &7/ &6会员专属"),
+                ColorParser.parse("&f传说查询 &7(不能100%准确)"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o查询该区域下会生成的宝可梦.")
+                ColorParser.parse("&r  &e■ &7使用收费:"),
+                ColorParser.parse("&r      &7   普通&f|&7玩家: &f"+500+" &7"+Data.SERVER_VAULT+"/次 (冷却2分钟)"),
+                ColorParser.parse("&r      &e   皮卡&f|&7玩家: &f"+240+" &7"+Data.SERVER_VAULT+"/次 (冷却1分钟)"),
+                ColorParser.parse("&r      &6   伊布&f|&7玩家: &f"+0+" &7"+Data.SERVER_VAULT+"/次 (无冷却)"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&r  &e■ &7概率信息:"),
+                ColorParser.parse("&r      &7   刷新周期: &c"+Data.LEGENDARY_SPAWN+" &7秒"),
+                ColorParser.parse("&r      &7   刷新概率: &c"+(10+Bukkit.getOnlinePlayers().size())+"% &7(随在线人数增加)"),
+                ColorParser.parse("&r      &7   下次刷新: "+PokemonAPI.getDate(SpawnTime.second)),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o只能查询该区域的传说宝可梦,并不能代表您的脚下.")
         );
         Button VIPCheckSpawnsButton = new Button(VIPCheckSpawns, type -> {
-            if (type.isLeftClick()) {
-                if (player.hasPermission("group.eevee")){
-                    player.sendMessage(ColorParser.parse("&r"));
-                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7正在为您查询这片区域的传说宝可梦..."));
-                    Bukkit.dispatchCommand(player,"checkspawns legendary");
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
-                    player.closeInventory();
+            player.closeInventory();
+            long s = 120000;
+            if (player.hasPermission("group.eevee")){
+                s = 0;
+            }else if (player.hasPermission("group.pikanium")){
+                s = 60000;
+            }
+            if (CheckSpawnsSleep.containsKey(player)){
+                if (System.currentTimeMillis()-CheckSpawnsSleep.get(player)>=s){
+                    CheckSpawnsSleep.put(player,System.currentTimeMillis());
+                    PokemonAPI.check(player);
                 }else {
-                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您无法使用该功能."));
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7抱歉，您必须等待 &c"+(s/1000 - (System.currentTimeMillis()-CheckSpawnsSleep.get(player))/1000)+" &7秒才能使用该功能."));
                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-                    player.closeInventory();
                 }
+            }else {
+                CheckSpawnsSleep.put(player,System.currentTimeMillis());
+                PokemonAPI.check(player);
             }
         });
         this.setButton(30, VIPCheckSpawnsButton);
@@ -312,7 +364,7 @@ public class MainMenu extends InventoryGUI {
         this.setButton(49, PokeRankButton);
 
         ItemStack Mission = ItemFactoryAPI.getItemStack(Material.LEASH,
-                ColorParser.parse("&f任务系统"),
+                ColorParser.parse("&f任务系统 &c(Bate1.0)"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o丰富的任务系统，完成并获得奖励.")
         );

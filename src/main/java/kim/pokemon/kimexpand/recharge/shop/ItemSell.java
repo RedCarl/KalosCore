@@ -157,7 +157,7 @@ public class ItemSell extends InventoryGUI {
         //累计充值
         ItemStack ArmourersShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励."));
+                ColorParser.parse("&7&o可以购买时装来进行穿戴."));
         Button ArmourersShopButton = new Button(ArmourersShop, type -> {
             if (type.isLeftClick()) {
                 kim.pokemon.kimexpand.recharge.ArmourersShop armourersShop = new ArmourersShop(player);

@@ -110,7 +110,7 @@ public class PokemonPhotoAPI {
                 ColorParser.parse(PokemonAPI.getPokemonName(pokemon)),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c79 &7"+ Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c79 &7"+ Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o本次活动仅限购买一件商品，请三思而后行！")
         );

@@ -34,6 +34,8 @@ public class NameTag extends InventoryGUI {
         User user= Main.luckPerms.getUserManager().getUser(player.getUniqueId());
 
         ArrayList<TagEntity> tagEntities = new ArrayList<>();
+
+
         tagEntities.add(new TagEntity("先锋","kim.tag.先锋","&9[先锋]",null,100));
 
 

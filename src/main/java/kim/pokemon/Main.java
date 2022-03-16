@@ -8,11 +8,15 @@ import kim.pokemon.command.PokeAward.PokeFormCommand;
 import kim.pokemon.command.PokemonBan.BanItemCommand;
 import kim.pokemon.command.PokemonBan.BanPokemonCommand;
 import kim.pokemon.configFile.Data;
-import kim.pokemon.database.*;
+import kim.pokemon.database.GlazedPayDataSQLReader;
+import kim.pokemon.database.PlayerEventDataSQLReader;
+import kim.pokemon.database.PokemonBanDataSQLReader;
+import kim.pokemon.database.PremiumPlayerDataSQLReader;
 import kim.pokemon.kimexpand.armourers.listener.ArmourersUpdateListener;
 import kim.pokemon.kimexpand.autobroadcast.BroadCastMessage;
 import kim.pokemon.kimexpand.crazyauctions.CrazyAuctions;
 import kim.pokemon.kimexpand.kitpvp.PVPEvent;
+import kim.pokemon.kimexpand.nick.Nick;
 import kim.pokemon.kimexpand.pokeban.PokemonBan;
 import kim.pokemon.kimexpand.pokespawn.SpawnTime;
 import kim.pokemon.listener.CommandEvent;
@@ -34,7 +38,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -48,11 +51,29 @@ public class Main extends JavaPlugin {
     public static Economy econ = null;
     public static PlayerPointsAPI ppAPI;
     public static LuckPerms luckPerms;
-    public static Plugin getInstance(){
+    public static Main getInstance() {
         return instance;
     }
+    
     //玩家累计充值数量数据
     public static HashMap<Player, Double> GlazedPayData = new HashMap<>();
+
+    private GlazedPayDataSQLReader glazedPayDataSQLReader;
+    public GlazedPayDataSQLReader getGlazedPayDataSQLReader(){
+        return this.glazedPayDataSQLReader;
+    }
+    private PlayerEventDataSQLReader playerEventDataSQLReader;
+    public PlayerEventDataSQLReader getPlayerEventDataSQLReader(){
+        return this.playerEventDataSQLReader;
+    }
+    private PokemonBanDataSQLReader pokemonBanDataSQLReader;
+    public PokemonBanDataSQLReader getPokemonBanDataSQLReader(){
+        return this.pokemonBanDataSQLReader;
+    }
+    private PremiumPlayerDataSQLReader premiumPlayerDataSQLReader;
+    public PremiumPlayerDataSQLReader getPremiumPlayerDataSQLReader(){
+        return this.premiumPlayerDataSQLReader;
+    }
 
     @Override
     public void onEnable() {
@@ -64,6 +85,16 @@ public class Main extends JavaPlugin {
         log(getName() + " " + getDescription().getVersion() + " &7开始加载...");
 
         long startTime = System.currentTimeMillis();
+
+        log("正在启动数据库...");
+        this.glazedPayDataSQLReader = new GlazedPayDataSQLReader();
+        this.playerEventDataSQLReader = new PlayerEventDataSQLReader();
+        this.premiumPlayerDataSQLReader = new PremiumPlayerDataSQLReader();
+        this.pokemonBanDataSQLReader = new PokemonBanDataSQLReader();
+        this.premiumPlayerDataSQLReader.initialize();
+        this.pokemonBanDataSQLReader.initialize();
+        this.glazedPayDataSQLReader.initialize();
+        this.playerEventDataSQLReader.initialize();
 
         //Vault
         if (!setupEconomy() ) {
@@ -118,7 +149,6 @@ public class Main extends JavaPlugin {
             log("若您想使用全部功能，请安装LuckPerms！");
         }
 
-
         log("正在注册监听器...");
         regListener(new ButtonClickListener());
         regListener(new CommandEvent());
@@ -128,6 +158,7 @@ public class Main extends JavaPlugin {
         regListener(new PokemonBan());
         regListener(new ArmourersUpdateListener());
         regListener(new PVPEvent());
+        regListener(new Nick());
 
         log("启动传奇宝可梦监控系统...");
         SpawnTime.start();
@@ -141,13 +172,6 @@ public class Main extends JavaPlugin {
         regCommand("BanItem",new BanItemCommand());
         regCommand("Kim",new CrazyAuctionsCommand());
         regCommand("PokeAward",new PokeFormCommand());
-
-        log("正在启动数据库...");
-        SQLConnection.initialize();
-        GlazedPayDataSQLReader.selectTable();
-        PokemonBanDataSQLReader.selectTable();
-        PremiumPlayerDataSQLReader.selectTable();
-        PlayerEventDataSQLReader.selectTable();
 
         log("获取在线玩家信息...");
         getAllOnlinePlayerData();
@@ -174,7 +198,9 @@ public class Main extends JavaPlugin {
         FileConfiguration CustomConfig = YamlConfiguration.loadConfiguration(CustomFile);
         Set<String> AllSkinList = CustomConfig.getConfigurationSection("skins").getKeys(false);
         Data.CUSTOM_SKIN.addAll(AllSkinList);
-        System.out.println(Data.CUSTOM_SKIN.size());
+
+        log("加载龙之核心组件...");
+        saveYmlConfig("Nick/gui.yml");
 
         log("加载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
@@ -189,12 +215,16 @@ public class Main extends JavaPlugin {
         log("卸载监听器...");
         Bukkit.getServicesManager().unregisterAll(this);
 
-        log("正在关闭数据库...");
-        SQLConnection.close();
-
         log("卸载内置插件 CrazyAuctions 信息...");
         CrazyAuctions crazyAuctions = new CrazyAuctions();
         crazyAuctions.onDisable();
+
+        log("正在关闭数据库...");
+        this.premiumPlayerDataSQLReader.close();
+        this.pokemonBanDataSQLReader.close();
+        this.glazedPayDataSQLReader.close();
+        this.playerEventDataSQLReader.close();
+
 
         log("卸载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
@@ -259,11 +289,19 @@ public class Main extends JavaPlugin {
             @Override
             public void run() {
                 for (Player player:Bukkit.getOnlinePlayers()) {
-                    GlazedPayData.put(player,GlazedPayDataSQLReader.getPlayer(player.getName()).getAmount());
+                    GlazedPayData.put(player,Main.getInstance().getGlazedPayDataSQLReader().getPlayer(player.getName()).getAmount());
                 }
             }
         }.runTaskTimer(Main.getInstance(),0,200);
+    }
 
+
+    //文件保存至本地
+    public void saveYmlConfig(String file) {
+        File configFile = new File(Bukkit.getPluginManager().getPlugin(this.getName()).getDataFolder(), file);
+        if (!configFile.exists()) {
+            this.saveResource(file, false);
+        }
 
     }
 }

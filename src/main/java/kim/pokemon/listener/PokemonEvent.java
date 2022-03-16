@@ -1,10 +1,13 @@
 package kim.pokemon.listener;
 
 import catserver.api.bukkit.event.ForgeEvent;
+import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.events.BreedEvent;
 import com.pixelmonmod.pixelmon.api.events.CaptureEvent;
+import com.pixelmonmod.pixelmon.api.events.KeyEvent;
 import com.pixelmonmod.pixelmon.api.events.PixelmonDeletedEvent;
 import com.pixelmonmod.pixelmon.api.events.battles.BattleEndEvent;
+import com.pixelmonmod.pixelmon.api.events.spawning.LegendaryCheckSpawnsEvent;
 import com.pixelmonmod.pixelmon.api.events.spawning.LegendarySpawnEvent;
 import com.pixelmonmod.pixelmon.api.events.spawning.SpawnEvent;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
@@ -13,12 +16,16 @@ import com.pixelmonmod.pixelmon.api.spawning.archetypes.entities.pokemon.SpawnAc
 import com.pixelmonmod.pixelmon.api.world.MutableLocation;
 import com.pixelmonmod.pixelmon.battles.controller.participants.BattleParticipant;
 import com.pixelmonmod.pixelmon.battles.controller.participants.ParticipantType;
+import com.pixelmonmod.pixelmon.comm.packetHandlers.EnumKeyPacketMode;
 import com.pixelmonmod.pixelmon.entities.pixelmon.EntityPixelmon;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.enums.EnumBossMode;
+import com.pixelmonmod.pixelmon.enums.EnumGrowth;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
+import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
+import kim.pokemon.kimexpand.pokespawn.SpawnTime;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.PokemonAPI;
 import org.bukkit.Bukkit;
@@ -90,8 +97,9 @@ public class PokemonEvent implements Listener {
             double z = mutableLocation.pos.func_177952_p();
             Location location = new Location(w, x, y, z);
             Player player = PokemonAPI.getRandPlayer(location);
-
-            Bukkit.broadcastMessage(ColorParser.parse("&8[&6&l!&8] &7一只传说宝可梦 &c"+pokemon.getLocalizedName()+" &7出现在 &C玩家 "+player.getName()+" 附近("+x+","+z+") &7快去寻找它。"));
+            SpawnTime.playerStringHashMap.put(player,pokemon.getLocalizedName());
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+            Bukkit.broadcastMessage(ColorParser.parse("&8[&6&l!&8] &7一只传说宝可梦 &c"+pokemon.getLocalizedName()+" &7出现在玩家 &c"+player.getName()+" &7附近快去寻找它。"));
         }
 
         //成功捕捉精灵事件
@@ -103,9 +111,9 @@ public class PokemonEvent implements Listener {
 
             //数据记录
             if (legendary){
-//                PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player,"SuccessfulCaptureLegendary",pokemon,new Timestamp(System.currentTimeMillis())));
+//                Main.getInstance().getPlayerEventDataSQLReader().addPlayerEvent(PlayerEventData.setPlayerEventData(player,"SuccessfulCaptureLegendary",pokemon,new Timestamp(System.currentTimeMillis())));
             }else {
-//                PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player,"SuccessfulCapture",pokemon,new Timestamp(System.currentTimeMillis())));
+//                Main.getInstance().getPlayerEventDataSQLReader().addPlayerEvent(PlayerEventData.setPlayerEventData(player,"SuccessfulCapture",pokemon,new Timestamp(System.currentTimeMillis())));
             }
         }
 
@@ -194,15 +202,21 @@ public class PokemonEvent implements Listener {
         //精灵回收
         if (forgeEvent.getForgeEvent() instanceof PixelmonDeletedEvent) {
             PixelmonDeletedEvent event = (PixelmonDeletedEvent)forgeEvent.getForgeEvent();
-            Player player = Bukkit.getPlayer(event.player.displayName);
+            Player player = Bukkit.getPlayer(event.player.getPersistentID());
             Pokemon pokemon = event.pokemon;
-            double money = PokemonAPI.getPokemonVault(pokemon);
-            player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_YES,1,1);
-            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7系统回收了您的 &c"+pokemon.getLocalizedName()+" &7并给予您 &c"+money+" &7"+ Data.SERVER_VAULT+",请注意查收"));
-            Main.econ.depositPlayer(player,money);
+            if (pokemon.isLegendary()&&PokemonAPI.getPokemonPoints(pokemon)!=0){
+                int money = PokemonAPI.getPokemonPoints(pokemon);
+                player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7系统回收了您的 &c"+pokemon.getLocalizedName()+" &7并给予您 &c"+money+" &7"+ Data.SERVER_POINTS+",请注意查收"));
+                Main.ppAPI.giveAsync(player.getUniqueId(),money);
+            }else {
+                double money = PokemonAPI.getPokemonVault(pokemon);
+                player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7系统回收了您的 &c"+pokemon.getLocalizedName()+" &7并给予您 &c"+money+" &7"+ Data.SERVER_VAULT+",请注意查收"));
+                Main.econ.depositPlayer(player,money);
+            }
 
-            //数据记录
-//            PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player.getName(),"PokemonRecycle ",pokemon.getLocalizedName()+" "+money,new Timestamp(System.currentTimeMillis())));
+
         }
 
         //战斗结束
@@ -213,7 +227,6 @@ public class PokemonEvent implements Listener {
             //与野外的宝可梦战斗结束
             if ((event.getPlayers().size()==1)&&(!event.abnormal)){
                 if (event.results.size()<=2){
-                    Pokemon pokemon;
                     Player player = Bukkit.getPlayer(event.getPlayers().get(0).getPersistentID());
                     if (!player.getLocation().getWorld().getName().equals("spawn")){
                         for (BattleParticipant battleParticipant: event.results.keySet()) {
@@ -221,50 +234,17 @@ public class PokemonEvent implements Listener {
                                 if (battleParticipant.checkPokemon()){
                                     if (battleParticipant.getType().equals(ParticipantType.WildPokemon)){
                                         EntityPixelmon pixelmon = (EntityPixelmon)battleParticipant.getEntity();
-                                        //春节掉福活动
-//                                        if (pixelmon!=null){
-//                                            switch (pixelmon.getBossMode().name()){
-//                                                case "NotBoss":
-//                                                    PokemonAPI.getBills(player,9);
-//                                                    break;
-//                                                case "Uncommon":
-//                                                    PokemonAPI.getBills(player,60);
-//                                                    break;
-//                                                case "Common":
-//                                                    PokemonAPI.getBills(player,70);
-//                                                    break;
-//                                                case "Rare":
-//                                                    PokemonAPI.getBills(player,80);
-//                                                    break;
-//                                                case "Epic":
-//                                                    PokemonAPI.getBills(player,90);
-//                                                    break;
-//                                                case "Equal":
-//                                                    PokemonAPI.getBills(player,95);
-//                                                    break;
-//                                                case "Legendary":
-//                                                    PokemonAPI.getBills(player,100);
-//                                                    break;
-//                                                case "Ultimate":
-//                                                    PokemonAPI.getBills(player,98);
-//                                                    break;
-//                                                case "Spooky":
-//                                                    PokemonAPI.getBills(player,50);
-//                                                    break;
-//                                                case "Drowned":
-//                                                    PokemonAPI.getBills(player,55);
-//                                                    break;
-//                                            }
-//                                        }
-
-                                        //                                        PlayerEventDataSQLReader.addPlayerEvent(PlayerEventData.setPlayerEventData(player.getName(),"BattleEndEvent",pokemon.getLocalizedName(),new Timestamp(System.currentTimeMillis())));
+                                        int money = pixelmon.getStoragePokemonData().getLevel();
+                                        player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您在战斗过程中获得了 &c"+money+" &7卡洛币。"));
+                                        Main.econ.depositPlayer(player,money);
                                     }
                                 }
                             }
                         }
                     }
                     //会员专属战斗结束后恢复精灵状态
-                    if (player.hasPermission("group.pikanium")&&player.hasPermission("group.eevee")){
+                    if (player.hasPermission("group.pikanium")||player.hasPermission("group.eevee")){
                         PokemonAPI.setPokemonStater(player);
                     }
                 }
@@ -272,5 +252,32 @@ public class PokemonEvent implements Listener {
 
 
         }
+
+        //神兽刷新查询
+        if (forgeEvent.getForgeEvent() instanceof LegendaryCheckSpawnsEvent){
+            LegendaryCheckSpawnsEvent event = (LegendaryCheckSpawnsEvent) forgeEvent.getForgeEvent();
+            event.shouldShowTime = false;
+            event.shouldShowChance = false;
+        }
+
+        //宝可梦进化事件EvolveEvent
+
+        //案件
+        if (forgeEvent.getForgeEvent() instanceof KeyEvent){
+            KeyEvent event = (KeyEvent) forgeEvent.getForgeEvent();
+
+            //丢出宝可梦
+            if (event.key.equals(EnumKeyPacketMode.SendPokemon)){
+                PlayerPartyStorage playerPartyStorage = Pixelmon.storageManager.getParty(Bukkit.getPlayer(event.player.displayName).getUniqueId());
+                for (Pokemon p:playerPartyStorage.getAll()) {
+                    if (p!=null&&p.getLocalizedName().equals("无极汰那")){
+                        p.setGrowth(EnumGrowth.Microscopic);
+                    }
+                }
+            }
+        }
     }
+
+
+
 }

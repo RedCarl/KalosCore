@@ -45,11 +45,13 @@ public class PokeInfoUpdate extends InventoryGUI {
                 int IVsPoints = 18;
                 ItemStack HP = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_HP_UP"), ColorParser.parse("&a生命 &7("+p.getIVs().getStat(StatsType.HP)+")"),
                         ColorParser.parse("&r"),
-                                ColorParser.parse("&7&o将更改您选中的这个精灵的个体值,基于Java的随机算法~"),
-                                ColorParser.parse("&r"),
-                                ColorParser.parse("&7价格: &f"+IVsMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+IVsPoints+" &7"+Data.SERVER_POINTS+""),
-                                ColorParser.parse("&r"),
-                                ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(0~31)  &7右键"+Data.SERVER_POINTS+"&c(31)"));
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键 00~31) &c" + IVsMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键 31~31) &c" + IVsPoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
                 if (p.getIVs().getStat(StatsType.HP)!=0){
                     HP.setAmount(p.getIVs().getStat(StatsType.HP));
                 }
@@ -92,11 +94,13 @@ public class PokeInfoUpdate extends InventoryGUI {
 
                 ItemStack Attack = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PROTEIN"), ColorParser.parse("&c攻击 &7("+p.getIVs().getStat(StatsType.Attack)+")"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7&o将更改您选中的这个精灵的个体值,基于Java的随机算法~"),
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7价格: &f"+IVsMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+IVsPoints+" &7"+Data.SERVER_POINTS+""),
-                        ColorParser.parse("&r"),
-                        ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(0~31)  &7右键"+Data.SERVER_POINTS+"&c(31)"));
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键 00~31) &c" + IVsMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键 31~31) &c" + IVsPoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
                 if (p.getIVs().getStat(StatsType.Attack)!=0){
                     Attack.setAmount(p.getIVs().getStat(StatsType.Attack));
                 }
@@ -139,11 +143,13 @@ public class PokeInfoUpdate extends InventoryGUI {
 
                 ItemStack Defence = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_IRON"), ColorParser.parse("&c防御 &7("+p.getIVs().getStat(StatsType.Defence)+")"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7&o将更改您选中的这个精灵的个体值,基于Java的随机算法~"),
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7价格: &f"+IVsMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+IVsPoints+" &7"+Data.SERVER_POINTS+""),
-                        ColorParser.parse("&r"),
-                        ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(0~31)  &7右键"+Data.SERVER_POINTS+"&c(31)"));
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键 00~31) &c" + IVsMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键 31~31) &c" + IVsPoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
                 if (p.getIVs().getStat(StatsType.Defence)!=0){
                     Defence.setAmount(p.getIVs().getStat(StatsType.Defence));
                 }
@@ -186,11 +192,13 @@ public class PokeInfoUpdate extends InventoryGUI {
 
                 ItemStack Speed = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_CARBOS"), ColorParser.parse("&b速度 &7("+p.getIVs().getStat(StatsType.Speed)+")"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7&o将更改您选中的这个精灵的个体值,基于Java的随机算法~"),
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7价格: &f"+IVsMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+IVsPoints+" &7"+Data.SERVER_POINTS+""),
-                        ColorParser.parse("&r"),
-                        ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(0~31)  &7右键"+Data.SERVER_POINTS+"&c(31)"));
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键 00~31) &c" + IVsMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键 31~31) &c" + IVsPoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
                 if (p.getIVs().getStat(StatsType.Speed)!=0){
                     Speed.setAmount(p.getIVs().getStat(StatsType.Speed));
                 }
@@ -233,11 +241,13 @@ public class PokeInfoUpdate extends InventoryGUI {
 
                 ItemStack SpecialAttack = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_CALCIUM"), ColorParser.parse("&6特攻 &7("+p.getIVs().getStat(StatsType.SpecialAttack)+")"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7&o将更改您选中的这个精灵的个体值,基于Java的随机算法~"),
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7价格: &f"+IVsMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+IVsPoints+" &7"+Data.SERVER_POINTS+""),
-                        ColorParser.parse("&r"),
-                        ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(0~31)  &7右键"+Data.SERVER_POINTS+"&c(31)"));
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键 00~31) &c" + IVsMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键 31~31) &c" + IVsPoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
                 if (p.getIVs().getStat(StatsType.SpecialAttack)!=0){
                     SpecialAttack.setAmount(p.getIVs().getStat(StatsType.SpecialAttack));
                 }
@@ -280,11 +290,13 @@ public class PokeInfoUpdate extends InventoryGUI {
 
                 ItemStack SpecialDefence = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ZINC"), ColorParser.parse("&c特防 &7("+p.getIVs().getStat(StatsType.SpecialDefence)+")"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7&o将更改您选中的这个精灵的个体值,基于Java的随机算法~"),
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7价格: &f"+IVsMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+IVsPoints+" &7"+Data.SERVER_POINTS+""),
-                        ColorParser.parse("&r"),
-                        ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(0~31)  &7右键"+Data.SERVER_POINTS+"&c(31)"));
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键 00~31) &c" + IVsMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键 31~31) &c" + IVsPoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
                 if (p.getIVs().getStat(StatsType.SpecialDefence)!=0){
                     SpecialDefence.setAmount(p.getIVs().getStat(StatsType.SpecialDefence));
                 }
@@ -336,11 +348,13 @@ public class PokeInfoUpdate extends InventoryGUI {
                 }else {
                     ItemStack Shiny = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_SHINY_CHARM") , ColorParser.parse("&7闪光"),
                             ColorParser.parse("&r"),
-                            ColorParser.parse("&7&o将更改您选中的这个精灵的闪光,基于Java的随机算法~"),
+                            ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                             ColorParser.parse("&r"),
-                            ColorParser.parse("&7价格: &f"+ShinyMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+ShinyPoints+" &7"+Data.SERVER_POINTS+""),
-                            ColorParser.parse("&r"),
-                            ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(50%)  &7右键"+Data.SERVER_POINTS+"&c(100%)"));
+                            ColorParser.parse("&r  &e■ &7售 价:"),
+                            ColorParser.parse("&r      &7(左键 50%) &c" + ShinyMoney + " &7"+Data.SERVER_VAULT),
+                            ColorParser.parse("&r      &7(右键 100%) &c" + ShinyPoints + " &7"+Data.SERVER_POINTS),
+                            ColorParser.parse("&r")
+                    );
                     Button ShinyButton = new Button(Shiny, type -> {
                         if (type.isLeftClick()) {
                             if (Main.econ.getBalance(player)>=ShinyMoney){
@@ -386,12 +400,20 @@ public class PokeInfoUpdate extends InventoryGUI {
                 int GrowthPoints = 5;
                 ItemStack Growth = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_N_LUNARIZER") , ColorParser.parse("&a"+p.getGrowth().getLocalizedName()),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7&o更改宝可梦的体型,使用Pixelmon的随机方法~"),
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7价格: &f"+GrowthMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+GrowthPoints+" &7"+Data.SERVER_POINTS+""),
-                        ColorParser.parse("&r"),
-                        ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(随机)  &7右键"+Data.SERVER_POINTS+"&c(选择)"));
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键 随机) &c" + GrowthMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键 自选) &c" + GrowthPoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
                 Button GrowthButton = new Button(Growth, type -> {
+                    if (p.getLocalizedName().equals("无极汰那")){
+                        player.closeInventory();
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，因为该宝可梦性能问题，无法修改体型."));
+                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                        return;
+                    }
                     if (type.isLeftClick()) {
                         if (Main.econ.getBalance(player)>=GrowthMoney){
                             Main.econ.withdrawPlayer(player, GrowthMoney);
@@ -427,11 +449,13 @@ public class PokeInfoUpdate extends InventoryGUI {
                 int ClonePoints = 248;
                 ItemStack Clone = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_CLONING_MACHINE") , ColorParser.parse("&d梦幻 &f> &c百变怪/超梦"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7&o将您的梦幻宝可梦克隆成百变怪或者超梦，概率事件~"),
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7价格: &f"+CloneMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+ClonePoints+" &7"+Data.SERVER_POINTS+""),
-                        ColorParser.parse("&r"),
-                        ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(50%)  &7右键"+Data.SERVER_POINTS+"&c(100%)"));
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键 50%) &c" + CloneMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键 100%) &c" + ClonePoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
                 Button CloneButton = new Button(Clone, type -> {
                     if (type.isLeftClick()) {
                         if (Main.econ.getBalance(player)>=CloneMoney){
@@ -474,11 +498,13 @@ public class PokeInfoUpdate extends InventoryGUI {
                 int NaturePoints = 25;
                 ItemStack Nature = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RAGE_CANDY_BAR") , ColorParser.parse("&a"+p.getNature().getLocalizedName()),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7&o更改宝可梦的性格,使用Pixelmon的随机方法~"),
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7价格: &f"+NatureMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+NaturePoints+" &7"+Data.SERVER_POINTS+""),
-                        ColorParser.parse("&r"),
-                        ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(随机)  &7右键"+Data.SERVER_POINTS+"&c(选择)"));
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键 随机) &c" + NatureMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键 自选) &c" + NaturePoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
                 Button NatureButton = new Button(Nature, type -> {
                     if (type.isLeftClick()) {
                         if (Main.econ.getBalance(player)>=NatureMoney){
@@ -516,11 +542,13 @@ public class PokeInfoUpdate extends InventoryGUI {
                 if (pokemon.getAbilitySlot()==2){
                     ItemStack Ability = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ABILITY_CAPSULE") , ColorParser.parse("&a"+p.getAbility().getLocalizedName()),
                             ColorParser.parse("&r"),
-                            ColorParser.parse("&7&o更改宝可梦的特性,使用Pixelmon的随机方法~"),
+                            ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                             ColorParser.parse("&r"),
-                            ColorParser.parse("&7价格: &f"+AbilityMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+AbilityPoints+" &7"+Data.SERVER_POINTS+""),
-                            ColorParser.parse("&r"),
-                            ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(随机)  &7右键"+Data.SERVER_POINTS+"&c(修改)"));
+                            ColorParser.parse("&r  &e■ &7售 价:"),
+                            ColorParser.parse("&r      &7(左键 随机) &c" + AbilityMoney + " &7"+Data.SERVER_VAULT),
+                            ColorParser.parse("&r      &7(右键 自选) &c" + AbilityPoints + " &7"+Data.SERVER_POINTS),
+                            ColorParser.parse("&r")
+                    );
                     Button AbilityButton = new Button(Ability, type -> {
                         if (type.isLeftClick()){
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
@@ -531,11 +559,13 @@ public class PokeInfoUpdate extends InventoryGUI {
                 }else {
                     ItemStack Ability = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ABILITY_CAPSULE") , ColorParser.parse("&a"+p.getAbility().getLocalizedName()),
                             ColorParser.parse("&r"),
-                            ColorParser.parse("&7&o更改宝可梦的特性,使用Pixelmon的随机方法~"),
+                            ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                             ColorParser.parse("&r"),
-                            ColorParser.parse("&7价格: &f"+AbilityMoney+" &7"+Data.SERVER_VAULT+" &9/ &f"+AbilityPoints+" &7"+Data.SERVER_POINTS+""),
-                            ColorParser.parse("&r"),
-                            ColorParser.parse("&7左键"+Data.SERVER_VAULT+"&c(随机)  &7右键"+Data.SERVER_POINTS+"&c(修改)"));
+                            ColorParser.parse("&r  &e■ &7售 价:"),
+                            ColorParser.parse("&r      &7(左键 随机) &c" + AbilityMoney + " &7"+Data.SERVER_VAULT),
+                            ColorParser.parse("&r      &7(右键 自选) &c" + AbilityPoints + " &7"+Data.SERVER_POINTS),
+                            ColorParser.parse("&r")
+                    );
                     Button AbilityButton = new Button(Ability, type -> {
                         if (type.isRightClick()){
                             try {
@@ -573,9 +603,12 @@ public class PokeInfoUpdate extends InventoryGUI {
                 ItemStack PokeAward = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
                         ColorParser.parse("&f" + form.getLocalizedName()),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&7拥有数量: &a" + leftTime),
+                        ColorParser.parse("&7&o将您的该宝可梦皮肤更改为此皮肤!"),
                         ColorParser.parse("&r"),
-                        ColorParser.parse("&c点击消耗一次数量进行更换"));
+                        ColorParser.parse("&r  &e■ &7信 息:"),
+                        ColorParser.parse("&r      &7(左键 更换) &c剩余 &c"+leftTime+" &7个"),
+                        ColorParser.parse("&r")
+                );
 
                 NBTItem nbtItem = new NBTItem(PokeAward);
                 nbtItem.setShort("ndex", (short) pokemon.getSpecies().getNationalPokedexInteger());
@@ -617,9 +650,12 @@ public class PokeInfoUpdate extends InventoryGUI {
                                 ItemStack PokeAward = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
                                         ColorParser.parse("&6" + sa+"·"+s),
                                         ColorParser.parse("&r"),
-                                        ColorParser.parse("&7拥有数量: &a" + amount),
+                                        ColorParser.parse("&7&o将您的该宝可梦皮肤更改为此皮肤!"),
                                         ColorParser.parse("&r"),
-                                        ColorParser.parse("&c点击消耗一次数量进行更换"));
+                                        ColorParser.parse("&r  &e■ &7信 息:"),
+                                        ColorParser.parse("&r      &7(左键 更换) &c剩余 &c"+amount+" &7个"),
+                                        ColorParser.parse("&r")
+                                );
 
                                 NBTItem nbtItem = new NBTItem(PokeAward);
                                 nbtItem.setShort("ndex", (short) pokemon.getSpecies().getNationalPokedexInteger());

@@ -1,5 +1,6 @@
 package kim.pokemon.kimexpand.pokeban.gui;
 
+import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.database.PokemonBanDataSQLReader;
 import kim.pokemon.kimexpand.pokeban.PokemonBan;
@@ -28,7 +29,7 @@ public class BanList extends InventoryGUI {
             itemStacks.add(itemStack);
         }
 
-        for (String item : PokemonBanDataSQLReader.getBanDrops()) {
+        for (String item : Main.getInstance().getPokemonBanDataSQLReader().getBanDrops()) {
             ItemStack itemStack = ItemFactoryAPI.getItemStack(Material.getMaterial(item));
             itemStacks.add(itemStack);
         }
@@ -77,10 +78,4 @@ public class BanList extends InventoryGUI {
         });
         this.setButton(53, CloseButton);
     }
-
-    public static void main(String[] args) {
-        System.out.println(73/36);
-        System.out.println(73%36);
-    }
-
 }

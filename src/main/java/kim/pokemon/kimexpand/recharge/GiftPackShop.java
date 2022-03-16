@@ -10,6 +10,7 @@ import kim.pokemon.kimexpand.menu.MainMenu;
 import kim.pokemon.kimexpand.premium.VIPBuy;
 import kim.pokemon.kimexpand.premium.entity.PlayerVIP;
 import kim.pokemon.kimexpand.recharge.recharge.RechargeMenu;
+import kim.pokemon.kimexpand.recharge.recharge.RechargeSelect;
 import kim.pokemon.kimexpand.recharge.shop.ItemBuy;
 import kim.pokemon.kimexpand.recharge.shop.ItemSell;
 import kim.pokemon.util.ColorParser;
@@ -41,8 +42,8 @@ public class GiftPackShop extends InventoryGUI {
                 ColorParser.parse("&f概率: &a普通(0%) &6伪传奇(100%)"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + RandomPseudoLegendaryMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + RandomPseudoLegendaryPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + RandomPseudoLegendaryMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + RandomPseudoLegendaryPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o随机获取一只伪传奇宝可梦，属性也是随机."));
         Button RandomPseudoLegendaryButton = new Button(RandomPseudoLegendary, type -> {
@@ -136,8 +137,8 @@ public class GiftPackShop extends InventoryGUI {
                 ColorParser.parse("&f概率: &a普通(0%) &6传奇(100%)"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + RandomLegendaryMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + RandomLegendaryPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + RandomLegendaryMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + RandomLegendaryPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o随机获取一只传说宝可梦，属性也是随机."));
         Button RandomLegendaryButton = new Button(RandomLegendary, type -> {
@@ -247,8 +248,8 @@ public class GiftPackShop extends InventoryGUI {
                 ColorParser.parse("&f概率: &a普通(0%) &6顶级传奇(100%)"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + RandomLegendaryMaxMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + RandomLegendaryMaxPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + RandomLegendaryMaxMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + RandomLegendaryMaxPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o随机获取一只顶级传说宝可梦，属性也是随机."));
         Button RandomLegendaryMaxButton = new Button(RandomLegendaryMax, type -> {
@@ -358,8 +359,8 @@ public class GiftPackShop extends InventoryGUI {
                 ColorParser.parse("&f概率: &9异兽(100%)"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + UltraBeastMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + UltraBeastPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + UltraBeastMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + UltraBeastPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o随机获取一只宝可梦超进化石，完全随机哦."));
         Button UltraBeastButton = new Button(UltraBeast, type -> {
@@ -453,11 +454,24 @@ public class GiftPackShop extends InventoryGUI {
                 ColorParser.parse("&f概率: &6超进化石(100%)"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + RandomEvolutionMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + RandomEvolutionPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + RandomEvolutionMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + RandomEvolutionPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o随机获取一只宝可梦超进化石，完全随机哦."));
         Button RandomEvolutionButton = new Button(RandomEvolution, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isLeftClick()) {
                 if (Main.econ.getBalance(player)>=RandomEvolutionMoney){
                     Main.econ.withdrawPlayer(player,RandomEvolutionMoney);
@@ -489,13 +503,13 @@ public class GiftPackShop extends InventoryGUI {
         //皮肤宝箱
         long RandomCustomSkinMoney=120000;
         int RandomCustomSkinPrice=12;
-        ItemStack RandomCustomSkin = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/a5c6944593820d13d7d47db2abcfcbf683bb74a07e1a982db9f32e0a8b5dc466",
+        ItemStack RandomCustomSkin = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/3677e65df2999d0319fdbcba3c092f160b99b4b467983af81fcfa1eb45d39a3",
                 ColorParser.parse("&e宝可梦皮肤宝箱"),
                 ColorParser.parse("&f概率: &6宝可梦皮肤(100%)"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + RandomCustomSkinMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + RandomCustomSkinPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + RandomCustomSkinMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + RandomCustomSkinPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o随机获取一个宝可梦的皮肤，完全随机哦."));
         Button RandomCustomSkinButton = new Button(RandomCustomSkin, type -> {
@@ -537,11 +551,24 @@ public class GiftPackShop extends InventoryGUI {
                 ColorParser.parse("&f范围: &a1~10 &f个"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + ArmourersMoney + " &7"+Data.SERVER_VAULT+""),
-                ColorParser.parse("&r      &7(右键) &c" + ArmourersPrice + " &7"+Data.SERVER_POINTS+""),
+                ColorParser.parse("&r      &7(左键) &c" + ArmourersMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + ArmourersPrice + " &7"+Data.SERVER_POINTS),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o时装碎片可以去兑换时装，需要非常多哦!"));
         Button ArmourersButton = new Button(Armourers, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
             if (type.isRightClick()) {
                 try {
                     if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=ArmourersPrice){
@@ -558,17 +585,14 @@ public class GiftPackShop extends InventoryGUI {
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
-
             }
         });
         this.setButton(9, ArmourersButton);
 
-
-
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
         //皮卡丘会员
-
-        long PikaniumMoney=-1;
         int PikaniumPrice=25;
         String PikaniumRanks="pikanium";
         String PikaniumRankName="&e"+Data.SERVER_NAME_CN+"の皮卡丘";
@@ -581,21 +605,21 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("&a"+PikaniumVIP.getTime()),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &e■ &7售 价:"),
-                    ColorParser.parse("&r      &7(续费) &c" + PikaniumPrice + " &7"+Data.SERVER_POINTS+""),
+                    ColorParser.parse("&r      &7(续费) &c" + PikaniumPrice + " &7"+Data.SERVER_RMB),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &c■ &7特 权:"),
                     ColorParser.parse("      &f飞行 &7(使用: /fly)"),
-                    ColorParser.parse("      &f签到 &7(额外的奖励)"),
+                    ColorParser.parse("      &f月卡礼包 &7(每天签到领取 &c1 &7卡点)"),
+                    ColorParser.parse("      &f签到 &7(额外的奖励 幸运方块)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a5%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a7&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a2&7)"),
                     ColorParser.parse("      &f战斗结束自动治疗 &7(被动)")
             );
             Button PikaniumButton = new Button(Pikanium, type -> {
-                if (type.isRightClick()) {
-                    player.closeInventory();
-                    PayManager.initiatePay(player,  PaywayType.ALIPAY, 25.0);
-                }
+                player.closeInventory();
+                RechargeSelect rechargeSelect = new RechargeSelect(player, 25.0);
+                rechargeSelect.openInventory();
             });
             this.setButton(18, PikaniumButton);
         }else {
@@ -604,10 +628,11 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("&f时效: &a30 &f天"),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &e■ &7售 价:"),
-                    ColorParser.parse("&r      &7(开通) &c" + PikaniumPrice + " &7"+Data.SERVER_POINTS+""),
+                    ColorParser.parse("&r      &7(开通) &c" + PikaniumPrice + " &7"+Data.SERVER_RMB),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &c■ &7特 权:"),
                     ColorParser.parse("      &f飞行 &7(使用: /fly)"),
+                    ColorParser.parse("      &f月卡礼包 &7(每天签到领取 &c1 &7卡点)"),
                     ColorParser.parse("      &f签到 &7(额外的奖励 幸运方块)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a5%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a7&7)"),
@@ -615,21 +640,21 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("      &f战斗结束自动治疗 &7(被动)")
             );
             Button PikaniumButton = new Button(Pikanium, type -> {
-                if (type.isRightClick()) {
-                    if (VIPBuy.checkRank(player,null,Main.luckPerms.getServerName())==null){
-                        player.closeInventory();
-                        PayManager.initiatePay(player,  PaywayType.ALIPAY, 25.0);
-                    }else {
-                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您还有其它的服务并未过期，请等待过期后再进行开通."));
-                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                    }
+                if (VIPBuy.checkRank(player,null,Main.luckPerms.getServerName())==null){
+                    player.closeInventory();
+                    RechargeSelect rechargeSelect = new RechargeSelect(player, 25.0);
+                    rechargeSelect.openInventory();
+                }else {
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您还有其它的服务并未过期，请等待过期后再进行开通."));
+                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                 }
             });
             this.setButton(18, PikaniumButton);
         }
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
         //伊布会员
-        long EeveeMoney=-1;
         int EeveePrice=45;
         String EeveeRanks="eevee";
         String EeveeRankName="&6"+Data.SERVER_NAME_CN+"の伊布";
@@ -642,12 +667,13 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("&a"+EeveeVIP.getTime()),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &e■ &7售 价:"),
-                    ColorParser.parse("&r      &7(续费) &c" + EeveePrice + " &7"+Data.SERVER_POINTS+""),
+                    ColorParser.parse("&r      &7(续费) &c" + EeveePrice + " &7"+Data.SERVER_RMB),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &c■ &7特 权:"),
                     ColorParser.parse("      &f飞行 &7(菜单)"),
                     ColorParser.parse("      &f签到 &7(额外的奖励 幸运方块)"),
                     ColorParser.parse("      &f自动签到 &7(进入服务器自动签到)"),
+                    ColorParser.parse("      &f月卡礼包 &7(每天签到领取 &c5 &7卡点)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a15%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a21&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a4&7)"),
@@ -656,10 +682,9 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("      &f战斗结束自动治疗 &7(被动)")
             );
             Button EeveeButton = new Button(Eevee, type -> {
-                if (type.isRightClick()) {
-                    player.closeInventory();
-                    PayManager.initiatePay(player,  PaywayType.ALIPAY, 45.0);
-                }
+                player.closeInventory();
+                RechargeSelect rechargeSelect = new RechargeSelect(player, 45.0);
+                rechargeSelect.openInventory();
             });
             this.setButton(19, EeveeButton);
         }else {
@@ -668,12 +693,13 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("&f时效: &a30 &f天"),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &e■ &7售 价:"),
-                    ColorParser.parse("&r      &7(开通) &c" + EeveePrice + " &7"+Data.SERVER_POINTS+""),
+                    ColorParser.parse("&r      &7(开通) &c" + EeveePrice + " &7"+Data.SERVER_RMB),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &c■ &7特 权:"),
                     ColorParser.parse("      &f飞行 &7(菜单)"),
                     ColorParser.parse("      &f签到 &7(额外的奖励 幸运方块)"),
                     ColorParser.parse("      &f自动签到 &7(进入服务器自动签到)"),
+                    ColorParser.parse("      &f月卡礼包 &7(每天签到领取 &c5 &7卡点)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a15%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a21&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a4&7)"),
@@ -682,15 +708,9 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("      &f战斗结束自动治疗 &7(被动)")
             );
             Button EeveeButton = new Button(Eevee, type -> {
-                if (type.isRightClick()) {
-                    if (VIPBuy.checkRank(player,null,Main.luckPerms.getServerName())==null){
-                        player.closeInventory();
-                        PayManager.initiatePay(player,  PaywayType.ALIPAY, 45.0);
-                    }else {
-                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您还有其它的服务并未过期，请等待过期后再进行开通."));
-                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                    }
-                }
+                player.closeInventory();
+                RechargeSelect rechargeSelect = new RechargeSelect(player, 45.0);
+                rechargeSelect.openInventory();
             });
             this.setButton(19, EeveeButton);
         }
@@ -699,7 +719,9 @@ public class GiftPackShop extends InventoryGUI {
         for (int i = 0; i < 9; i++) {
             this.setButton(36+i, new Button(Line));
         }
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
         //"+Data.SERVER_POINTS+"充值
         ItemStack Recharge = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/76c9c0b2b1e74b70847e551be14c81b58fc6011017f8922b5fe6f66a6dc77066",ColorParser.parse("&c"+Data.SERVER_POINTS+"充值"),
                 ColorParser.parse("&r"),
@@ -763,7 +785,7 @@ public class GiftPackShop extends InventoryGUI {
         //累计充值
         ItemStack ArmourersShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励."));
+                ColorParser.parse("&7&o可以购买时装来进行穿戴."));
         Button ArmourersShopButton = new Button(ArmourersShop, type -> {
             if (type.isLeftClick()) {
                 ArmourersShop armourersShop = new ArmourersShop(player);

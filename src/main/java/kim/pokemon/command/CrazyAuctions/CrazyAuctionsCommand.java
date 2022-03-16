@@ -3,6 +3,7 @@ package kim.pokemon.command.CrazyAuctions;
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
+import kim.pokemon.Main;
 import kim.pokemon.database.PokemonBanDataSQLReader;
 import kim.pokemon.kimexpand.crazyauctions.Methods;
 import kim.pokemon.kimexpand.crazyauctions.api.*;
@@ -42,8 +43,8 @@ public class CrazyAuctionsCommand implements CommandExecutor {
             } else if (args.length == 3 && (args[0].equalsIgnoreCase("poke"))) {
                 String numStr = args[1];
                 String moneyStr = args[2];
-                int num = 0;
-                int money = 0;
+                int num;
+                int money;
                 try{
                     num = Integer.parseInt(numStr);
                     money = Integer.parseInt(moneyStr);
@@ -194,7 +195,7 @@ public class CrazyAuctionsCommand implements CommandExecutor {
                 }
                 if (!Methods.hasPermission(player, "Bid")) return true;
             }
-            if (PokemonBanDataSQLReader.getBanDrops().contains(item.getType().name())) {
+            if (Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(item.getType().name())&&(!item.getType().name().contains("PIXELMON_PIXELMON_SPRITE"))) {
                 player.getInventory().remove(item);
                 player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，该物品已经被服务器禁止使用。"));
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
@@ -378,7 +379,7 @@ public class CrazyAuctionsCommand implements CommandExecutor {
                 if (!Methods.hasPermission(player, "Bid")) return true;
             }
             ItemStack item = Methods.getItemInHand(player);
-            if (PokemonBanDataSQLReader.getBanDrops().contains(item.getType().name())) {
+            if (Main.getInstance().getPokemonBanDataSQLReader().getBanDrops().contains(item.getType().name())) {
                 player.getInventory().remove(item);
                 player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，该物品已经被服务器禁止使用。"));
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);

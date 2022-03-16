@@ -35,4 +35,5 @@ public class PlayerRecharge {
     public String toString() {
         return "PlayerRankData@[Player=" + this.player + ", Amount=" + this.amount + "]";
     }
+
 }
