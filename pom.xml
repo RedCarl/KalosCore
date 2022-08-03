@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>kim.pokemon</groupId>
-    <artifactId>KimCore</artifactId>
-    <version>1.1</version>
+    <groupId>red.kalos.core</groupId>
+    <artifactId>KalosCore</artifactId>
+    <version>1.2</version>
 	
 	<properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -243,7 +243,7 @@
 <!--                    <relocations>-->
 <!--                        <relocation>-->
 <!--                            <pattern>cc.carm.lib</pattern>-->
-<!--                            <shadedPattern>kim.pokemon.lib.easysql</shadedPattern>-->
+<!--                            <shadedPattern>red.kalos.core.lib.easysql</shadedPattern>-->
 <!--                        </relocation>-->
 <!--                    </relocations>-->
 <!--                    <filters>-->

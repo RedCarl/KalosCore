@@ -1,10 +1,10 @@
-main: kim.pokemon.Main
-name: KimCore
+main: red.kalos.core.Main
+name: KalosCore
 version: ${project.version}
 depend: [Vault,ProtocolLib,PlayerPoints,CMI,PlotSquared,LuckPerms,DragonCore]
 authors:
   - Red_Carl
-website: "https://github.com/RedCarl/KimCore"
+website: "https://github.com/RedCarl/KalosCore"
 commands:
   Core:
     aliases:
