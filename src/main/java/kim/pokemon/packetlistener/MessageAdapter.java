@@ -4,7 +4,6 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import kim.pokemon.Main;
 
 public class MessageAdapter extends PacketAdapter {
@@ -23,8 +22,5 @@ public class MessageAdapter extends PacketAdapter {
                 }
             }
         }
-    }
-
-    public void onPacketReceiving(PacketEvent event) {
     }
 }

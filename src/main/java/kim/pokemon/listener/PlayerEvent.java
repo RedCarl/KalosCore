@@ -5,33 +5,29 @@ import com.Zrips.CMI.Containers.CMIUser;
 import com.glazed7.glazedpay.bukkit.event.OrderShipEvent;
 import eos.moe.dragoncore.api.KeyPressEvent;
 import kim.pokemon.Main;
-import kim.pokemon.configFile.Data;
-import kim.pokemon.database.GlazedPayDataSQLReader;
-import kim.pokemon.database.PlayerEventDataSQLReader;
-import kim.pokemon.entity.PlayerEventData;
-import kim.pokemon.kimexpand.menu.MainMenu;
-import kim.pokemon.kimexpand.premium.VIPBuy;
-import kim.pokemon.kimexpand.premium.entity.PlayerVIP;
-import kim.pokemon.kimexpand.signin.Newbie;
+import kim.pokemon.database.PlayerDataManager;
+import kim.pokemon.entity.PlayerData;
+import kim.pokemon.entity.RankData;
+import kim.pokemon.manager.buildmanager.BuildGUI;
+import kim.pokemon.manager.menu.MainMenu;
+import kim.pokemon.manager.premium.VIPBuy;
+import kim.pokemon.manager.premium.entity.PlayerVIP;
+import kim.pokemon.manager.signin.Newbie;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.api.PokemonPhotoAPI;
-import org.black_ixx.playerpoints.event.PlayerPointsChangeEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import studio.trc.bukkit.litesignin.api.Storage;
 import studio.trc.bukkit.litesignin.event.custom.PlayerSignInEvent;
@@ -44,55 +40,48 @@ import java.util.Random;
 
 public class PlayerEvent implements Listener {
     HashMap<Player, Location> playerLocationHashMap = new HashMap<>();
-    /**
-     * 玩家进入游戏事件
-     * @param event
-     */
+
+    //玩家进入游戏事件
     @EventHandler
-    public void PlayerJoin(PlayerJoinEvent event){
+    public void PlayerJoinEvent(PlayerJoinEvent event){
+
         Player player = event.getPlayer();
 
         //修改玩家默认游戏模式
         player.setGameMode(GameMode.SURVIVAL);
 
         //玩家进入游戏提示
-        if (player.hasPlayedBefore()){
+        if (PlayerDataManager.getPlayerData(player.getUniqueId()).getUuid()==null){
+            PlayerDataManager.setPlayerData(new PlayerData(player.getUniqueId().toString(),player.getName(),0,0,new RankData("default",0),"0"));
+            event.setJoinMessage(ColorParser.parse("&8[&a&l!&8] &7欢迎新玩家 &f"+player.getName()+" &7加入卡洛斯！"));
+        }else {
             if (player.hasPermission("kim.grandtotal.L")&&!(player.hasPermission("group.admin"))){
-                event.setJoinMessage(ColorParser.parse("&8[&c&l!&8] &7欢迎贵族玩家 &6"+player.getDisplayName()+" &7回到卡洛斯！"));
+                //通知全服玩家
+                event.setJoinMessage(ColorParser.parse("&8[&c&l!&8] &7欢迎贵族玩家 &6"+player.getName()+" &7回到卡洛斯！"));
                 for (Player p: Bukkit.getOnlinePlayers()) {
                     p.playSound(p.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 }
             }
-        }else {
-            event.setJoinMessage(ColorParser.parse("&8[&a&l!&8] &7欢迎新玩家 &f"+player.getName()+" &7加入卡洛斯！"));
         }
 
-        //签到系统
-        if (!player.hasPermission("kim.newbie.G")){
-            Newbie newbie = new Newbie(player);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    newbie.openInventory();
-                    player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                }
-            }.runTaskLater(Main.getInstance(),60);
-        }else {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
+
+        //进入提示
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                //新手签到
+                Newbie.loadPlayerSignData(player);
+
+                //签到系统
+                if (!Storage.getPlayer(player).alreadySignIn()){
                     if (player.hasPermission("group.eevee")){
-                        if (!Storage.getPlayer(player).alreadySignIn()){
-                            Storage.getPlayer(player).signIn();
-                            player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您是尊贵的 &6[伊布] &7会员玩家，已经自动帮您签到."));
-                        }
-                    }else {
-                        Bukkit.dispatchCommand(player,"LiteSignIn gui");
+                        Storage.getPlayer(player).signIn();
+                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您是尊贵的 &6[伊布] &7会员玩家，已经自动帮您签到."));
+                        player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                     }
-                    player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 }
-            }.runTaskLater(Main.getInstance(),60);
-        }
+            }
+        }.runTaskLater(Main.getInstance(),120);
 
         //设置管理员隐身状态
         if (player.hasPermission("group.admin")){
@@ -100,19 +89,15 @@ public class PlayerEvent implements Listener {
             cmiUser.setVanished(true);
             player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7管理员自动启动隐藏模式,请不要尝试现身,不要打扰玩家游戏."));
         }
+
+        //检查会员状态
+        VIPBuy.checkRank(player,"eevee",Main.luckPerms.getServerName());
+        VIPBuy.checkRank(player,"pikanium",Main.luckPerms.getServerName());
     }
 
+    //蹲下+F 打开菜单
     @EventHandler
-    public void PlayerQuit(PlayerQuitEvent event){
-
-    }
-
-    /**
-     * 蹲下+F 打开菜单
-     * @param event 事件
-     */
-    @EventHandler
-    public void PlayerInteractEvent(PlayerSwapHandItemsEvent event){
+    public void PlayerSwapHandItemsEvent(PlayerSwapHandItemsEvent event){
         if (event.getPlayer().isSneaking()){
             MainMenu mainMenu = new MainMenu(event.getPlayer());
             mainMenu.openInventory();
@@ -120,47 +105,39 @@ public class PlayerEvent implements Listener {
         }
     }
 
-    /**
-     * 玩家交互时的操作
-     * @param event 事件
-     */
+    //玩家交互时的操作
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent event){
         Player player = event.getPlayer();
-
-        if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)||event.getAction().equals(Action.RIGHT_CLICK_AIR)){
-            //禁止在地皮种植树果
-//            if (player.getLocation().getWorld().getName().equals("plot")){
-//                if (player.getItemInHand().getType().name().contains("_APRICORN")){
-//                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，为了服务器的流畅度，您无法在地皮种植树果."));
-//                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-//                    event.setCancelled(true);
-//                }
-//            }
-            //禁止在主城使用 锅 和 钓鱼竿
-            if (!player.hasPermission("group.admin")){
-                if (player.getLocation().getWorld().getName().equals("spawn")){
-                    if (
-                            player.getItemInHand().getType().name().contains("_ROD")||
-                            player.getItemInHand().getType().name().contains("FRYPAN")||
-                                    player.getItemInHand().getType().name().contains("SAKURA")||
-                                    player.getItemInHand().getType().name().contains("TCONSTRUCT")
-                    ){
-                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，为了服务器的秩序，您无法在主城使用该物品."));
-                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                        event.setCancelled(true);
-                    }
+        ItemStack itemStack = event.getItem();
+        //禁止在主城使用 锅 和 钓鱼竿
+        if (itemStack!=null&&!player.hasPermission("group.admin")){
+            if (player.getLocation().getWorld().getName().equals("spawn")){
+                if (
+                        itemStack.getType().name().contains("_ROD")||
+                                itemStack.getType().name().contains("FRYPAN")||
+                                itemStack.getType().name().contains("SAKURA")||
+                                itemStack.getType().name().contains("TCONSTRUCT")||
+                                itemStack.getType().name().contains("EGG")
+                ){
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，为了服务器的秩序，您无法在主城使用该物品."));
+                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                    event.setCancelled(true);
                 }
             }
+        }
 
+        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)||event.getAction().equals(Action.RIGHT_CLICK_AIR)){
+            if (itemStack!=null&&player.hasPermission("group.eevee")){
+                if (itemStack.getType().equals(Material.WOOD_AXE)){
+                    BuildGUI buildGUI = new BuildGUI(player,0);
+                    buildGUI.openInventory();
+                }
+            }
         }
 
     }
-
-    /**
-     * 库存被打开的时候
-     * @param event
-     */
+    //库存被打开的时候
     @EventHandler
     public void InventoryOpenEvent(InventoryOpenEvent event){
         //修复大部分需要两人配合的刷物品BUG
@@ -185,10 +162,7 @@ public class PlayerEvent implements Listener {
         }
     }
 
-    /**
-     * 玩家关闭库存的操作
-     * @param event 事件
-     */
+    //玩家关闭库存的操作
     @EventHandler
     public void InventoryCloseEvent(InventoryCloseEvent event){
         playerLocationHashMap.remove(Bukkit.getPlayer(event.getPlayer().getName()));
@@ -199,45 +173,9 @@ public class PlayerEvent implements Listener {
 //        }
     }
 
-    /**
-     * 玩家点击余额变更事件
-     * @param event
-     */
-    @EventHandler
-    public void PlayerPoints(PlayerPointsChangeEvent event){
-        //充值奖励翻倍
-        if (Data.POINTS_ACTIVITY){
-            Player player = Bukkit.getPlayer(event.getPlayerId());
-            if (player!=null){
-                int money = event.getChange();
-                if (money>0){
-                    if (Main.getInstance().getGlazedPayDataSQLReader().getPlayer(player.getName()).getAmount()<1){
-                        event.setChange(money*2);
-                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7感谢您的支持,由于您是第一次赞助,本次充值到账的 &c"+Data.SERVER_POINTS+"x2 &7请注意查收."));
-                    }
-                }
-            }
-        }
-
-
-        //数据记录
-        Main.getInstance().getPlayerEventDataSQLReader().addPlayerEvent(PlayerEventData.setPlayerEventData(Bukkit.getPlayer(event.getPlayerId()).getName(),event.getEventName(),String.valueOf(event.getChange()),new Timestamp(System.currentTimeMillis())));
-    }
-
-
-    //方块破坏事件
-    @EventHandler
-    public void PlayerInteractEvent(BlockBreakEvent event){
-        //开启幸运方块
-        if (event.getBlock().getType().toString().equals("POKELUCKY_POKE_LUCKY")){
-            //数据记录
-//            Main.getInstance().getPlayerEventDataSQLReader().addPlayerEvent(PlayerEventData.setPlayerEventData(event.getPlayer().getName(),event.getEventName(),"1",new Timestamp(System.currentTimeMillis())));
-        }
-    }
-
     //玩家移动事件
     @EventHandler
-    public void Player(PlayerMoveEvent event){
+    public void PlayerMoveEvent(PlayerMoveEvent event){
         Player player = event.getPlayer();
 
         //掉入虚空拉回
@@ -254,15 +192,18 @@ public class PlayerEvent implements Listener {
         String money = String.valueOf(event.getOrderInfo().get("totalFee"));
         Player player = Bukkit.getPlayer(name);
 
-
-        Main.getInstance().getPlayerEventDataSQLReader().addPlayerEvent(PlayerEventData.setPlayerEventData(name,event.getEventName(),money,new Timestamp(System.currentTimeMillis())));
+        //累计充值记录
+        PlayerData playerData = PlayerDataManager.getPlayerData(player.getUniqueId());
+        double m = playerData.getRecharge()+Double.parseDouble(money);
+        playerData.setRecharge((long)m);
+        PlayerDataManager.setPlayerData(playerData);
 
         //会员 充值/续费 取消发货
-        if (Objects.equals(money, "25.0") || Objects.equals(money, "45.0")){
+        if (Objects.equals(money, "15.0") || Objects.equals(money, "45.0")){
             PlayerVIP rank = new PlayerVIP();
             switch (money){
-                case "25.0":
-                    PlayerVIP PikaniumVIP = VIPBuy.checkRank(player,"pikanium",Main.luckPerms.getServerName());
+                case "15.0":
+                    PlayerVIP PikaniumVIP = VIPBuy.checkRank(player,"pikanium", Main.luckPerms.getServerName());
                     rank.setName(player.getName());
                     rank.setRank("pikanium");
                     if (PikaniumVIP!=null){
@@ -279,7 +220,7 @@ public class PlayerEvent implements Listener {
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                     break;
                 case "45.0":
-                    PlayerVIP EeveeVIP = VIPBuy.checkRank(player,"eevee",Main.luckPerms.getServerName());
+                    PlayerVIP EeveeVIP = VIPBuy.checkRank(player,"eevee", Main.luckPerms.getServerName());
                     rank.setName(player.getName());
                     rank.setRank("eevee");
                     if (EeveeVIP!=null){
@@ -309,13 +250,11 @@ public class PlayerEvent implements Listener {
         PokemonPhotoAPI.getFolder("KeyPressEvent/");
         File file = new File(Main.getInstance().getDataFolder(), "KeyPressEvent/"+player.getName() + ".yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        switch (key){
-            case "G":
-                if (!config.getBoolean("G")){
-                    MainMenu mainMenu = new MainMenu(player);
-                    mainMenu.openInventory();
-                }
-                break;
+        if ("G".equals(key)) {
+            if (!config.getBoolean("G")) {
+                MainMenu mainMenu = new MainMenu(player);
+                mainMenu.openInventory();
+            }
         }
     }
 
@@ -341,5 +280,49 @@ public class PlayerEvent implements Listener {
         int money = new Random().nextInt(45);
         Main.econ.withdrawPlayer(player,money);
         player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很遗憾您在探险的过程中失败了，您丢失了 &c"+money+" &7卡洛币，不要灰心。"));
+    }
+
+    //玩家更换世界事件
+    @EventHandler
+    public void PlayerChangedWorldEvent(PlayerChangedWorldEvent event){
+        Player player = event.getPlayer();
+        switch (event.getPlayer().getWorld().getName()){
+            case "world":
+                player.sendTitle(ColorParser.parse("&aKalos &f// &a主世界"),ColorParser.parse("&f尽情的享受这个世界吧!"),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                break;
+            case "DIM-1":
+                player.sendTitle(ColorParser.parse("&cKalos &f// &c下届"),ColorParser.parse("&f这是一个可怕的世界."),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                break;
+            case "DIM1":
+                player.sendTitle(ColorParser.parse("&dKalos &f// &d末地"),ColorParser.parse("&f末影龙?"),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                break;
+            case "DIM72":
+                player.sendTitle(ColorParser.parse("&6Kalos &f// &6究极世界"),ColorParser.parse("&f天空的颜色好像在变化着?"),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                break;
+            case "DIM73":
+                player.sendTitle(ColorParser.parse("&3Kalos &f// &3溺水世界"),ColorParser.parse("&f全世界都是海水，无比压抑!"),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                break;
+            case "olostland":
+                player.sendTitle(ColorParser.parse("&aKalos &f// &a楼兰之地"),ColorParser.parse("&f一个全新的领域，在这里加入其它部族吧！"),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                break;
+            case "plot":
+                player.sendTitle(ColorParser.parse("&bKalos &f// &b地皮世界"),ColorParser.parse("&f供训练家居住的地方，萌新专属哦！"),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                break;
+            case "pvp":
+                player.sendTitle(ColorParser.parse("&cKalos &f// &c战斗世界"),ColorParser.parse("&f您进入了战斗世界，可以互相攻击."),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                break;
+            case "spawn":
+                player.sendTitle(ColorParser.parse("&3Kalos &f// &3宝可梦训练场"),ColorParser.parse("&f尽情的训练您的宝可梦去吧."),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                break;
+        }
     }
 }

@@ -37,6 +37,12 @@ public class ItemFacAPI {
       return is;
    }
 
+   public static ItemStack getItemStackWithDurability(Material material, int amount){
+      ItemStack is = new ItemStack(material);
+      is.setAmount(amount);
+      return is;
+   }
+
    public static ItemStack getItemStackWithDurability(Material material, short d, String name) {
       ItemStack is = new ItemStack(material);
       is.setDurability(d);

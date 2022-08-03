@@ -11,4 +11,11 @@ public class DragonItemAPI {
         is = DragonAPI.setItemSkin(is,dragonName);
         return is;
     }
+
+    public static ItemStack getItemStack(String dragonName,String displayName,int amount,String... lores){
+        ItemStack is = ItemFacAPI.getItemStack(Material.MAGMA_CREAM,displayName,lores);
+        is = DragonAPI.setItemSkin(is,dragonName);
+        is.setAmount(amount);
+        return is;
+    }
 }

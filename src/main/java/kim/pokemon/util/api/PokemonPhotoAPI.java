@@ -8,8 +8,8 @@ import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import de.tr7zw.nbtapi.NBTItem;
 import kim.pokemon.Main;
 import kim.pokemon.configFile.Data;
-import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.PokemonAPI;
+import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
@@ -71,7 +71,7 @@ public class PokemonPhotoAPI {
         String totalIVs = df.format((int) (ivSum / 186.0 * 100.0)) + "%";
 
         ItemStack PokemonInfo = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
-                ColorParser.parse(PokemonAPI.getPokemonName(pokemon)+" &7(点击培养宝可梦)"),
+                ColorParser.parse(PokemonAPI.getPokemonName(pokemon)+" &7(右键培养宝可梦属性)"),
                 ColorParser.parse("&7等级: &b"+pokemon.getLevel()),
                 ColorParser.parse("&7闪光: &f"+PokemonAPI.isShiny(pokemon)),
                 ColorParser.parse("&7特性: &f"+pokemon.getAbility().getLocalizedName()),
@@ -105,7 +105,7 @@ public class PokemonPhotoAPI {
         return nbtItem.getItem();
     }
 
-    public static ItemStack getPhotoItemC(Pokemon pokemon){
+    public static ItemStack getPhotoItemSell(Pokemon pokemon){
         ItemStack PokemonInfo = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
                 ColorParser.parse(PokemonAPI.getPokemonName(pokemon)),
                 ColorParser.parse("&r"),
@@ -127,7 +127,39 @@ public class PokemonPhotoAPI {
         return nbtItem.getItem();
     }
 
+    public static ItemStack getPhotoItemSelect(Pokemon pokemon){
+        ItemStack PokemonInfo = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
+                ColorParser.parse(PokemonAPI.getPokemonName(pokemon)),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o请谨慎选择，选择后将无法更改！")
+        );
 
+        NBTItem nbtItem = new NBTItem(PokemonInfo);
+        nbtItem.setShort("ndex", (short) pokemon.getSpecies().getNationalPokedexInteger());
+        if (pokemon.isShiny()){
+            nbtItem.setByte("Shiny", (byte) 1);
+        }else {
+            nbtItem.setByte("Shiny", (byte) 0);
+        }
+
+        nbtItem.setByte("form", pokemon.getFormEnum().getForm());
+        return nbtItem.getItem();
+    }
+
+    public static ItemStack getPhotoItem(Pokemon pokemon){
+        ItemStack PokemonInfo = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"));
+
+        NBTItem nbtItem = new NBTItem(PokemonInfo);
+        nbtItem.setShort("ndex", (short) pokemon.getSpecies().getNationalPokedexInteger());
+        if (pokemon.isShiny()){
+            nbtItem.setByte("Shiny", (byte) 1);
+        }else {
+            nbtItem.setByte("Shiny", (byte) 0);
+        }
+
+        nbtItem.setByte("form", pokemon.getFormEnum().getForm());
+        return nbtItem.getItem();
+    }
 
     /**
      * 把某相片代表的宝可梦发送给玩家，并且清除该相片的所有数据

@@ -1,10 +1,9 @@
 main: kim.pokemon.Main
 name: KimCore
 version: ${project.version}
-depend: [Vault,PlaceholderAPI,ProtocolLib,PlayerPoints,CMI,PlotSquared,LuckPerms,DragonCore]
+depend: [Vault,ProtocolLib,PlayerPoints,CMI,PlotSquared,LuckPerms,DragonCore]
 authors:
   - Red_Carl
-  - 85
 website: "https://github.com/RedCarl/KimCore"
 commands:
   Core:
@@ -27,16 +26,6 @@ commands:
     aliases:
       - menu
     description: "主菜单，可通过蹲下+F打开菜单。"
-  BanPokemon:
-    aliases:
-      - banpokemon
-      - bp
-    description: "禁止该宝可梦在本服中出现。"
-  BanItem:
-    aliases:
-      - banitem
-      - bi
-    description: "禁止该物品在服务器中使用。"
   Kim:
     aliases:
       - kim

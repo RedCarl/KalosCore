@@ -18,7 +18,7 @@ import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import com.pixelmonmod.pixelmon.enums.forms.IEnumForm;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import kim.pokemon.Main;
-import kim.pokemon.command.PokeAward.PokeFormCommand;
+import kim.pokemon.command.pokeaward.PokeFormCommand;
 import kim.pokemon.configFile.Data;
 import kim.pokemon.util.gui.inventory.ItemFactoryAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -136,32 +136,39 @@ public class PokemonAPI {
      */
     public static Pokemon getRandomLegendaryMaxPokemon(){
         String[] PokeBlackList = new String[]{
-                "calyrex",
-                "glastrier",
-                "groudon",
-                "kyogre",
-                "zamazenta",
-                "zacian",
-                "eternatus",
                 "mewtwo",
-                "urshifu",
-                "spectrier",
-                "lunala",
-                "solgaleo",
-                "type_null",
-                "ho_oh",
                 "lugia",
-                "yveltal",
-                "giratina",
-                "xerneas",
+                "ho_oh",
+                "kyogre",
+                "groudon",
+                "rayquaza",
                 "dialga",
                 "palkia",
-                "zygarde",
-                "arceus",
-                "zekrom",
+                "giratina",
                 "reshiram",
-                "kyurem"
+                "zekrom",
+                "kyurem",
+                "xerneas",
+                "yveltal",
+                "zygarde",
+                "diancie",
+                "solgaleo",
+                "lunala",
+                "cosmoem",
+                "cosmog",
+                "necrozma",
+                "zacian",
+                "zamazenta",
+                "eternatus",
+                "glastrier",
+                "spectrier",
+                "calyrex",
         };
+
+        for (String s:PokeBlackList) {
+            System.out.println(SpawnPokemon(s).getLocalizedName());
+        }
+
         PokemonSpec spec = PokemonSpec.from(Arrays.asList(PokeBlackList).get(new Random().nextInt(Arrays.asList(PokeBlackList).size()-1)));
 
         return spec.create();
@@ -318,10 +325,12 @@ public class PokemonAPI {
             for (Pokemon p:playerPartyStorage.getAll()) {
                 if (p==null){
                     playerPartyStorage.add(pokemon);
+                    player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7注意，一只宝可梦 &c"+pokemon.getLocalizedName()+" &7已经进入您的背包，请注意查看。"));
                     return;
                 }
             }
             Pixelmon.storageManager.getPCForPlayer(player.getUniqueId()).add(pokemon);
+            player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7注意，一只宝可梦 &c"+pokemon.getLocalizedName()+" &7已经进入您的PC，请注意查看。"));
         }
     }
 
@@ -543,7 +552,7 @@ public class PokemonAPI {
 
         //闪光
         if (pokemon.isShiny()){
-            money+=400;
+            money+=150;
         }
 
         //努力值估算
@@ -562,13 +571,13 @@ public class PokemonAPI {
         }
         switch (a){
             case 6:
-                money+=800;
+                money+=400;
                 break;
             case 5:
-                money+=500;
+                money+=300;
                 break;
             case 4:
-                money+=200;
+                money+=150;
                 break;
             case 3:
                 money+=50;
@@ -781,17 +790,17 @@ public class PokemonAPI {
 
         if (isOn){
             playerPartyStorage.set(slot,Mewtwo);
-            player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"),ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &6超梦 &f宝可梦."),0,60,0);
+            player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"), ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &6超梦 &f宝可梦."),0,60,0);
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
         }else {
             int i = new Random().nextInt(2);
             if (i==1){
                 playerPartyStorage.set(slot,Mewtwo);
-                player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"),ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &6超梦 &f宝可梦."),0,60,0);
+                player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"), ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &6超梦 &f宝可梦."),0,60,0);
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
             }else {
                 playerPartyStorage.set(slot,SpawnPokemon("Ditto"));
-                player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"),ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &9百变怪 &f宝可梦."),0,60,0);
+                player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"), ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &9百变怪 &f宝可梦."),0,60,0);
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
             }
         }
@@ -922,18 +931,18 @@ public class PokemonAPI {
     /**
      * 秒格式化
      */
-    public static String getDate(Integer date){
+    public static String getDate(long date){
         if (date<60) {
-            return "&e"+date+" &7秒";
+            return "&c"+date+" &7秒";
         }else if (date>60&&date<3600) {
-            int m = date/60;
-            int s = date%60;
-            return "&e"+m+" &7分"+" &e"+s+" &7秒";
+            long m = date/60;
+            long s = date%60;
+            return "&c"+m+" &7分"+" &c"+s+" &7秒";
         }else {
-            int h = date/3600;
-            int m = (date%3600)/60;
-            int s = (date%3600)%60;
-            return "&e"+h+" &7小时"+" &e"+m+" &7分"+" &e"+s+" &7秒";
+            long h = date/3600;
+            long m = (date%3600)/60;
+            long s = (date%3600)%60;
+            return "&c"+h+" &7小时"+" &c"+m+" &7分"+" &c"+s+" &7秒";
         }
     }
 
@@ -958,5 +967,15 @@ public class PokemonAPI {
         }
 
         Bukkit.spigot().broadcast(texts.toArray(new BaseComponent[0]));
+    }
+
+    //获取当月第一天
+    public static Long getMonthDay(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTimeInMillis() / 1000;
     }
 }

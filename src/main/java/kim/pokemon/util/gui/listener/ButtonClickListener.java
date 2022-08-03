@@ -39,6 +39,7 @@ public class ButtonClickListener implements Listener {
          if(InventoryGUI.guiContains(v.getTopInventory())){
             inv = v.getTopInventory();
          }
+         assert inv != null;
          if(i<inv.getSize()){
             Slot s = InventoryGUI.getGUI(inv).getSlot(i);
             if(s==null){

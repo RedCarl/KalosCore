@@ -66,7 +66,7 @@ public class TitleAPI {
 	      
 	      if (subtitle != null) {
 	        subtitle = ChatColor.translateAlternateColorCodes('&', subtitle);
-	        subtitle = subtitle.replaceAll("%player%", player.getDisplayName());
+	        subtitle = subtitle.replaceAll("%player%", player.getName());
 	        
 	        Object e = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TIMES").get(null);
 	        Object chatSubtitle = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[] { String.class }).invoke(null, new Object[] { "{\"text\":\"" + title + "\"}" });
@@ -96,8 +96,8 @@ public class TitleAPI {
 	    if (footer == null) footer = ""; 
 	    footer = ChatColor.translateAlternateColorCodes('&', footer);
 	    
-	    header = header.replaceAll("%player%", player.getDisplayName());
-	    footer = footer.replaceAll("%player%", player.getDisplayName());
+	    header = header.replaceAll("%player%", player.getName());
+	    footer = footer.replaceAll("%player%", player.getName());
 	    
 	    try {
 	      Object tabHeader = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", new Class[] { String.class }).invoke(null, new Object[] { "{\"text\":\"" + header + "\"}" });

@@ -2,29 +2,33 @@ package kim.pokemon;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import kim.pokemon.command.CrazyAuctions.CrazyAuctionsCommand;
-import kim.pokemon.command.MenuCommand;
-import kim.pokemon.command.PokeAward.PokeFormCommand;
-import kim.pokemon.command.PokemonBan.BanItemCommand;
-import kim.pokemon.command.PokemonBan.BanPokemonCommand;
+import kim.pokemon.command.crazyauctions.CrazyAuctionsCommand;
+import kim.pokemon.command.menu.MenuCommand;
+import kim.pokemon.command.pokeaward.PokeFormCommand;
 import kim.pokemon.configFile.Data;
-import kim.pokemon.database.GlazedPayDataSQLReader;
-import kim.pokemon.database.PlayerEventDataSQLReader;
-import kim.pokemon.database.PokemonBanDataSQLReader;
-import kim.pokemon.database.PremiumPlayerDataSQLReader;
-import kim.pokemon.kimexpand.armourers.listener.ArmourersUpdateListener;
-import kim.pokemon.kimexpand.autobroadcast.BroadCastMessage;
-import kim.pokemon.kimexpand.crazyauctions.CrazyAuctions;
-import kim.pokemon.kimexpand.kitpvp.PVPEvent;
-import kim.pokemon.kimexpand.nick.Nick;
-import kim.pokemon.kimexpand.pokeban.PokemonBan;
-import kim.pokemon.kimexpand.pokespawn.SpawnTime;
+import kim.pokemon.database.PlayerDataManager;
+import kim.pokemon.entity.PlayerData;
+import kim.pokemon.manager.armourers.listener.ArmourersUpdateListener;
+import kim.pokemon.manager.autobroadcast.BroadCastMessage;
+import kim.pokemon.manager.autosave.AutoSave;
+import kim.pokemon.manager.crazyauctions.CrazyAuctions;
+import kim.pokemon.manager.kitpvp.listener.KitPvpEvent;
+import kim.pokemon.manager.kits.KitsManager;
+import kim.pokemon.manager.nick.Nick;
+import kim.pokemon.manager.pokeban.PokemonBan;
+import kim.pokemon.manager.pokespawn.SpawnTime;
+import kim.pokemon.manager.questmanager.listener.QuestListener;
+import kim.pokemon.manager.questmanager.manager.ConfigManager;
+import kim.pokemon.manager.questmanager.manager.QuestManager;
+import kim.pokemon.manager.questmanager.quest.list.achievement.Achievement;
+import kim.pokemon.manager.questmanager.quest.list.dayquest.Day;
+import kim.pokemon.manager.ranking.RankingManager;
 import kim.pokemon.listener.CommandEvent;
+import kim.pokemon.listener.ItemInteractEvent;
 import kim.pokemon.listener.PlayerEvent;
 import kim.pokemon.listener.PokemonEvent;
 import kim.pokemon.packetlistener.AdvanceAdapter;
 import kim.pokemon.packetlistener.MessageAdapter;
-import kim.pokemon.placeholder.TitlePlaceholderAPI;
 import kim.pokemon.util.ColorParser;
 import kim.pokemon.util.api.PokemonPhotoAPI;
 import kim.pokemon.util.gui.listener.ButtonClickListener;
@@ -34,8 +38,6 @@ import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -43,37 +45,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Set;
 
 public class Main extends JavaPlugin {
+
     private static Main instance;
-    public static Economy econ = null;
-    public static PlayerPointsAPI ppAPI;
-    public static LuckPerms luckPerms;
     public static Main getInstance() {
         return instance;
     }
-    
-    //玩家累计充值数量数据
-    public static HashMap<Player, Double> GlazedPayData = new HashMap<>();
 
-    private GlazedPayDataSQLReader glazedPayDataSQLReader;
-    public GlazedPayDataSQLReader getGlazedPayDataSQLReader(){
-        return this.glazedPayDataSQLReader;
-    }
-    private PlayerEventDataSQLReader playerEventDataSQLReader;
-    public PlayerEventDataSQLReader getPlayerEventDataSQLReader(){
-        return this.playerEventDataSQLReader;
-    }
-    private PokemonBanDataSQLReader pokemonBanDataSQLReader;
-    public PokemonBanDataSQLReader getPokemonBanDataSQLReader(){
-        return this.pokemonBanDataSQLReader;
-    }
-    private PremiumPlayerDataSQLReader premiumPlayerDataSQLReader;
-    public PremiumPlayerDataSQLReader getPremiumPlayerDataSQLReader(){
-        return this.premiumPlayerDataSQLReader;
-    }
+    public static Economy econ = null;
+    public static PlayerPointsAPI ppAPI;
+    public static LuckPerms luckPerms;
 
     @Override
     public void onEnable() {
@@ -85,16 +67,6 @@ public class Main extends JavaPlugin {
         log(getName() + " " + getDescription().getVersion() + " &7开始加载...");
 
         long startTime = System.currentTimeMillis();
-
-        log("正在启动数据库...");
-        this.glazedPayDataSQLReader = new GlazedPayDataSQLReader();
-        this.playerEventDataSQLReader = new PlayerEventDataSQLReader();
-        this.premiumPlayerDataSQLReader = new PremiumPlayerDataSQLReader();
-        this.pokemonBanDataSQLReader = new PokemonBanDataSQLReader();
-        this.premiumPlayerDataSQLReader.initialize();
-        this.pokemonBanDataSQLReader.initialize();
-        this.glazedPayDataSQLReader.initialize();
-        this.playerEventDataSQLReader.initialize();
 
         //Vault
         if (!setupEconomy() ) {
@@ -110,15 +82,6 @@ public class Main extends JavaPlugin {
             ppAPI = PlayerPoints.getInstance().getAPI();
         }else {
             log("未找到 PlayerPoints 依赖...");
-        }
-
-        //PlaceholderAPI
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            log("注册变量...");
-            new TitlePlaceholderAPI(Main.instance).register();
-        }else {
-            log("未安装 PlaceholderAPI 不进行变量注册...");
-            log("若您想使用变量显示，请安装PlaceholderAPI！");
         }
 
         //NBTAPI
@@ -154,11 +117,13 @@ public class Main extends JavaPlugin {
         regListener(new CommandEvent());
         regListener(new PlayerEvent());
         regListener(new PokemonEvent());
-        regListener(new SpawnTime());
         regListener(new PokemonBan());
         regListener(new ArmourersUpdateListener());
-        regListener(new PVPEvent());
+        regListener(new KitPvpEvent());
         regListener(new Nick());
+        regListener(new KitsManager());
+        regListener(new ItemInteractEvent());
+        regListener(new AutoSave());
 
         log("启动传奇宝可梦监控系统...");
         SpawnTime.start();
@@ -168,8 +133,6 @@ public class Main extends JavaPlugin {
 
         log("正在注册指令...");
         regCommand("Menu",new MenuCommand());
-        regCommand("BanPokemon",new BanPokemonCommand());
-        regCommand("BanItem",new BanItemCommand());
         regCommand("Kim",new CrazyAuctionsCommand());
         regCommand("PokeAward",new PokeFormCommand());
 
@@ -194,13 +157,32 @@ public class Main extends JavaPlugin {
         new BroadCastMessage(this);
 
         log("加载宝可梦皮肤信息...");
-        File CustomFile = new File(Main.getInstance().getDataFolder(), "CustomSkin/config.yml");
-        FileConfiguration CustomConfig = YamlConfiguration.loadConfiguration(CustomFile);
-        Set<String> AllSkinList = CustomConfig.getConfigurationSection("skins").getKeys(false);
-        Data.CUSTOM_SKIN.addAll(AllSkinList);
+//        saveYmlConfig("CustomSkin/config.yml");
+//        File CustomFile = new File(Main.getInstance().getDataFolder(), "CustomSkin/config.yml");
+//        FileConfiguration CustomConfig = YamlConfiguration.loadConfiguration(CustomFile);
+//        Set<String> AllSkinList = CustomConfig.getConfigurationSection("skins").getKeys(false);
+//        Data.CUSTOM_SKIN.addAll(AllSkinList);
 
         log("加载龙之核心组件...");
         saveYmlConfig("Nick/gui.yml");
+
+        log("加载礼包系统...");
+        KitsManager.onLoadKitsEvent();
+
+        log("加载玩家Ranking系统...");
+        RankingManager.LoadAllPlayerData();
+        RankingManager.LoadTimeRankingData();
+        RankingManager.LoadMoneyRankingData();
+
+        log("加载 AutoSave 模块...");
+        AutoSave.onEnable();
+
+        log("加载 Quest 模块...");
+        ConfigManager.initialize();
+        new QuestListener().initialize();
+        new Day().initialize();
+        new Achievement().initialize();
+        QuestManager.initialize();
 
         log("加载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
@@ -212,6 +194,9 @@ public class Main extends JavaPlugin {
         log(getName() + " " + getDescription().getVersion() + " 开始卸载...");
         long startTime = System.currentTimeMillis();
 
+        log("保存 Quest 模块数据...");
+        QuestManager.save();
+
         log("卸载监听器...");
         Bukkit.getServicesManager().unregisterAll(this);
 
@@ -219,12 +204,8 @@ public class Main extends JavaPlugin {
         CrazyAuctions crazyAuctions = new CrazyAuctions();
         crazyAuctions.onDisable();
 
-        log("正在关闭数据库...");
-        this.premiumPlayerDataSQLReader.close();
-        this.pokemonBanDataSQLReader.close();
-        this.glazedPayDataSQLReader.close();
-        this.playerEventDataSQLReader.close();
-
+        log("卸载 AutoSave 模块...");
+        AutoSave.onDisable();
 
         log("卸载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
@@ -289,10 +270,12 @@ public class Main extends JavaPlugin {
             @Override
             public void run() {
                 for (Player player:Bukkit.getOnlinePlayers()) {
-                    GlazedPayData.put(player,Main.getInstance().getGlazedPayDataSQLReader().getPlayer(player.getName()).getAmount());
+                    PlayerData playerData = PlayerDataManager.getPlayerData(player.getUniqueId());
+                    playerData.setPlayTime(playerData.getPlayTime()+1);
+                    PlayerDataManager.setPlayerData(playerData);
                 }
             }
-        }.runTaskTimer(Main.getInstance(),0,200);
+        }.runTaskTimer(Main.getInstance(),0,20);
     }
 
 
@@ -304,4 +287,5 @@ public class Main extends JavaPlugin {
         }
 
     }
+
 }

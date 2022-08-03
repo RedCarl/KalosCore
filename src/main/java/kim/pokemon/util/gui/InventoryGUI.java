@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class InventoryGUI {
-   int size = 9;
-   String name = "箱子界面";
-   private Button[] buttons = new Button[54];
-   private Slot[] slots = new Slot[54];
-   private Player owner;
-   private Inventory inv;
+   int size;
+   String name;
+   private final Button[] buttons = new Button[54];
+   private final Slot[] slots = new Slot[54];
+   private final Player owner;
+   private final Inventory inv;
    private static final HashMap<Inventory, InventoryGUI> guiMap = Maps.newHashMap();
    public InventoryGUI(String name, Player player, int row) {
       this.name = name;

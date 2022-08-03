@@ -37,6 +37,16 @@ public class ItemFactoryAPI {
       return is;
    }
 
+   public static ItemStack getItemStack(Material material, short d,int amount) {
+      ItemStack is = new ItemStack(material);
+
+      ItemMeta im = Bukkit.getItemFactory().getItemMeta(material);
+      is.setDurability(d);
+      is.setAmount(amount);
+      is.setItemMeta(im);
+      return is;
+   }
+
    public static ItemStack getItemStackWithDurability(Material material,short d){
       ItemStack is = new ItemStack(material);
       is.setDurability(d);

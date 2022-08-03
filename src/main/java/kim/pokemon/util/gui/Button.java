@@ -1,23 +1,18 @@
 package kim.pokemon.util.gui;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class Button {
-   private ItemStack icon;
-   private ButtonClick buttonClick;
+   private final ItemStack icon;
+   private final ButtonClick buttonClick;
 
    public Button(ItemStack ic) {
-      this.icon = new ItemStack(Material.SKULL_ITEM);
       this.buttonClick = (type) -> {
       };
       this.icon = ic;
    }
 
    public Button(ItemStack ic, ButtonClick bc) {
-      this.icon = new ItemStack(Material.SKULL_ITEM);
-      this.buttonClick = (type) -> {
-      };
       this.icon = ic;
       this.buttonClick = bc;
    }
