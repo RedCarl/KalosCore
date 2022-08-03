@@ -5,6 +5,7 @@ import red.kalos.core.Main;
 import red.kalos.core.util.ColorParser;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+import red.kalos.core.util.api.KalosUtil;
 
 public class SpawnTime {
     //循环更新事件
@@ -12,29 +13,27 @@ public class SpawnTime {
         new BukkitRunnable() {
             @Override
             public void run() {
-                long nextSpawnTime = PixelmonSpawning.legendarySpawner.nextSpawnTime;
-                nextSpawnTime=nextSpawnTime/1000;
-                System.out.println(nextSpawnTime);
-                if (nextSpawnTime==12000){
-                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+nextSpawnTime/60+" &7分钟后尝试出现."));
+
+                if (KalosUtil.getLegendarySpawnerTime()==12000){
+                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+ KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试出现."));
                 }
-                if (nextSpawnTime==8000){
-                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+nextSpawnTime/60+" &7分钟后尝试出现."));
+                if (KalosUtil.getLegendarySpawnerTime()==8000){
+                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试出现."));
                 }
-                if (nextSpawnTime==6000){
-                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+nextSpawnTime/60+" &7分钟后尝试出现."));
+                if (KalosUtil.getLegendarySpawnerTime()==6000){
+                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试出现."));
                 }
-                if (nextSpawnTime==3000){
-                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+nextSpawnTime/60+" &7分钟后尝试出现."));
+                if (KalosUtil.getLegendarySpawnerTime()==3000){
+                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试出现."));
                 }
-                if (nextSpawnTime==600){
-                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+nextSpawnTime/60+" &7分钟后尝试出现."));
+                if (KalosUtil.getLegendarySpawnerTime()==600){
+                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试出现."));
                 }
-                if (nextSpawnTime==60){
-                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+nextSpawnTime/60+" &7分钟后尝试出现."));
+                if (KalosUtil.getLegendarySpawnerTime()==60){
+                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试出现."));
                 }
-                if (nextSpawnTime<=10&&nextSpawnTime>0){
-                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+nextSpawnTime+" &7秒后尝试出现."));
+                if (KalosUtil.getLegendarySpawnerTime()<=10&&KalosUtil.getLegendarySpawnerTime()>0){
+                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传说宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()+" &7秒后尝试出现."));
                 }
             }
 

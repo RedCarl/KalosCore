@@ -4,6 +4,7 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.PlayerManager;
 import eos.moe.dragoncore.api.gui.event.CustomPacketEvent;
 import eos.moe.dragoncore.network.PacketSender;
+import red.kalos.core.Main;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.api.CustomItem;
 import org.bukkit.Bukkit;
@@ -20,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Nick implements Listener {
-    YamlConfiguration DragonGUI = YamlConfiguration.loadConfiguration(new File(Bukkit.getPluginManager().getPlugin("KimCore").getDataFolder(),"Nick/gui.yml"));
+    YamlConfiguration DragonGUI = YamlConfiguration.loadConfiguration(new File(Main.getInstance().getDataFolder(),"Nick/gui.yml"));
     YamlConfiguration NickData;
 
 
@@ -71,7 +72,7 @@ public class Nick implements Listener {
                 }
                 playerManager.getUser(player).setNickName(Name,true);
                 try {
-                    File Data = new File(Bukkit.getPluginManager().getPlugin("KimCore").getDataFolder(),"Nick/data.yml");
+                    File Data = new File(Main.getInstance().getDataFolder(),"Nick/data.yml");
                     NickData = YamlConfiguration.loadConfiguration(Data);
                     NickData.set(player.getName(),Name);
                     NickData.save(Data);

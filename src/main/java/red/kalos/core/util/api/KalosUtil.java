@@ -1,5 +1,6 @@
 package red.kalos.core.util.api;
 
+import com.pixelmonmod.pixelmon.spawning.PixelmonSpawning;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
@@ -29,5 +30,11 @@ public class KalosUtil {
         }
 
         return decimalFormat.format(d);
+    }
+
+    public static long getLegendarySpawnerTime(){
+        long nextSpawnTime = PixelmonSpawning.legendarySpawner.nextSpawnTime;
+        nextSpawnTime=(nextSpawnTime - System.currentTimeMillis()) / 1000;
+        return nextSpawnTime;
     }
 }

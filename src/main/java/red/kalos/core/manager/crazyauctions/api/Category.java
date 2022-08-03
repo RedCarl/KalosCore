@@ -3,6 +3,7 @@ package red.kalos.core.manager.crazyauctions.api;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
+import red.kalos.core.Main;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public enum Category {
     	}
 
     	ArrayList<Material> ma = new ArrayList<>();
-    	File f = new File(Bukkit.getPluginManager().getPlugin("KimCore").getDataFolder(),"pokemons.yml");
+    	File f = new File(Main.getInstance().getDataFolder(),"pokemons.yml");
     	YamlConfiguration yaml = YamlConfiguration.loadConfiguration(f);
     	List<String> materials = yaml.getStringList("materials");
     	for(String m:materials) {

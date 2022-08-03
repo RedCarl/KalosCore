@@ -333,7 +333,7 @@ public class MainMenu extends InventoryGUI {
                 ColorParser.parse("&r  &e■ &7概率信息:"),
                 ColorParser.parse("&r      &7   刷新周期: &c"+ DateUtil.getDate(PixelmonConfig.legendarySpawnTicks/20)),
                 ColorParser.parse("&r      &7   刷新概率: &c"+(KalosUtil.decimalFormat(PixelmonConfig.legendarySpawnChance, 2))+"%"),
-                ColorParser.parse("&r      &7   下次刷新: "+0),
+                ColorParser.parse("&r      &7   下次刷新: "+DateUtil.getDate(KalosUtil.getLegendarySpawnerTime())),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o只能查询该区域的传说宝可梦,并不能代表您的脚下.")
         );
