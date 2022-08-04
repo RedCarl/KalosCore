@@ -21,10 +21,10 @@ public class VIPBuy {
     public static void addRank(PlayerVIP playerVIP){
         RankData rankData = new RankData(playerVIP.getRank(),playerVIP.getTime().getTime());
 
-        PlayerData playerData = PlayerDataManager.getPlayerData(Bukkit.getPlayer(playerVIP.getName()).getUniqueId());
+        PlayerData playerData = PlayerDataManager.getInstance().getPlayerData(Bukkit.getPlayer(playerVIP.getName()).getUniqueId());
         playerData.setRankData(rankData);
 
-        PlayerDataManager.setPlayerData(playerData);
+        PlayerDataManager.getInstance().setPlayerData(playerData);
     }
 
     /**
@@ -34,17 +34,17 @@ public class VIPBuy {
     public static void updateRank(PlayerVIP playerVIP){
         RankData rankData = new RankData(playerVIP.getRank(),playerVIP.getTime().getTime());
 
-        PlayerData playerData = PlayerDataManager.getPlayerData(Bukkit.getPlayer(playerVIP.getName()).getUniqueId());
+        PlayerData playerData = PlayerDataManager.getInstance().getPlayerData(Bukkit.getPlayer(playerVIP.getName()).getUniqueId());
         playerData.setRankData(rankData);
 
-        PlayerDataManager.setPlayerData(playerData);
+        PlayerDataManager.getInstance().setPlayerData(playerData);
     }
 
     /**
      * 查询Rank
      */
     public static PlayerVIP checkRank(Player player,String rank,String server){
-        RankData rankData = PlayerDataManager.getPlayerData(player.getUniqueId()).getRankData();
+        RankData rankData = PlayerDataManager.getInstance().getPlayerData(player.getUniqueId()).getRankData();
 
         PlayerVIP vip = new PlayerVIP();
 
@@ -78,9 +78,9 @@ public class VIPBuy {
      * 删除Rank
      */
     public static void deleteRank(Player player){
-        PlayerData playerData = PlayerDataManager.getPlayerData(player.getUniqueId());
+        PlayerData playerData = PlayerDataManager.getInstance().getPlayerData(player.getUniqueId());
         playerData.setRankData(new RankData("default",0));
-        PlayerDataManager.setPlayerData(playerData);
+        PlayerDataManager.getInstance().setPlayerData(playerData);
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" parent clear server="+ Main.luckPerms.getServerName());
 
     }

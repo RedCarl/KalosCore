@@ -9,16 +9,42 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerDataManager {
+
+//    private final Set<PlayerData> playerDataSet;
+    private static final PlayerDataManager instance = new PlayerDataManager();
+//    public PlayerDataManager() {
+//        playerDataSet = new HashSet<>(getAllPlayerData());
+//    }
+    public static PlayerDataManager getInstance() {
+        return instance;
+    }
+
+    /**
+     * 获取所有玩家数据
+     * @return 数据
+     */
+    public List<PlayerData> getAllPlayerData(){
+        List<PlayerData> playerData = new ArrayList<>();
+        File file = new File(Main.getInstance().getDataFolder(), "PlayerData");
+        File[] files = file.listFiles();
+        if (files!=null){
+            for (File f: files) {
+                playerData.add(getPlayerData(UUID.fromString(f.getName().replace(".yml",""))));
+            }
+        }
+        return playerData;
+    }
 
     /**
      * 添加玩家数据
      */
-    public static void setPlayerData(PlayerData playerData){
+    public void setPlayerData(PlayerData playerData){
+//        if (getPlayerData(UUID.fromString(playerData.getUuid())).getUuid() == null) {
+//            playerDataSet.add(playerData);
+//        }
         try {
             File file = new File(Main.getInstance().getDataFolder(), "PlayerData/"+playerData.getUuid()+".yml");
             FileConfiguration data = YamlConfiguration.loadConfiguration(file);
@@ -38,7 +64,7 @@ public class PlayerDataManager {
      * 获取玩家数据
      * @return 数据
      */
-    public static PlayerData getPlayerData(UUID uuid){
+    public PlayerData getPlayerData(UUID uuid){
         File file = new File(Main.getInstance().getDataFolder(), "PlayerData/"+uuid+".yml");
         FileConfiguration data = YamlConfiguration.loadConfiguration(file);
         PlayerData playerData = new PlayerData();
@@ -61,19 +87,5 @@ public class PlayerDataManager {
     }
 
 
-    /**
-     * 获取所有玩家数据
-     * @return 数据
-     */
-    public static List<PlayerData> getPlayerData(){
-        List<PlayerData> playerData = new ArrayList<>();
-        File file = new File(Main.getInstance().getDataFolder(), "PlayerData");
-        File[] files = file.listFiles();
-        if (files!=null){
-            for (File f: files) {
-                playerData.add(getPlayerData(UUID.fromString(f.getName().replace(".yml",""))));
-            }
-        }
-        return playerData;
-    }
+
 }

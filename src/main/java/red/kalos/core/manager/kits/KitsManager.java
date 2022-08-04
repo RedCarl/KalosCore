@@ -36,8 +36,6 @@ public class KitsManager implements Listener {
 
 
         switch (kit){
-            case "内测礼包":
-                return false;
             case "皮卡丘月礼包":
                 if (player.hasPermission("group.pikanium")){
                     if (data.get("皮卡丘月礼包.领取日期")==null||data.getInt("皮卡丘月礼包.领取日期")==0||data.getLong("皮卡丘月礼包.领取日期") < (PokemonAPI.getMonthDay()*1000)){
@@ -54,13 +52,6 @@ public class KitsManager implements Listener {
                         data.save(file);
                         return true;
                     }
-                }
-                break;
-            case "补偿礼包4月13日":
-                if (PlayerDataManager.getPlayerData(player.getUniqueId()).getPlayTime()>=10800 && data.getLong("补偿礼包4月13日.领取时间") <= 0 && System.currentTimeMillis()<=1649952000000L){
-                    data.set("补偿礼包4月13日.领取时间",System.currentTimeMillis());
-                    data.save(file);
-                    return true;
                 }
                 break;
         }

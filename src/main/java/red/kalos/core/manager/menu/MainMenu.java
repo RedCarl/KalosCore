@@ -3,23 +3,18 @@ package red.kalos.core.manager.menu;
 import com.Zrips.CMI.CMI;
 import com.pixelmonmod.pixelmon.config.PixelmonConfig;
 import de.tr7zw.nbtapi.NBTItem;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import red.kalos.core.Main;
 import red.kalos.core.configFile.Data;
 import red.kalos.core.database.PlayerDataManager;
 import red.kalos.core.manager.armourers.guis.ArmourersGUI;
-import red.kalos.core.manager.crazyauctions.api.Category;
-import red.kalos.core.manager.crazyauctions.api.ShopType;
-import red.kalos.core.manager.crazyauctions.controllers.GUI;
 import red.kalos.core.manager.homes.HomeMenu;
-import red.kalos.core.manager.kits.PlayerKits;
-import red.kalos.core.manager.mysteriousstore.EeveeShop;
-import red.kalos.core.manager.nametag.NameTag;
 import red.kalos.core.manager.plotadmin.gui.PlotMenu;
-import red.kalos.core.manager.pokeban.gui.BanList;
 import red.kalos.core.manager.pokeinfo.gui.PokemonInfoMenu;
-import red.kalos.core.manager.questmanager.QuestGUI;
-import red.kalos.core.manager.questmanager.quest.QuestType;
-import red.kalos.core.manager.ranking.gui.RankingMenu;
 import red.kalos.core.manager.recharge.recharge.RechargeMenu;
 import red.kalos.core.manager.warps.WorldWarpMenu;
 import red.kalos.core.util.ColorParser;
@@ -30,11 +25,6 @@ import red.kalos.core.util.gui.Button;
 import red.kalos.core.util.gui.InventoryGUI;
 import red.kalos.core.util.gui.inventory.ItemFactoryAPI;
 import red.kalos.core.util.gui.inventory.SkullAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -61,18 +51,7 @@ public class MainMenu extends InventoryGUI {
         );
         Button CommandButton = new Button(Command, type -> {
         });
-        this.setButton(7, CommandButton);
-
-        ItemStack Ranking = ItemFactoryAPI.getItemStack(Material.BEACON,
-                ColorParser.parse("&c全服Top榜"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o来看看你在全服的位置.")
-        );
-        Button RankingButton = new Button(Ranking, type -> {
-            RankingMenu rankingMenu = new RankingMenu(player);
-            rankingMenu.openInventory();
-        });
-        this.setButton(8, RankingButton);
+        this.setButton(37, CommandButton);
 
         try {
             ItemStack PlayerInfo = SkullAPI.getPlayerSkull(
@@ -86,13 +65,13 @@ public class MainMenu extends InventoryGUI {
                     ColorParser.parse("&r  &c■ &7UUID(用于存储玩家数据):"),
                     ColorParser.parse("&r      &f" + player.getUniqueId()),
                     ColorParser.parse("&r  &d■ &7TIME(累计游玩时长):"),
-                    ColorParser.parse("&r      &f" + PokemonAPI.getDate((int) PlayerDataManager.getPlayerData(player.getUniqueId()).getPlayTime())),
+                    ColorParser.parse("&r      &f" + PokemonAPI.getDate((int) PlayerDataManager.getInstance().getPlayerData(player.getUniqueId()).getPlayTime())),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &e■ &7游戏余额:"),
                     ColorParser.parse("&r      &3" + CMI.getInstance().getPlayerManager().getUser(player).getBalance() + " &7"+Data.SERVER_VAULT),
                     ColorParser.parse("&r      &3" + Main.ppAPI.lookAsync(player.getUniqueId()).get() + ".0 &7"+Data.SERVER_POINTS),
                     ColorParser.parse("&r  &6■ &7累计充值: &3"),
-                    ColorParser.parse("&r      &3" + PlayerDataManager.getPlayerData(player.getUniqueId()).getRecharge() + " &7RMB"),
+                    ColorParser.parse("&r      &3" + PlayerDataManager.getInstance().getPlayerData(player.getUniqueId()).getRecharge() + " &7RMB"),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&7&o您可以查看一些与您相关的信息.")
             );
@@ -128,33 +107,43 @@ public class MainMenu extends InventoryGUI {
         });
         this.setButton(28, TeleportationButton);
 
-        ItemStack Clock = ItemFactoryAPI.getItemStack(Material.FIREWORK,
-                ColorParser.parse("&f娱乐活动"),
+        ItemStack VIPCheckSpawns = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_POKEMON_EDITOR"),
+                ColorParser.parse("&f传说查询 &7(不能100%准确)"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o您可以看到本服务器所有的娱乐活动详情.")
-        );
-        Button ClockButton = new Button(Clock, type -> {
-            Bukkit.dispatchCommand(player,"GameCore:game");
-        });
-        this.setButton(37, ClockButton);
-
-
-        ItemStack Spyglass = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_CASH_REGISTER"),
-                ColorParser.parse("&f全球市场"),
+                ColorParser.parse("&r  &e■ &7使用收费:"),
+                ColorParser.parse("&r      &7   普通&f|&7玩家: &f"+500+" &7"+Data.SERVER_VAULT+"/次 (冷却2分钟)"),
+                ColorParser.parse("&r      &e   皮卡&f|&7玩家: &f"+240+" &7"+Data.SERVER_VAULT+"/次 (冷却1分钟)"),
+                ColorParser.parse("&r      &6   伊布&f|&7玩家: &f"+0+" &7"+Data.SERVER_VAULT+"/次 (无冷却)"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o在这里与全服的玩家更方便的进行 &a出售 &7&o或 &a拍卖 &7&o物品."),
-                ColorParser.parse("&7&o左键点击进入 &a出售 &7&o市场,右键点击进入 &a拍卖 &7&o市场.")
+                ColorParser.parse("&r  &e■ &7概率信息:"),
+                ColorParser.parse("&r      &7   刷新周期: &c"+ DateUtil.getDate(PixelmonConfig.legendarySpawnTicks/20)),
+                ColorParser.parse("&r      &7   刷新概率: &c"+(KalosUtil.decimalFormat(PixelmonConfig.legendarySpawnChance*100, 2))+"%"),
+                ColorParser.parse("&r      &7   下次刷新: "+DateUtil.getDate(KalosUtil.getLegendarySpawnerTime())),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o只能查询该区域的传说宝可梦,并不能代表您的脚下.")
         );
-        Button SpyglassButton = new Button(Spyglass, type -> {
-            if (type.isLeftClick()) {
-                GUI.openShop(player, ShopType.SELL, Category.NONE, 1);
+        Button VIPCheckSpawnsButton = new Button(VIPCheckSpawns, type -> {
+            player.closeInventory();
+            long s = 120000;
+            if (player.hasPermission("group.eevee")){
+                s = 0;
+            }else if (player.hasPermission("group.pikanium")){
+                s = 60000;
             }
-            if (type.isRightClick()) {
-                GUI.openShop(player, ShopType.BID, Category.NONE, 1);
+            if (CheckSpawnsSleep.containsKey(player)){
+                if (System.currentTimeMillis()-CheckSpawnsSleep.get(player)>=s){
+                    CheckSpawnsSleep.put(player,System.currentTimeMillis());
+                    PokemonAPI.check(player);
+                }else {
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7抱歉，您必须等待 &c"+(s/1000 - (System.currentTimeMillis()-CheckSpawnsSleep.get(player))/1000)+" &7秒才能使用该功能."));
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                }
+            }else {
+                CheckSpawnsSleep.put(player,System.currentTimeMillis());
+                PokemonAPI.check(player);
             }
         });
-        this.setButton(12, SpyglassButton);
-
+        this.setButton(12, VIPCheckSpawnsButton);
 
         ItemStack Bed = ItemFactoryAPI.getItemStack(Material.BED,
                 ColorParser.parse("&f家园系统"),
@@ -322,70 +311,6 @@ public class MainMenu extends InventoryGUI {
         });
         this.setButton(25, VIPFlyButton);
 
-        ItemStack VIPCheckSpawns = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_POKEMON_EDITOR"),
-                ColorParser.parse("&f传说查询 &7(不能100%准确)"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&r  &e■ &7使用收费:"),
-                ColorParser.parse("&r      &7   普通&f|&7玩家: &f"+500+" &7"+Data.SERVER_VAULT+"/次 (冷却2分钟)"),
-                ColorParser.parse("&r      &e   皮卡&f|&7玩家: &f"+240+" &7"+Data.SERVER_VAULT+"/次 (冷却1分钟)"),
-                ColorParser.parse("&r      &6   伊布&f|&7玩家: &f"+0+" &7"+Data.SERVER_VAULT+"/次 (无冷却)"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&r  &e■ &7概率信息:"),
-                ColorParser.parse("&r      &7   刷新周期: &c"+ DateUtil.getDate(PixelmonConfig.legendarySpawnTicks/20)),
-                ColorParser.parse("&r      &7   刷新概率: &c"+(KalosUtil.decimalFormat(PixelmonConfig.legendarySpawnChance, 2))+"%"),
-                ColorParser.parse("&r      &7   下次刷新: "+DateUtil.getDate(KalosUtil.getLegendarySpawnerTime())),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o只能查询该区域的传说宝可梦,并不能代表您的脚下.")
-        );
-        Button VIPCheckSpawnsButton = new Button(VIPCheckSpawns, type -> {
-            player.closeInventory();
-            long s = 120000;
-            if (player.hasPermission("group.eevee")){
-                s = 0;
-            }else if (player.hasPermission("group.pikanium")){
-                s = 60000;
-            }
-            if (CheckSpawnsSleep.containsKey(player)){
-                if (System.currentTimeMillis()-CheckSpawnsSleep.get(player)>=s){
-                    CheckSpawnsSleep.put(player,System.currentTimeMillis());
-                    PokemonAPI.check(player);
-                }else {
-                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7抱歉，您必须等待 &c"+(s/1000 - (System.currentTimeMillis()-CheckSpawnsSleep.get(player))/1000)+" &7秒才能使用该功能."));
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-                }
-            }else {
-                CheckSpawnsSleep.put(player,System.currentTimeMillis());
-                PokemonAPI.check(player);
-            }
-        });
-        this.setButton(30, VIPCheckSpawnsButton);
-
-        //头衔系统
-        ItemStack NameTag = ItemFactoryAPI.getItemStack(Material.NAME_TAG,
-                ColorParser.parse("&f头衔系统"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o管理您的头衔，装配或者取下."));
-        Button NameTagButton = new Button(NameTag, type -> {
-            if (type.isLeftClick()) {
-                red.kalos.core.manager.nametag.NameTag nameTag = new NameTag(player);
-                nameTag.openInventory();
-            }
-        });
-        this.setButton(31, NameTagButton);
-
-        //礼包系统
-        ItemStack Kits = ItemFactoryAPI.getItemStack(Material.STORAGE_MINECART,
-                ColorParser.parse("&f礼包系统"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o这里有各种礼包可以供您领取."));
-        Button KitsButton = new Button(Kits, type -> {
-            if (type.isLeftClick()) {
-                PlayerKits playerKits = new PlayerKits(player);
-                playerKits.openInventory();
-            }
-        });
-        this.setButton(32, KitsButton);
-
         //时装系统
         ItemStack Armourers = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RED_UMBRELLA"),
                 ColorParser.parse("&f时装仓库"),
@@ -397,95 +322,134 @@ public class MainMenu extends InventoryGUI {
                 armourersGUI.openInventory();
             }
         });
-        this.setButton(33, ArmourersButton);
+        this.setButton(30, ArmourersButton);
+
+//        //头衔系统
+//        ItemStack NameTag = ItemFactoryAPI.getItemStack(Material.NAME_TAG,
+//                ColorParser.parse("&f头衔系统"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o管理您的头衔，装配或者取下."));
+//        Button NameTagButton = new Button(NameTag, type -> {
+//            if (type.isLeftClick()) {
+//                red.kalos.core.manager.nametag.NameTag nameTag = new NameTag(player);
+//                nameTag.openInventory();
+//            }
+//        });
+//        this.setButton(31, NameTagButton);
+
+//        //礼包系统
+//        ItemStack Kits = ItemFactoryAPI.getItemStack(Material.STORAGE_MINECART,
+//                ColorParser.parse("&f礼包系统"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o这里有各种礼包可以供您领取."));
+//        Button KitsButton = new Button(Kits, type -> {
+//            if (type.isLeftClick()) {
+//                PlayerKits playerKits = new PlayerKits(player);
+//                playerKits.openInventory();
+//            }
+//        });
+//        this.setButton(32, KitsButton);
+
+//        //Job
+//        ItemStack Job = ItemFactoryAPI.getItemStack(Material.DIAMOND_AXE,
+//                ColorParser.parse("&f职业系统 &7(卡尔画的大饼)"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o您可以升级您的职业技能，来获得额外的加成."));
+//        Button JobButton = new Button(Job, type -> {
+//        });
+//        this.setButton(34, JobButton);
+//
+//        //BattleToken
+//        ItemStack BattleToken = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_BEACON_BADGE"),
+//                ColorParser.parse("&f战斗令牌 &7(卡尔画的大饼)"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o通过日常的游玩获得更多奖励."));
+//        Button BattleTokenButton = new Button(BattleToken, type -> {
+//        });
+//        this.setButton(48, BattleTokenButton);
+
+//        ItemStack PokeRank = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_TRAINER_EDITOR"),
+//                ColorParser.parse("&f排位系统 &c(Bate1.0)"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&r  &a■ &7使用教程:"),
+//                ColorParser.parse("&r      &7   鼠标 &c左键 &7加入排位队伍 &c右键 &7取消匹配。"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o宝可梦竞标赛，来这里展示你的队伍.")
+//        );
+//        Button PokeRankButton = new Button(PokeRank, type -> {
+//            if (type.isLeftClick()) {
+//                Bukkit.dispatchCommand(player,"pokemonrank:rank");
+//                player.closeInventory();
+//            }
+//            if (type.isRightClick()) {
+//                Bukkit.dispatchCommand(player,"pokemonrank:rank cancel");
+//                player.closeInventory();
+//            }
+//        });
+//        this.setButton(50, PokeRankButton);
+
+//        ItemStack Mission = ItemFactoryAPI.getItemStack(Material.LEASH,
+//                ColorParser.parse("&f任务系统 &c(Bate1.0)"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o丰富的任务系统，完成并获得奖励.")
+//        );
+//        Button MissionButton = new Button(Mission, type -> {
+//            new QuestGUI(player, QuestType.DAILY).openInventory();
+//        });
+//        this.setButton(51, MissionButton);
+//
+//
+//        ItemStack LiteSignIn = ItemFactoryAPI.getItemStack(Material.SIGN,
+//                ColorParser.parse("&f签到系统"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o每日的打卡可以获得丰厚的奖励.")
+//        );
+//        Button LiteSignInButton = new Button(LiteSignIn, type -> {
+//            if (type.isLeftClick()) {
+//                Bukkit.dispatchCommand(player,"LiteSignIn gui");
+//            }
+//        });
+//        this.setButton(52, LiteSignInButton);
+//
+//        ItemStack BanList = ItemFactoryAPI.getItemStack(Material.BARRIER,
+//                ColorParser.parse("&f封禁列表"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o查看服务器封禁了那些物品.")
+//        );
+//        Button BanListButton = new Button(BanList, type -> {
+//            if (type.isLeftClick()) {
+//                red.kalos.core.manager.pokeban.gui.BanList banMenu = new BanList(player,0);
+//                banMenu.openInventory();
+//            }
+//        });
+//        this.setButton(53, BanListButton);
+
+//        ItemStack Clock = ItemFactoryAPI.getItemStack(Material.FIREWORK,
+//                ColorParser.parse("&f娱乐活动"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o您可以看到本服务器所有的娱乐活动详情.")
+//        );
+//        Button ClockButton = new Button(Clock, type -> {
+//            Bukkit.dispatchCommand(player,"GameCore:game");
+//        });
+//        this.setButton(37, ClockButton);
 
 
-        //Job
-        ItemStack Job = ItemFactoryAPI.getItemStack(Material.DIAMOND_AXE,
-                ColorParser.parse("&f职业系统 &7(卡尔画的大饼)"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o您可以升级您的职业技能，来获得额外的加成."));
-        Button JobButton = new Button(Job, type -> {
-        });
-        this.setButton(34, JobButton);
-
-        //BattleToken
-        ItemStack BattleToken = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_BEACON_BADGE"),
-                ColorParser.parse("&f战斗令牌 &7(卡尔画的大饼)"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o通过日常的游玩获得更多奖励."));
-        Button BattleTokenButton = new Button(BattleToken, type -> {
-        });
-        this.setButton(48, BattleTokenButton);
-
-        ItemStack PokeRank = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_TRAINER_EDITOR"),
-                ColorParser.parse("&f排位系统 &c(Bate1.0)"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&r  &a■ &7使用教程:"),
-                ColorParser.parse("&r      &7   鼠标 &c左键 &7加入排位队伍 &c右键 &7取消匹配。"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o宝可梦竞标赛，来这里展示你的队伍.")
-        );
-        Button PokeRankButton = new Button(PokeRank, type -> {
-            if (type.isLeftClick()) {
-                Bukkit.dispatchCommand(player,"pokemonrank:rank");
-                player.closeInventory();
-            }
-            if (type.isRightClick()) {
-                Bukkit.dispatchCommand(player,"pokemonrank:rank cancel");
-                player.closeInventory();
-            }
-        });
-        this.setButton(49, PokeRankButton);
-
-        ItemStack Mission = ItemFactoryAPI.getItemStack(Material.LEASH,
-                ColorParser.parse("&f任务系统 &c(Bate1.0)"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o丰富的任务系统，完成并获得奖励.")
-        );
-        Button MissionButton = new Button(Mission, type -> {
-            new QuestGUI(player, QuestType.DAILY).openInventory();
-        });
-        this.setButton(50, MissionButton);
-
-        ItemStack Mysterious = ItemFactoryAPI.getItemStack(Material.CHEST,
-                ColorParser.parse("&f神秘商店"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o各种丰富的商品，意想不到.")
-        );
-        Button MysteriousButton = new Button(Mysterious, type -> {
-            if (type.isLeftClick()) {
-                EeveeShop eeveeShop = new EeveeShop(player);
-                eeveeShop.openInventory();
-            }
-        });
-        this.setButton(51, MysteriousButton);
-
-
-        ItemStack LiteSignIn = ItemFactoryAPI.getItemStack(Material.SIGN,
-                ColorParser.parse("&f签到系统"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o每日的打卡可以获得丰厚的奖励.")
-        );
-        Button LiteSignInButton = new Button(LiteSignIn, type -> {
-            if (type.isLeftClick()) {
-                Bukkit.dispatchCommand(player,"LiteSignIn gui");
-            }
-        });
-        this.setButton(52, LiteSignInButton);
-
-        ItemStack BanList = ItemFactoryAPI.getItemStack(Material.BARRIER,
-                ColorParser.parse("&f封禁列表"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o查看服务器封禁了那些物品.")
-        );
-        Button BanListButton = new Button(BanList, type -> {
-            if (type.isLeftClick()) {
-                red.kalos.core.manager.pokeban.gui.BanList banMenu = new BanList(player,0);
-                banMenu.openInventory();
-            }
-        });
-        this.setButton(53, BanListButton);
+//        ItemStack Spyglass = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_CASH_REGISTER"),
+//                ColorParser.parse("&f全球市场"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o在这里与全服的玩家更方便的进行 &a出售 &7&o或 &a拍卖 &7&o物品."),
+//                ColorParser.parse("&7&o左键点击进入 &a出售 &7&o市场,右键点击进入 &a拍卖 &7&o市场.")
+//        );
+//        Button SpyglassButton = new Button(Spyglass, type -> {
+//            if (type.isLeftClick()) {
+//                GUI.openShop(player, ShopType.SELL, Category.NONE, 1);
+//            }
+//            if (type.isRightClick()) {
+//                GUI.openShop(player, ShopType.BID, Category.NONE, 1);
+//            }
+//        });
+//        this.setButton(12, SpyglassButton);
     }
 
 }

@@ -72,6 +72,6 @@ public class PlayerData {
     }
 
     public PlayerData sendPlayer(Player player) {
-        return PlayerDataManager.getPlayerData(player.getUniqueId());
+        return PlayerDataManager.getInstance().getPlayerData(player.getUniqueId());
     }
 }

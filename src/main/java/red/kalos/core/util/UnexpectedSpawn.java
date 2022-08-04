@@ -24,8 +24,8 @@ public class UnexpectedSpawn{
         do {
 
             Random r = new Random();
-            int x = -9500 + r.nextInt(9500 - -9500 + 1);
-            int z = -9500 + r.nextInt(9500 - -9500 + 1);
+            int x = -2400 + r.nextInt(2400 - -2400 + 1);
+            int z = -2400 + r.nextInt(2400 - -2400 + 1);
             int y = w.getHighestBlockYAt(x, z);
 
             Block block = w.getHighestBlockAt(x,z);

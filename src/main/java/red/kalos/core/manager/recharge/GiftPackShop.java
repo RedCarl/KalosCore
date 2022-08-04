@@ -9,8 +9,8 @@ import red.kalos.core.manager.premium.VIPBuy;
 import red.kalos.core.manager.premium.entity.PlayerVIP;
 import red.kalos.core.manager.recharge.recharge.RechargeMenu;
 import red.kalos.core.manager.recharge.recharge.RechargeSelect;
-import red.kalos.core.manager.recharge.shop.ItemBuy;
-import red.kalos.core.manager.recharge.shop.ItemSell;
+import red.kalos.core.manager.shop.ItemBuy;
+import red.kalos.core.manager.shop.ItemSell;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.PokemonAPI;
 import red.kalos.core.util.gui.Button;
@@ -30,170 +30,170 @@ public class GiftPackShop extends InventoryGUI {
     PlayerPointsAPI playerPointsAPI = Main.ppAPI;
     public GiftPackShop(Player player) {
         super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 礼包商店"), player, 6);
-        //传说宝可梦
-        long RandomLegendaryMoney=480000;
-        int RandomLegendaryPrice=48;
-        ItemStack RandomLegendary = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/e18af14cb4046c32678e9a97bd78461b97524b41022335a12bbc45bc6985a5b4",
-                ColorParser.parse("&b传说宝可梦 &7(即将下架)"),
-                ColorParser.parse("&f概率: &a普通(0%) &6传奇(100%)"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + RandomLegendaryMoney + " &7"+Data.SERVER_VAULT),
-                ColorParser.parse("&r      &7(右键) &c" + RandomLegendaryPrice + " &7"+Data.SERVER_POINTS),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o随机获取一只传说宝可梦，属性也是随机."));
-        Button RandomLegendaryButton = new Button(RandomLegendary, type -> {
-            if (type.isLeftClick()) {
-                if (Main.econ.getBalance(player)>=RandomLegendaryMoney){
-                    Main.econ.withdrawPlayer(player,RandomLegendaryMoney);
-                    player.closeInventory();
-                    new Thread(()->{
-                        for (int i = 0; i <= 50; i++) {
-                            try {
-                                player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse(EnumSpecies.randomLegendary().getLocalizedName()),0,20,0);
-                                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK,1,1);
-                                if (i<=10){
-                                    Thread.sleep(30);
-                                }else if (i<=20){
-                                    Thread.sleep(50);
-                                }else if (i<=30){
-                                    Thread.sleep(100);
-                                }else if (i<=40){
-                                    Thread.sleep(300);
-                                }else if (i<=45){
-                                    Thread.sleep(500);
-                                }else if (i<=49){
-                                    Thread.sleep(800);
-                                }else {
-                                    Pokemon pokemon = PokemonAPI.getRandomLegendaryPokemon();
-                                    PokemonAPI.GivePokemon(player,false,3,0,false,pokemon);
-                                    player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
-                                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                                    if (PokemonAPI.isLegendaryMaxPokemon(pokemon)){
-                                        for (Player p: Bukkit.getOnlinePlayers()) {
-                                            if (p!=player){
-                                                p.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜 &c"+player.getName()+" &f,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
-                                                p.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                                            }
-                                        }
-                                    }
-                                }
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-                }else {
-                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+ Main.econ.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
-                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                }
-            }
-            if (type.isRightClick()) {
-                try {
-                    if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=RandomLegendaryPrice){
-                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomLegendaryPrice);
-                        player.closeInventory();
-                        new Thread(()->{
-                            for (int i = 0; i <= 50; i++) {
-                                try {
-                                    player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse(EnumSpecies.randomLegendary().getLocalizedName()),0,20,0);
-                                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK,1,1);
-                                    if (i<=10){
-                                        Thread.sleep(30);
-                                    }else if (i<=20){
-                                        Thread.sleep(50);
-                                    }else if (i<=30){
-                                        Thread.sleep(100);
-                                    }else if (i<=40){
-                                        Thread.sleep(300);
-                                    }else if (i<=45){
-                                        Thread.sleep(500);
-                                    }else if (i<=49){
-                                        Thread.sleep(800);
-                                    }else {
-                                        Pokemon pokemon = PokemonAPI.getRandomLegendaryPokemon();
-                                        PokemonAPI.GivePokemon(player,false,3,0,false,pokemon);
-                                        player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
-                                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                                        if (PokemonAPI.isLegendaryMaxPokemon(pokemon)){
-                                            for (Player p: Bukkit.getOnlinePlayers()) {
-                                                if (p!=player){
-                                                    p.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜 &c"+player.getName()+" &f,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
-                                                    p.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                                                }
-                                            }
-                                        }
-                                    }
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
-                    }else {
-                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
-                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-        this.setButton(0, RandomLegendaryButton);
-
-        //进化石宝箱
-        long RandomEvolutionMoney=80000;
-        int RandomEvolutionPrice=19;
-        this.setButton(1, new Button(SkullAPI.getSkullItem(
-                "http://textures.minecraft.net/texture/a5c6944593820d13d7d47db2abcfcbf683bb74a07e1a982db9f32e0a8b5dc466",
-                ColorParser.parse("&6宝可梦进化石 &7(即将下架)"),
-                ColorParser.parse("&f概率: &6超进化石(100%)"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&r  &e■ &7售 价:"),
-                ColorParser.parse("&r      &7(左键) &c" + RandomEvolutionMoney + " &7"+Data.SERVER_VAULT),
-                ColorParser.parse("&r      &7(右键) &c" + RandomEvolutionPrice + " &7"+Data.SERVER_POINTS),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o随机获取一只宝可梦超进化石，完全随机哦.")
-        ), type -> {
-            boolean varOn = true;
-            for (int i = 0; i < 36; i++) {
-                if (player.getInventory().getItem(i) == null) {
-                    varOn = false;
-                    break;
-                }
-            }
-            if (varOn){
-                player.closeInventory();
-                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
-                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                return;
-            }
-            if (type.isLeftClick()) {
-                if (Main.econ.getBalance(player)>=RandomEvolutionMoney){
-                    Main.econ.withdrawPlayer(player,RandomEvolutionMoney);
-                    String name = PokemonAPI.getRandomEvolution(player);
-                    player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过购买宝可梦进化石获得了一个 &c"+name+" &7超进化石."));
-                }else {
-                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+ Main.econ.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
-                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                }
-            }
-            if (type.isRightClick()) {
-                try {
-                    if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=RandomEvolutionPrice){
-                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomEvolutionPrice);
-                        String name = PokemonAPI.getRandomEvolution(player);
-                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过购买宝可梦进化石获得了一个 &c"+name+" &7超进化石."));
-                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                    }else {
-                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
-                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-        }));
+//        //传说宝可梦
+//        long RandomLegendaryMoney=480000;
+//        int RandomLegendaryPrice=48;
+//        ItemStack RandomLegendary = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/e18af14cb4046c32678e9a97bd78461b97524b41022335a12bbc45bc6985a5b4",
+//                ColorParser.parse("&b传说宝可梦 &7(即将下架)"),
+//                ColorParser.parse("&f概率: &a普通(0%) &6传奇(100%)"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&r  &e■ &7售 价:"),
+//                ColorParser.parse("&r      &7(左键) &c" + RandomLegendaryMoney + " &7"+Data.SERVER_VAULT),
+//                ColorParser.parse("&r      &7(右键) &c" + RandomLegendaryPrice + " &7"+Data.SERVER_POINTS),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o随机获取一只传说宝可梦，属性也是随机."));
+//        Button RandomLegendaryButton = new Button(RandomLegendary, type -> {
+//            if (type.isLeftClick()) {
+//                if (Main.econ.getBalance(player)>=RandomLegendaryMoney){
+//                    Main.econ.withdrawPlayer(player,RandomLegendaryMoney);
+//                    player.closeInventory();
+//                    new Thread(()->{
+//                        for (int i = 0; i <= 50; i++) {
+//                            try {
+//                                player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse(EnumSpecies.randomLegendary().getLocalizedName()),0,20,0);
+//                                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK,1,1);
+//                                if (i<=10){
+//                                    Thread.sleep(30);
+//                                }else if (i<=20){
+//                                    Thread.sleep(50);
+//                                }else if (i<=30){
+//                                    Thread.sleep(100);
+//                                }else if (i<=40){
+//                                    Thread.sleep(300);
+//                                }else if (i<=45){
+//                                    Thread.sleep(500);
+//                                }else if (i<=49){
+//                                    Thread.sleep(800);
+//                                }else {
+//                                    Pokemon pokemon = PokemonAPI.getRandomLegendaryPokemon();
+//                                    PokemonAPI.GivePokemon(player,false,3,0,false,pokemon);
+//                                    player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
+//                                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+//                                    if (PokemonAPI.isLegendaryMaxPokemon(pokemon)){
+//                                        for (Player p: Bukkit.getOnlinePlayers()) {
+//                                            if (p!=player){
+//                                                p.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜 &c"+player.getName()+" &f,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
+//                                                p.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }).start();
+//                }else {
+//                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+ Main.econ.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
+//                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+//                }
+//            }
+//            if (type.isRightClick()) {
+//                try {
+//                    if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=RandomLegendaryPrice){
+//                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomLegendaryPrice);
+//                        player.closeInventory();
+//                        new Thread(()->{
+//                            for (int i = 0; i <= 50; i++) {
+//                                try {
+//                                    player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse(EnumSpecies.randomLegendary().getLocalizedName()),0,20,0);
+//                                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK,1,1);
+//                                    if (i<=10){
+//                                        Thread.sleep(30);
+//                                    }else if (i<=20){
+//                                        Thread.sleep(50);
+//                                    }else if (i<=30){
+//                                        Thread.sleep(100);
+//                                    }else if (i<=40){
+//                                        Thread.sleep(300);
+//                                    }else if (i<=45){
+//                                        Thread.sleep(500);
+//                                    }else if (i<=49){
+//                                        Thread.sleep(800);
+//                                    }else {
+//                                        Pokemon pokemon = PokemonAPI.getRandomLegendaryPokemon();
+//                                        PokemonAPI.GivePokemon(player,false,3,0,false,pokemon);
+//                                        player.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜您,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
+//                                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+//                                        if (PokemonAPI.isLegendaryMaxPokemon(pokemon)){
+//                                            for (Player p: Bukkit.getOnlinePlayers()) {
+//                                                if (p!=player){
+//                                                    p.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜 &c"+player.getName()+" &f,获得了 &6"+pokemon.getLocalizedName()+" &f传说宝可梦."),0,60,0);
+//                                                    p.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                } catch (InterruptedException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }).start();
+//                    }else {
+//                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
+//                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+//                    }
+//                } catch (InterruptedException | ExecutionException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
+//        this.setButton(0, RandomLegendaryButton);
+//
+//        //进化石宝箱
+//        long RandomEvolutionMoney=80000;
+//        int RandomEvolutionPrice=19;
+//        this.setButton(1, new Button(SkullAPI.getSkullItem(
+//                "http://textures.minecraft.net/texture/a5c6944593820d13d7d47db2abcfcbf683bb74a07e1a982db9f32e0a8b5dc466",
+//                ColorParser.parse("&6宝可梦进化石 &7(即将下架)"),
+//                ColorParser.parse("&f概率: &6超进化石(100%)"),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&r  &e■ &7售 价:"),
+//                ColorParser.parse("&r      &7(左键) &c" + RandomEvolutionMoney + " &7"+Data.SERVER_VAULT),
+//                ColorParser.parse("&r      &7(右键) &c" + RandomEvolutionPrice + " &7"+Data.SERVER_POINTS),
+//                ColorParser.parse("&r"),
+//                ColorParser.parse("&7&o随机获取一只宝可梦超进化石，完全随机哦.")
+//        ), type -> {
+//            boolean varOn = true;
+//            for (int i = 0; i < 36; i++) {
+//                if (player.getInventory().getItem(i) == null) {
+//                    varOn = false;
+//                    break;
+//                }
+//            }
+//            if (varOn){
+//                player.closeInventory();
+//                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+//                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+//                return;
+//            }
+//            if (type.isLeftClick()) {
+//                if (Main.econ.getBalance(player)>=RandomEvolutionMoney){
+//                    Main.econ.withdrawPlayer(player,RandomEvolutionMoney);
+//                    String name = PokemonAPI.getRandomEvolution(player);
+//                    player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过购买宝可梦进化石获得了一个 &c"+name+" &7超进化石."));
+//                }else {
+//                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+ Main.econ.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
+//                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+//                }
+//            }
+//            if (type.isRightClick()) {
+//                try {
+//                    if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=RandomEvolutionPrice){
+//                        playerPointsAPI.takeAsync(player.getUniqueId(),RandomEvolutionPrice);
+//                        String name = PokemonAPI.getRandomEvolution(player);
+//                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过购买宝可梦进化石获得了一个 &c"+name+" &7超进化石."));
+//                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+//                    }else {
+//                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
+//                        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+//                    }
+//                } catch (InterruptedException | ExecutionException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }));
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -228,7 +228,7 @@ public class GiftPackShop extends InventoryGUI {
                 RechargeSelect rechargeSelect = new RechargeSelect(player, (double) PikaniumPrice);
                 rechargeSelect.openInventory();
             });
-            this.setButton(9, PikaniumButton);
+            this.setButton(0, PikaniumButton);
         }else {
             ItemStack Pikanium = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIKANIUM_Z"),
                     ColorParser.parse(PikaniumRankName+" &f// &aVIP头衔"),
@@ -257,7 +257,7 @@ public class GiftPackShop extends InventoryGUI {
                     player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                 }
             });
-            this.setButton(9, PikaniumButton);
+            this.setButton(0, PikaniumButton);
         }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -296,7 +296,7 @@ public class GiftPackShop extends InventoryGUI {
                 RechargeSelect rechargeSelect = new RechargeSelect(player, (double) EeveePrice);
                 rechargeSelect.openInventory();
             });
-            this.setButton(10, EeveeButton);
+            this.setButton(1, EeveeButton);
         }else {
             ItemStack Eevee = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_EEVIUM_Z"),
                     ColorParser.parse(EeveeRankName+" &f// &6MVP头衔"),
@@ -324,7 +324,7 @@ public class GiftPackShop extends InventoryGUI {
                 RechargeSelect rechargeSelect = new RechargeSelect(player, (double) EeveePrice);
                 rechargeSelect.openInventory();
             });
-            this.setButton(10, EeveeButton);
+            this.setButton(1, EeveeButton);
         }
 
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));
@@ -364,7 +364,7 @@ public class GiftPackShop extends InventoryGUI {
                 ColorParser.parse("&7&o这里可以购买一些常用的物品道具."));
         Button ItemBuyButton = new Button(ItemBuy, type -> {
             if (type.isLeftClick()) {
-                red.kalos.core.manager.recharge.shop.ItemBuy itemBuy = new ItemBuy(player);
+                red.kalos.core.manager.shop.ItemBuy itemBuy = new ItemBuy(player);
                 itemBuy.openInventory();
             }
         });
@@ -376,7 +376,7 @@ public class GiftPackShop extends InventoryGUI {
                 ColorParser.parse("&7&o这里可以回收一些不常用的物品道具."));
         Button ItemSellButton = new Button(ItemSell, type -> {
             if (type.isLeftClick()) {
-                red.kalos.core.manager.recharge.shop.ItemSell itemSell = new ItemSell(player);
+                red.kalos.core.manager.shop.ItemSell itemSell = new ItemSell(player);
                 itemSell.openInventory();
             }
         });

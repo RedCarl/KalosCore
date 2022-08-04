@@ -9,16 +9,17 @@ import red.kalos.core.util.PokemonAPI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class RankingManager {
     public static List<TimeEntity> timeEntities = new ArrayList<>();
     public static List<MoneyEntity> moneyEntities = new ArrayList<>();
     public static List<PlayerData> playerDataList = new ArrayList<>();
-
+    public static List<UUID> complexList = new ArrayList<>();
     //获取所有玩家数据
     public static void LoadAllPlayerData(){
         playerDataList.clear();
-        playerDataList=PlayerDataManager.getPlayerData();
+        playerDataList=PlayerDataManager.getInstance().getAllPlayerData();
     }
 
     //加载玩家在线时间排行
@@ -46,5 +47,10 @@ public class RankingManager {
         }
         moneyEntities.sort(null);
         Collections.reverse(moneyEntities);
+    }
+
+    //加载玩家综合排行榜
+    public static void complexRankingData(){
+
     }
 }

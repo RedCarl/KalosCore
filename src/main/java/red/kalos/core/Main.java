@@ -8,9 +8,11 @@ import red.kalos.core.command.pokeaward.PokeFormCommand;
 import red.kalos.core.configFile.Data;
 import red.kalos.core.database.PlayerDataManager;
 import red.kalos.core.entity.PlayerData;
+import red.kalos.core.listener.*;
 import red.kalos.core.manager.armourers.listener.ArmourersUpdateListener;
 import red.kalos.core.manager.autobroadcast.BroadCastMessage;
 import red.kalos.core.manager.autosave.AutoSave;
+import red.kalos.core.manager.citizens.CitizensManager;
 import red.kalos.core.manager.crazyauctions.CrazyAuctions;
 import red.kalos.core.manager.kitpvp.listener.KitPvpEvent;
 import red.kalos.core.manager.kits.KitsManager;
@@ -23,10 +25,6 @@ import red.kalos.core.manager.questmanager.manager.QuestManager;
 import red.kalos.core.manager.questmanager.quest.list.achievement.Achievement;
 import red.kalos.core.manager.questmanager.quest.list.dayquest.Day;
 import red.kalos.core.manager.ranking.RankingManager;
-import red.kalos.core.listener.CommandEvent;
-import red.kalos.core.listener.ItemInteractEvent;
-import red.kalos.core.listener.PlayerEvent;
-import red.kalos.core.listener.PokemonEvent;
 import red.kalos.core.packetlistener.AdvanceAdapter;
 import red.kalos.core.packetlistener.MessageAdapter;
 import red.kalos.core.util.ColorParser;
@@ -124,6 +122,7 @@ public class Main extends JavaPlugin {
         regListener(new KitsManager());
         regListener(new ItemInteractEvent());
         regListener(new AutoSave());
+        regListener(new CitizensEvent());
 
         log("启动传奇宝可梦监控系统...");
         SpawnTime.start();
@@ -153,10 +152,10 @@ public class Main extends JavaPlugin {
         crazyAuctions.onEnable();
         Bukkit.getConsoleSender().sendMessage(ColorParser.parse("&c-------------------------------"));
 
-        log("加载公告组件....");
-        new BroadCastMessage(this);
+//        log("加载公告组件....");
+//        new BroadCastMessage(this);
 
-        log("加载宝可梦皮肤信息...");
+//        log("加载宝可梦皮肤信息...");
 //        saveYmlConfig("CustomSkin/config.yml");
 //        File CustomFile = new File(Main.getInstance().getDataFolder(), "CustomSkin/config.yml");
 //        FileConfiguration CustomConfig = YamlConfiguration.loadConfiguration(CustomFile);
@@ -184,6 +183,9 @@ public class Main extends JavaPlugin {
         new Achievement().initialize();
         QuestManager.initialize();
 
+        log("加载 NPC 模块...");
+        CitizensManager.getInstance().init(Bukkit.getWorld("spawn"));
+
         log("加载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
         showAD();
@@ -206,6 +208,9 @@ public class Main extends JavaPlugin {
 
         log("卸载 AutoSave 模块...");
         AutoSave.onDisable();
+
+        log("卸载 Citizens 模块...");
+        CitizensManager.getInstance().clear();
 
         log("卸载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 
@@ -270,9 +275,9 @@ public class Main extends JavaPlugin {
             @Override
             public void run() {
                 for (Player player:Bukkit.getOnlinePlayers()) {
-                    PlayerData playerData = PlayerDataManager.getPlayerData(player.getUniqueId());
+                    PlayerData playerData = PlayerDataManager.getInstance().getPlayerData(player.getUniqueId());
                     playerData.setPlayTime(playerData.getPlayTime()+1);
-                    PlayerDataManager.setPlayerData(playerData);
+                    PlayerDataManager.getInstance().setPlayerData(playerData);
                 }
             }
         }.runTaskTimer(Main.getInstance(),0,20);

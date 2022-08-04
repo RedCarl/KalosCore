@@ -1,20 +1,7 @@
 package red.kalos.core.listener;
 
-import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIUser;
 import com.glazed7.glazedpay.bukkit.event.OrderShipEvent;
 import eos.moe.dragoncore.api.KeyPressEvent;
-import red.kalos.core.Main;
-import red.kalos.core.database.PlayerDataManager;
-import red.kalos.core.entity.PlayerData;
-import red.kalos.core.entity.RankData;
-import red.kalos.core.manager.buildmanager.BuildGUI;
-import red.kalos.core.manager.menu.MainMenu;
-import red.kalos.core.manager.premium.VIPBuy;
-import red.kalos.core.manager.premium.entity.PlayerVIP;
-import red.kalos.core.manager.signin.Newbie;
-import red.kalos.core.util.ColorParser;
-import red.kalos.core.util.api.PokemonPhotoAPI;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,8 +15,15 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import studio.trc.bukkit.litesignin.api.Storage;
+import red.kalos.core.Main;
+import red.kalos.core.database.PlayerDataManager;
+import red.kalos.core.entity.PlayerData;
+import red.kalos.core.entity.RankData;
+import red.kalos.core.manager.menu.MainMenu;
+import red.kalos.core.manager.premium.VIPBuy;
+import red.kalos.core.manager.premium.entity.PlayerVIP;
+import red.kalos.core.util.ColorParser;
+import red.kalos.core.util.api.PokemonPhotoAPI;
 import studio.trc.bukkit.litesignin.event.custom.PlayerSignInEvent;
 
 import java.io.File;
@@ -51,44 +45,45 @@ public class PlayerEvent implements Listener {
         player.setGameMode(GameMode.SURVIVAL);
 
         //玩家进入游戏提示
-        if (PlayerDataManager.getPlayerData(player.getUniqueId()).getUuid()==null){
-            PlayerDataManager.setPlayerData(new PlayerData(player.getUniqueId().toString(),player.getName(),0,0,new RankData("default",0),"0"));
-            event.setJoinMessage(ColorParser.parse("&8[&a&l!&8] &7欢迎新玩家 &f"+player.getName()+" &7加入卡洛斯！"));
-        }else {
-            if (player.hasPermission("kim.grandtotal.L")&&!(player.hasPermission("group.admin"))){
-                //通知全服玩家
-                event.setJoinMessage(ColorParser.parse("&8[&c&l!&8] &7欢迎贵族玩家 &6"+player.getName()+" &7回到卡洛斯！"));
-                for (Player p: Bukkit.getOnlinePlayers()) {
-                    p.playSound(p.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                }
-            }
+        if (PlayerDataManager.getInstance().getPlayerData(player.getUniqueId()).getUuid()==null){
+            PlayerDataManager.getInstance().setPlayerData(new PlayerData(player.getUniqueId().toString(),player.getName(),0,0,new RankData("default",0),"0"));
+            /*event.setJoinMessage(ColorParser.parse("&8[&a&l!&8] &7欢迎新玩家 &f"+player.getName()+" &7加入卡洛斯！"));*/
         }
+//        else {
+//            if (player.hasPermission("kim.grandtotal.L")&&!(player.hasPermission("group.admin"))){
+//                //通知全服玩家
+//                event.setJoinMessage(ColorParser.parse("&8[&c&l!&8] &7欢迎贵族玩家 &6"+player.getName()+" &7回到卡洛斯！"));
+//                for (Player p: Bukkit.getOnlinePlayers()) {
+//                    p.playSound(p.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+//                }
+//            }
+//        }
 
 
         //进入提示
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                //新手签到
-                Newbie.loadPlayerSignData(player);
-
-                //签到系统
-                if (!Storage.getPlayer(player).alreadySignIn()){
-                    if (player.hasPermission("group.eevee")){
-                        Storage.getPlayer(player).signIn();
-                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您是尊贵的 &6[伊布] &7会员玩家，已经自动帮您签到."));
-                        player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                    }
-                }
-            }
-        }.runTaskLater(Main.getInstance(),120);
+//        new BukkitRunnable() {
+//            @Override
+//            public void run() {
+//                //新手签到
+//                Newbie.loadPlayerSignData(player);
+//
+//                //签到系统
+//                if (!Storage.getPlayer(player).alreadySignIn()){
+//                    if (player.hasPermission("group.eevee")){
+//                        Storage.getPlayer(player).signIn();
+//                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您是尊贵的 &6[伊布] &7会员玩家，已经自动帮您签到."));
+//                        player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
+//                    }
+//                }
+//            }
+//        }.runTaskLater(Main.getInstance(),120);
 
         //设置管理员隐身状态
-        if (player.hasPermission("group.admin")){
-            CMIUser cmiUser = CMI.getInstance().getPlayerManager().getUser(player);
-            cmiUser.setVanished(true);
-            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7管理员自动启动隐藏模式,请不要尝试现身,不要打扰玩家游戏."));
-        }
+//        if (player.hasPermission("group.admin")){
+//            CMIUser cmiUser = CMI.getInstance().getPlayerManager().getUser(player);
+//            cmiUser.setVanished(true);
+//            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7管理员自动启动隐藏模式,请不要尝试现身,不要打扰玩家游戏."));
+//        }
 
         //检查会员状态
         VIPBuy.checkRank(player,"eevee",Main.luckPerms.getServerName());
@@ -127,14 +122,14 @@ public class PlayerEvent implements Listener {
             }
         }
 
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)||event.getAction().equals(Action.RIGHT_CLICK_AIR)){
-            if (itemStack!=null&&player.hasPermission("group.eevee")){
-                if (itemStack.getType().equals(Material.WOOD_AXE)){
-                    BuildGUI buildGUI = new BuildGUI(player,0);
-                    buildGUI.openInventory();
-                }
-            }
-        }
+//        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)||event.getAction().equals(Action.RIGHT_CLICK_AIR)){
+//            if (itemStack!=null&&player.hasPermission("group.eevee")){
+//                if (itemStack.getType().equals(Material.WOOD_AXE)){
+//                    BuildGUI buildGUI = new BuildGUI(player,0);
+//                    buildGUI.openInventory();
+//                }
+//            }
+//        }
 
     }
     //库存被打开的时候
@@ -193,10 +188,10 @@ public class PlayerEvent implements Listener {
         Player player = Bukkit.getPlayer(name);
 
         //累计充值记录
-        PlayerData playerData = PlayerDataManager.getPlayerData(player.getUniqueId());
+        PlayerData playerData = PlayerDataManager.getInstance().getPlayerData(player.getUniqueId());
         double m = playerData.getRecharge()+Double.parseDouble(money);
         playerData.setRecharge((long)m);
-        PlayerDataManager.setPlayerData(playerData);
+        PlayerDataManager.getInstance().setPlayerData(playerData);
 
         //会员 充值/续费 取消发货
         if (Objects.equals(money, "15.0") || Objects.equals(money, "45.0")){
@@ -276,7 +271,7 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void PlayerDeathEvent(PlayerDeathEvent event){
         Player player = event.getEntity();
-
+        event.setKeepInventory(true);
         int money = new Random().nextInt(45);
         Main.econ.withdrawPlayer(player,money);
         player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很遗憾您在探险的过程中失败了，您丢失了 &c"+money+" &7卡洛币，不要灰心。"));
@@ -307,16 +302,8 @@ public class PlayerEvent implements Listener {
                 player.sendTitle(ColorParser.parse("&3Kalos &f// &3溺水世界"),ColorParser.parse("&f全世界都是海水，无比压抑!"),10,60,10);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
-            case "olostland":
-                player.sendTitle(ColorParser.parse("&aKalos &f// &a楼兰之地"),ColorParser.parse("&f一个全新的领域，在这里加入其它部族吧！"),10,60,10);
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                break;
             case "plot":
                 player.sendTitle(ColorParser.parse("&bKalos &f// &b地皮世界"),ColorParser.parse("&f供训练家居住的地方，萌新专属哦！"),10,60,10);
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                break;
-            case "pvp":
-                player.sendTitle(ColorParser.parse("&cKalos &f// &c战斗世界"),ColorParser.parse("&f您进入了战斗世界，可以互相攻击."),10,60,10);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
             case "spawn":

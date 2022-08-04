@@ -5,8 +5,8 @@ import red.kalos.core.manager.menu.MainMenu;
 import red.kalos.core.manager.recharge.GiftPackShop;
 import red.kalos.core.manager.recharge.ArmourersShop;
 import red.kalos.core.manager.recharge.GrandTotal;
-import red.kalos.core.manager.recharge.shop.ItemBuy;
-import red.kalos.core.manager.recharge.shop.ItemSell;
+import red.kalos.core.manager.shop.ItemBuy;
+import red.kalos.core.manager.shop.ItemSell;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.gui.Button;
 import red.kalos.core.util.gui.InventoryGUI;
@@ -92,7 +92,7 @@ public class RechargeMenu extends InventoryGUI {
                 ColorParser.parse("&7&o这里可以购买一些常用的物品道具."));
         Button ItemBuyButton = new Button(ItemBuy, type -> {
             if (type.isLeftClick()) {
-                red.kalos.core.manager.recharge.shop.ItemBuy itemBuy = new ItemBuy(player);
+                red.kalos.core.manager.shop.ItemBuy itemBuy = new ItemBuy(player);
                 itemBuy.openInventory();
             }
         });
@@ -104,7 +104,7 @@ public class RechargeMenu extends InventoryGUI {
                 ColorParser.parse("&7&o这里可以回收一些不常用的物品道具."));
         Button ItemSellButton = new Button(ItemSell, type -> {
             if (type.isLeftClick()) {
-                red.kalos.core.manager.recharge.shop.ItemSell itemSell = new ItemSell(player);
+                red.kalos.core.manager.shop.ItemSell itemSell = new ItemSell(player);
                 itemSell.openInventory();
             }
         });
