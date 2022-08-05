@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import red.kalos.core.manager.crazyauctions.api.Category;
 import red.kalos.core.manager.crazyauctions.api.ShopType;
 import red.kalos.core.manager.crazyauctions.controllers.GUI;
+import red.kalos.core.manager.help.Newbie;
 import red.kalos.core.manager.kits.PlayerKits;
 
 /**
@@ -30,7 +31,13 @@ public class CitizensEvent implements Listener {
 
     public void ClickNPCEvent(NPC npc, Player player){
         if (npc.data().get("kalos_spawn").equals("签到")){
-            Bukkit.dispatchCommand(player,"LiteSignIn gui");
+
+            if (player.hasPermission("kim.newbie.G")){
+                Bukkit.dispatchCommand(player,"LiteSignIn gui");
+            }else {
+                new Newbie(player).openInventory();
+            }
+
         }
 
         if (npc.data().get("kalos_spawn").equals("礼物")){
@@ -40,6 +47,11 @@ public class CitizensEvent implements Listener {
 
         if (npc.data().get("kalos_spawn").equals("市场")){
             GUI.openShop(player, ShopType.SELL, Category.NONE, 1);
+        }
+
+
+        if (npc.data().get("kalos_spawn").equals("帮助")){
+
         }
     }
 }

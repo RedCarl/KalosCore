@@ -94,6 +94,24 @@ public class WorldWarpMenu extends InventoryGUI {
         });
         this.setButton(4, DrownedWorldButton);
 
+        //地皮
+        ItemStack PlotWorld = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/ed339d52393d5183a3664015c0b2c6c1012ea1b525ed952073311ca180a0e6",ColorParser.parse("&e地皮 &f// &7Plot"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o每人都可以领取一块属于自己的地皮!"));
+        Button PlotWorldButton = new Button(PlotWorld, type -> {
+            if (type.isLeftClick()) {
+                player.closeInventory();
+                Location location = new Location(Bukkit.getWorld("plot"),0,65,0);
+                location.setYaw(-90);
+                player.teleport(location);
+            }
+        });
+        this.setButton(5, PlotWorldButton);
+
+
+
+
+
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));
         for (int i = 0; i < 9; i++) {
             this.setButton(36+i, new Button(Line));

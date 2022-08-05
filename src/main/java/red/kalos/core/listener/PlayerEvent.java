@@ -259,11 +259,9 @@ public class PlayerEvent implements Listener {
         Player player = event.getPlayer();
 
         //月卡礼包
-        if (player.hasPermission("group.pikanium")){
-            Main.ppAPI.giveAsync(player.getUniqueId(),1);
-        }
         if (player.hasPermission("group.eevee")){
-            Main.ppAPI.giveAsync(player.getUniqueId(),5);
+            Main.ppAPI.giveAsync(player.getUniqueId(),1);
+            player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7尊贵的 伊布月卡会员 成功领取今天的月卡奖励。 &a(卡点*1)"));
         }
     }
 

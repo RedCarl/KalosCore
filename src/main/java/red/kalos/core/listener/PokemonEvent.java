@@ -31,6 +31,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 import red.kalos.core.Main;
 import red.kalos.core.configFile.Data;
+import red.kalos.core.manager.pokespawn.SpawnTime;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.PokemonAPI;
 
@@ -66,10 +67,10 @@ public class PokemonEvent implements Listener {
             //指定世界不刷新的宝可梦类型
             switch (world){
                 case "plot":
+                case "training":
+                case "pokerank":
                 case "spawn":
-                    if (entityPixelmon.isBossPokemon()){
-                        event.setCanceled(true);
-                    }
+                    event.setCanceled(true);
                     break;
             }
 
@@ -79,11 +80,21 @@ public class PokemonEvent implements Listener {
             }
 
             //设置野外宝可梦MT
-            int a = new Random().nextInt(100);
-            if (a<=80){
-                entityPixelmon.getPokemonData().setShiny(false);
-                entityPixelmon.getPokemonData().setAbilitySlot(0);
+            if (entityPixelmon.getPokemonData().getAbilitySlot()>0){
+                int a = new Random().nextInt(100);
+                if (a<=50){
+                    entityPixelmon.getPokemonData().setAbilitySlot(0);
+                }
             }
+            //设置野生宝可梦闪光
+            if (entityPixelmon.getPokemonData().isShiny()){
+                int b = new Random().nextInt(100);
+                if (b<=30){
+                    entityPixelmon.getPokemonData().setShiny(false);
+                }
+            }
+
+
 
 
         }
@@ -102,13 +113,9 @@ public class PokemonEvent implements Listener {
             Location location = new Location(w, x, y, z);
             Player player = PokemonAPI.getRandPlayer(location);
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-                    Bukkit.broadcastMessage(ColorParser.parse("&8[&6&l!&8] &7一只传说宝可梦 &c"+pokemon.getLocalizedName()+" &7出现在玩家 &c"+player.getName()+" &7附近快去寻找它。"));
-                }
-            }.runTaskLater(Main.getInstance(),60);
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+            Bukkit.broadcastMessage(ColorParser.parse("&8[&6&l!&8] &7一只传说宝可梦 &c"+pokemon.getLocalizedName()+" &7出现在玩家 &c"+player.getName()+" &7附近快去寻找它。"));
+            SpawnTime.isSpawner = true;
         }
 
         //牧场孵化
@@ -139,19 +146,27 @@ public class PokemonEvent implements Listener {
                     player.closeInventory();
                 }
             }
-
-            if ((!Main.getInstance().getConfig().getBoolean("BreedLimit.Ability")) && (event.pokemon.getAbilitySlot() == 2)) {
-                event.setCanceled(true);
-                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，牧场禁止繁殖 &c特性 &7宝可梦."));
-                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
-                player.closeInventory();
-            }
+//
+//            if ((!Main.getInstance().getConfig().getBoolean("BreedLimit.Ability")) && (event.pokemon.getAbilitySlot() == 2)) {
+//                event.setCanceled(true);
+//                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，牧场禁止繁殖 &c特性 &7宝可梦."));
+//                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+//                player.closeInventory();
+//            }
         }
 
         //生蛋
         if (forgeEvent.getForgeEvent() instanceof BreedEvent.MakeEgg) {
             BreedEvent.MakeEgg event = (BreedEvent.MakeEgg)forgeEvent.getForgeEvent();
             Pokemon egg = event.getEgg();
+
+            //特性管辖
+            if (egg.getAbilitySlot()>0){
+                int b = new Random().nextInt(100);
+                if (b<=95){
+                    egg.setAbilitySlot(0);
+                }
+            }
 
             //带有红线不对蛋进行操作
             if (event.parent1.getHeldItem().field_151002_e!=null&&event.parent1.getHeldItem().field_151002_e.func_77658_a().equals("item.destiny_knot")){
