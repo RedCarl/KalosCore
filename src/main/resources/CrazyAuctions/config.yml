@@ -18,47 +18,47 @@ Settings:
   Category-Page-Opens-First: false
   Feature-Toggle:
     Selling: true
-    Bidding: true
+    Bidding: false
   Sounds:
     Toggle: false
     Sound: CLICK
   GUISettings:
     SellingItemLore:
-    - ''
-    - '&7商品价格:'
-    - '&r     &c%Price% &7卡洛币'
-    - ''
-    - '&7商品主人:'
-    - '&r     &c%Seller%'
-    - '&f&o➥ &7点击 &c立即 &7购买'
+      - ''
+      - '&7商品价格:'
+      - '&r     &c%Price% &7卡洛币'
+      - ''
+      - '&7商品主人:'
+      - '&r     &c%Seller%'
+      - '&f&o➥ &7点击 &c立即 &7购买'
     CurrentLore:
-    - ''
-    - '&7商品价格:'
-    - '&r     &c%Price% &7卡洛币'
-    - ''
-    - '&7剩余时间:'
-    - '&r     &c%Time%'
-    - ''
-    - '&f&o➥ &7点击 &c下架 &7商品'
+      - ''
+      - '&7商品价格:'
+      - '&r     &c%Price% &7卡洛币'
+      - ''
+      - '&7剩余时间:'
+      - '&r     &c%Time%'
+      - ''
+      - '&f&o➥ &7点击 &c下架 &7商品'
     Cancelled/ExpiredLore:
-    - ''
-    - '&7剩余时间:'
-    - '&r     &c%Time%'
-    - ''
-    - '&f&o➥ &7点击 &c返回 &7背包'
+      - ''
+      - '&7剩余时间:'
+      - '&r     &c%Time%'
+      - ''
+      - '&f&o➥ &7点击 &c返回 &7背包'
     Bidding:
-    - ''
-    - '&7当前拍价:'
-    - '&r     &c%TopBid% &7卡洛币'
-    - ''
-    - '&7商品主人:'
-    - '&r     &c%Seller%'
-    - ''
-    - '&7最高竞拍者:'
-    - '&r     &c%TopBidder%'
-    - ''
-    - '&7剩余拍卖时间:'
-    - '&r     &c%Time%'
+      - ''
+      - '&7当前拍价:'
+      - '&r     &c%TopBid% &7卡洛币'
+      - ''
+      - '&7商品主人:'
+      - '&r     &c%Seller%'
+      - ''
+      - '&7最高竞拍者:'
+      - '&r     &c%TopBidder%'
+      - ''
+      - '&7剩余拍卖时间:'
+      - '&r     &c%Time%'
     Category-Settings:
       Armor:
         Item: '315'
@@ -66,64 +66,64 @@ Settings:
         Slot: 11
         Name: '&6盔甲'
         Lore:
-        - '&7&o这个分类包含了当前正在出售的盔甲'
+          - '&7&o这个分类包含了当前正在出售的盔甲'
       Weapons:
         Item: '283'
         Toggle: true
         Slot: 12
         Name: '&6武器'
         Lore:
-        - '&7&o这个分类包含了当前正在出售的武器'
+          - '&7&o这个分类包含了当前正在出售的武器'
       Tools:
         Item: '285'
         Toggle: true
         Slot: 13
         Name: '&6工具'
         Lore:
-        - '&7&o这个分类包含了当前正在出售的工具'
+          - '&7&o这个分类包含了当前正在出售的工具'
       Food:
         Item: '322'
         Toggle: true
         Slot: 14
         Name: '&6食物'
         Lore:
-        - '&7&o这个分类包含了当前正在出售的食物'
+          - '&7&o这个分类包含了当前正在出售的食物'
       Potions:
         Item: '373'
         Toggle: true
         Slot: 15
         Name: '&6药水'
         Lore:
-        - '&7&o这个分类包含了当前正在出售的药水'
+          - '&7&o这个分类包含了当前正在出售的药水'
       Blocks:
         Item: '2'
         Toggle: true
         Slot: 16
         Name: '&6方块'
         Lore:
-        - '&7&o这个分类包含了当前正在出售的方块'
+          - '&7&o这个分类包含了当前正在出售的方块'
       Other:
         Item: '371'
         Toggle: true
         Slot: 17
         Name: '&6其它'
         Lore:
-        - '&7&o这个分类包含了当前正在出售的其它物品'
+          - '&7&o这个分类包含了当前正在出售的其它物品'
       Pokemons:
         Item: PIXELMON_MASTER_BALL
         Toggle: true
         Slot: 20
         Name: '&6宝可梦'
         Lore:
-        - '&7&o这个分类包含了当前正在出售的宝可梦'
+          - '&7&o这个分类包含了当前正在出售的宝可梦'
       None:
         Item: '166'
         Toggle: false
         Slot: 23
         Name: '&6&l全部'
         Lore:
-        - '&7This category contains all'
-        - '&7items currently being sold.'
+          - '&7This category contains all'
+          - '&7items currently being sold.'
     OtherSettings:
       SellingItems:
         Item: '146'
@@ -131,14 +131,14 @@ Settings:
         Slot: 46
         Name: '&c[ 正在出售 ]'
         Lore:
-        - '&7&o查看您正在出售的商品.'
+          - '&7&o查看您正在出售的商品.'
       Cancelled/ExpiredItems:
         Item: '130'
         Toggle: true
         Slot: 47
         Name: '&c[ 收件箱 ]'
         Lore:
-        - '&7&o查看您下架的商品/过期的商品.'
+          - '&7&o查看您下架的商品/过期的商品.'
       PreviousPage:
         Item: PIXELMON_TRADE_HOLDER_LEFT
         Toggle: true
@@ -163,21 +163,6 @@ Settings:
         Slot: 53
         Name: '&c[ 商品分类 ]'
         Lore:
-        - '&7当前分类: &c%Category%'
-      Category2:
-        Item: '340'
-        Toggle: false
-        Slot: 48
-        Name: '&c[ 商品分类 ]'
-        Lore:
-        - '&7当前分类: &c%Category%'
-      Bidding/Selling:
-        Selling:
-          Item: '421'
-          Toggle: true
-          Slot: 54
-          Name: '&c[ 全球市场 ]'
-          Lore:
           - '&7&o这里是交易系统,您可以在这里 &a出售 &7&o您的物品.'
           - '&r'
           - '&f物品上架:'
@@ -185,72 +170,93 @@ Settings:
           - '&r'
           - '&f宝可梦上架:'
           - '&r  &c■ &7/kim poke 位置(1-6) 价格'
-          - '&r'
-          - '&7点击可切换至 &c全球拍卖 &7系统.'
+      Category2:
+        Item: '340'
+        Toggle: false
+        Slot: 48
+        Name: '&c[ 商品分类 ]'
+        Lore:
+          - '&7当前分类: &c%Category%'
+      Bidding/Selling:
+        Selling:
+          Item: '421'
+          Toggle: false
+          Slot: 54
+          Name: '&c[ 全球市场 ]'
+          Lore:
+            - '&7&o这里是交易系统,您可以在这里 &a出售 &7&o您的物品.'
+            - '&r'
+            - '&f物品上架:'
+            - '&r  &e■ &7/kim sell 价格 数量'
+            - '&r'
+            - '&f宝可梦上架:'
+            - '&r  &c■ &7/kim poke 位置(1-6) 价格'
+            - '&r'
+            - '&7点击可切换至 &c全球拍卖 &7系统.'
         Bidding:
           Item: '421'
-          Toggle: true
+          Toggle: false
           Slot: 54
           Name: '&c[ 全球拍卖 ]'
           Lore:
-          - '&7&o这里是拍卖系统,您可以在这里 &a拍卖 &7&o您的物品.'
-          - '&r'
-          - '&f物品上架:'
-          - '&r  &e■ &7/kim bid 价格 数量'
-          - '&r'
-          - '&f宝可梦上架:'
-          - '&r  &c■ &7/kim poke 位置(1-6) 价格'
-          - '&r'
-          - '&7点击可切换至 &c全球市场 &7系统.'
+            - '&7&o这里是拍卖系统,您可以在这里 &a拍卖 &7&o您的物品.'
+            - '&r'
+            - '&f物品上架:'
+            - '&r  &e■ &7/kim bid 价格 数量'
+            - '&r'
+            - '&f宝可梦上架:'
+            - '&r  &c■ &7/kim poke 位置(1-6) 价格'
+            - '&r'
+            - '&7点击可切换至 &c全球市场 &7系统.'
       WhatIsThis:
         SellingShop:
-          Item: '323'
+          Item: '421'
           Toggle: false
           Slot: 54
           Name: '&c全球市场教程:'
           Lore:
-          - '&7&o这里是交易系统,您可以在这里 出售 您的物品.'
-          - '&r'
-          - '&7使用教程:'
-          - '&7上架: &c/kim sell 价格 数量 '
+            - '&7&o这里是交易系统,您可以在这里 出售 您的物品.'
+            - '&r'
+            - '&7使用教程:'
+            - '&7上架: &c/kim sell 价格 数量 '
         BiddingShop:
           Item: '323'
           Toggle: false
           Slot: 54
           Name: '&c全球拍卖教程:'
           Lore:
-          - '&7&o这里是交易系统,您可以在这里 拍卖 您的物品.'
-          - '&r'
-          - '&7使用教程:'
-          - '&7上架: &c/ca bid 价格 数量 '
+            - '&7&o这里是交易系统,您可以在这里 拍卖 您的物品.'
+            - '&r'
+            - '&7使用教程:'
+            - '&7上架: &c/ca bid 价格 数量 '
         CurrentItems:
           Item: '340'
           Toggle: true
           Slot: 54
           Name: '&c[ 当前出售 ]'
           Lore:
-          - '&7&o这里列出的是你当前出售/拍卖的商品'
+            - '&7&o这里列出的是你当前出售/拍卖的商品'
         Cancelled/ExpiredItems:
           Item: '340'
           Toggle: true
           Slot: 54
           Name: '&C[ 收件箱 ]'
           Lore:
-          - '&7&o这里列出的是你撤销出售/过期的商品'
+            - '&7&o这里列出的是你撤销出售/过期的商品'
         Viewing:
           Item: '340'
           Toggle: true
           Slot: 50
-          Name: '&c[ 出售/拍卖列表 ]'
+          Name: '&c[ 出售列表 ]'
           Lore:
-          - '&7&o这里展示的是其它玩家出售/拍卖的商品'
+            - '&7&o这里展示的是其它玩家出售的商品'
         Categories:
           Item: '340'
           Toggle: true
           Slot: 54
           Name: '&c[ 商品分类 ]'
           Lore:
-          - '&7&o这里展示的是正在出售商品的分类'
+            - '&7&o这里展示的是正在出售商品的分类'
       Back:
         Item: '166'
         Slot: 46
@@ -260,7 +266,7 @@ Settings:
         Slot: 50
         Name: '&c[ 一键返回背包 ]'
         Lore:
-        - '&7&o点击将所有物品返还至你的背包'
+          - '&7&o点击将所有物品返还至你的背包'
       Confirm:
         Item: '160:5'
         Name: '&a确认'
@@ -280,12 +286,12 @@ Settings:
         Item: '160:15'
         Name: '&7拍卖'
         Lore:
-        - '&c拍卖定价:'
-        - '&r'
-        - '&7你的拍卖价格: &c%Bid%'
-        - '&7最高拍卖价格: &c%TopBid%'
+          - '&c拍卖定价:'
+          - '&r'
+          - '&7你的拍卖价格: &c%Bid%'
+          - '&7最高拍卖价格: &c%TopBid%'
       Bid:
         Item: '160:3'
         Name: '&c竞拍！'
         Lore:
-        - '&7&o点击竞拍'
+          - '&7&o点击竞拍'

@@ -107,7 +107,7 @@ public class PlayerEvent implements Listener {
         ItemStack itemStack = event.getItem();
         //禁止在主城使用 锅 和 钓鱼竿
         if (itemStack!=null&&!player.hasPermission("group.admin")){
-            if (player.getLocation().getWorld().getName().equals("spawn")){
+            if (player.getLocation().getWorld().getName().equals("spawn")||player.getLocation().getWorld().getName().equals("training")){
                 if (
                         itemStack.getType().name().contains("_ROD")||
                                 itemStack.getType().name().contains("FRYPAN")||
@@ -307,7 +307,11 @@ public class PlayerEvent implements Listener {
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
             case "spawn":
-                player.sendTitle(ColorParser.parse("&3Kalos &f// &3宝可梦训练场"),ColorParser.parse("&f尽情的训练您的宝可梦去吧."),10,60,10);
+                player.sendTitle(ColorParser.parse("&3Kalos &f// &3主城"),ColorParser.parse("&f在这里交易、培养宝可梦。"),10,60,10);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                break;
+            case "training":
+                player.sendTitle(ColorParser.parse("&cKalos &f// &c宝可梦训练场"),ColorParser.parse("&f尽情的训练您的宝可梦去吧."),10,60,10);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
         }

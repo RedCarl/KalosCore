@@ -80,49 +80,19 @@ public class WorldWarpMenu extends InventoryGUI {
         });
         this.setButton(3, UltraSpaceButton);
 
-        //地狱世界
-//        ItemStack TheNether = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/d500292f4afe52d10f299dfb26036322830450331e003084bb220333530664e1",ColorParser.parse("&c下届 &f// &7The Nether"),
-//                ColorParser.parse("&r"),
-//                ColorParser.parse("&7&o来探索一个可怕的新维度吧！"));
-//        Button TheNetherButton = new Button(TheNether, type -> {
-//            player.closeInventory();
-//            Location location = new UnexpectedSpawn().randomLocation(Bukkit.getWorld("DIM-1"));
-//            if (location!=null){
-//                player.teleport(location);
-//            }else {
-//                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，暂时没有找到合适的落脚点呢，请再次尝试。"));
-//                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-//            }
-//        });
-//        this.setButton(2, TheNetherButton);
-
-//        //训练场
-//        ItemStack DrownedWorld = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/e6799bfaa3a2c63ad85dd378e66d57d9a97a3f86d0d9f683c498632f4f5c",ColorParser.parse("&3训练场 &f// &7Training"),
-//                ColorParser.parse("&r"),
-//                ColorParser.parse("&7&o训练宝可梦的地方,快带着你的宝可梦来历练吧!"));
-//        Button DrownedWorldButton = new Button(DrownedWorld, type -> {
-//            if (type.isLeftClick()) {
-//                player.closeInventory();
-//                Location location = new Location(Bukkit.getWorld("spawn"),0.5,10,47.5);
-//                location.setYaw(-90);
-//                player.teleport(location);
-//            }
-//        });
-//        this.setButton(5, DrownedWorldButton);
-//
-//        //训练场
-//        ItemStack PVPWorld = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/3d1164f8ed8a89bee10a7fa2fec84ecc0221d85097ea60a4a70d378ca00b0241",ColorParser.parse("&c战斗世界 &f// &7PVP World"),
-//                ColorParser.parse("&r"),
-//                ColorParser.parse("&7&o危险的世界，与其他玩家一决生死!"));
-//        Button PVPWorldButton = new Button(PVPWorld, type -> {
-//            if (type.isLeftClick()) {
-//                player.closeInventory();
-//                Location location = new Location(Bukkit.getWorld("pvp"), -120.5,88.5,-52.5);
-//                location.setYaw(-90);
-//                player.teleport(location);
-//            }
-//        });
-//        this.setButton(6, PVPWorldButton);
+        //训练场
+        ItemStack DrownedWorld = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/e6799bfaa3a2c63ad85dd378e66d57d9a97a3f86d0d9f683c498632f4f5c",ColorParser.parse("&3训练场 &f// &7Training"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o训练宝可梦的地方,快带着你的宝可梦来历练吧!"));
+        Button DrownedWorldButton = new Button(DrownedWorld, type -> {
+            if (type.isLeftClick()) {
+                player.closeInventory();
+                Location location = new Location(Bukkit.getWorld("training"),10.5,7,47.5);
+                location.setYaw(-90);
+                player.teleport(location);
+            }
+        });
+        this.setButton(4, DrownedWorldButton);
 
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));
         for (int i = 0; i < 9; i++) {

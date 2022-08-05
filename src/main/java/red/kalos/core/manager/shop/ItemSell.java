@@ -36,11 +36,11 @@ public class ItemSell extends InventoryGUI {
         ItemList.add(new ItemInfo("&6胡萝卜",Material.CARROT_ITEM,0.2,0));
         ItemList.add(new ItemInfo("&6马铃薯",Material.POTATO_ITEM,0.2,0));
 
-        ItemList.add(new ItemInfo("&a煤矿石",Material.COAL_ORE,2.3,0));
-        ItemList.add(new ItemInfo("&a铁矿石",Material.IRON_ORE,3.5,0));
-        ItemList.add(new ItemInfo("&a金矿石",Material.GOLD_ORE,6.7,0));
-        ItemList.add(new ItemInfo("&a钻石矿",Material.DIAMOND_ORE,15,0));
-        ItemList.add(new ItemInfo("&a绿宝石矿",Material.EMERALD_ORE,32,0));
+//        ItemList.add(new ItemInfo("&a煤矿石",Material.COAL_ORE,1.3,0));
+//        ItemList.add(new ItemInfo("&a铁矿石",Material.IRON_ORE,3.5,0));
+//        ItemList.add(new ItemInfo("&a金矿石",Material.GOLD_ORE,6.7,0));
+//        ItemList.add(new ItemInfo("&a钻石矿",Material.DIAMOND_ORE,9.5,0));
+//        ItemList.add(new ItemInfo("&a绿宝石矿",Material.EMERALD_ORE,12.6,0));
 
         ItemList.add(new ItemInfo("&f黑球果",Material.getMaterial("PIXELMON_BLACK_APRICORN"),0.2,0));
         ItemList.add(new ItemInfo("&f白球果",Material.getMaterial("PIXELMON_WHITE_APRICORN"),0.2,0));

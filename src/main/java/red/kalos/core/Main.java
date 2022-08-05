@@ -25,6 +25,7 @@ import red.kalos.core.manager.questmanager.manager.QuestManager;
 import red.kalos.core.manager.questmanager.quest.list.achievement.Achievement;
 import red.kalos.core.manager.questmanager.quest.list.dayquest.Day;
 import red.kalos.core.manager.ranking.RankingManager;
+import red.kalos.core.manager.worldtime.WorldTimeSynchronize;
 import red.kalos.core.packetlistener.AdvanceAdapter;
 import red.kalos.core.packetlistener.MessageAdapter;
 import red.kalos.core.util.ColorParser;
@@ -185,6 +186,9 @@ public class Main extends JavaPlugin {
 
         log("加载 NPC 模块...");
         CitizensManager.getInstance().init(Bukkit.getWorld("spawn"));
+
+        log("加载 世界状态同步 模块...");
+        WorldTimeSynchronize.getInstance().init();
 
         log("加载完成 ，共耗时 " + (System.currentTimeMillis() - startTime) + " ms 。");
 

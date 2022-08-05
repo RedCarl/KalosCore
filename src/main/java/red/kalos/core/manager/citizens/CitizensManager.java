@@ -4,9 +4,6 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.event.Listener;
-import org.bukkit.event.world.WorldInitEvent;
-import org.bukkit.event.world.WorldLoadEvent;
 import red.kalos.core.entity.NPCs;
 import red.kalos.core.util.ColorParser;
 
@@ -18,7 +15,7 @@ import java.util.List;
  * @Author: carl0
  * @DATE: 2022/8/3 17:41
  */
-public class CitizensManager implements Listener {
+public class CitizensManager {
     List<NPC> npcList = new ArrayList<>();
     private static final CitizensManager instance = new CitizensManager();
 
@@ -53,30 +50,30 @@ public class CitizensManager implements Listener {
             );
         });
         npcList.add(npc);
-//
-//        npc = NPCs.createNPC(new Location(world, 22.5, 59, 17, 90, 0),
-//                Arrays.asList(ColorParser.parse("&7(右键点击)"), "factions.npc.kits"), 0.25, n -> {
-//            n.data().set("factions_npc", "kits");
-//            SkinTrait skinTrait = n.getOrAddTrait(SkinTrait.class);
-//            skinTrait.setSkinPersistent(
-//                    "cb6f3204b1204cc398ff444ff6a761bd",
-//                    "wCeppxRGULUXL+Sw6QRlzv1RCpK2LawiaRqM3vhly+H2weaJFhpZi5iiOlBxJZNderTpdz0GxnYPW/P/COaYlE8zhY7RafKMQx2Ia+vFuL6i8zDnbG0oAku486Fhm0ZrkQQkmx9UstO6p29wrlMpwhZRYKXBv5z5feHAIkE4XIFKjVLlDzsmtGW8tMeRslyZAi77lDPO1oid9c1DcrJprv4nOeHwmeg9G5xtsh7U53vyEeUITogstZboSeCpVZvv5JVRBnSEmvijHsDCKzKAIz3KPLMuZXod1XHudI9QGAP+FiXZWl+GK4R1QqtOAFCLmMaj3h5R1U8QymTI2J06cGVecyqUKIbL5W3CLRddtCYk13pxxLxTlZiPmvAZz2D1FIFeQQCbi+EWSJF3P1jrh50WKNy7YVUlb2JkJcZMstoCNLT3UWEpZQIdd7qlxsy2rAL/23aencnI2QnfhUnUpMGHM+o8Y/Oz8V9wEe/4Ddr/300ok7TIcrKH8IZ9v7oHA9JotWMK+HtB0sGknXxzZFKa6GkBrtV48inZYSZKIlFzqdh1ueEVFXu0D98kCpqr8qnJDA7zft5245ttnxjW8mYiZSIIkE+EPoeJvxmHsj/ZF6ZpOXkcNpjHZLgjWOWVNIXOoLqoZLNDFGXU3xz73FMMcbrgRUNM0RXTIPb3bRo=",
-//                    "ewogICJ0aW1lc3RhbXAiIDogMTY1NzgxNjUwNjEzOSwKICAicHJvZmlsZUlkIiA6ICJjYjZmMzIwNGIxMjA0Y2MzOThmZjQ0NGZmNmE3NjFiZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJ0cmFuZ2N1dGUxOXQ5Mms4IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzQ5YzMxYTBlMjFkZTUwNTM1MjhjNjhjOTQzMjk3YWRjNWM3MDE0ZjkzOTM0MDQzODFiMWM2ZGU4NzIzYjBkM2UiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfSwKICAgICJDQVBFIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8yMzQwYzBlMDNkZDI0YTExYjE1YThiMzNjMmE3ZTllMzJhYmIyMDUxYjI0ODFkMGJhN2RlZmQ2MzVjYTdhOTMzIgogICAgfQogIH0KfQ=="
-//            );
-//        });
-//        npcList.add(npc);
-//
-//        npc = NPCs.createNPC(new Location(world, 18, 59, 22.5, 180, 0),
-//                Arrays.asList(ColorParser.parse("&7(右键点击)"), "factions.npc.tag"), 0.25, n -> {
-//            n.data().set("factions_npc", "tag");
-//            SkinTrait skinTrait = n.getOrAddTrait(SkinTrait.class);
-//            skinTrait.setSkinPersistent(
-//                    "e23d5d9a533f411f81ae1c341ebc8856",
-//                    "i2+QjH48z/tTS9HPhRwJFWaSA6pCCIeDBzmz0IKXdSefijTA++G0bFki2oIS/XktW/GMm/9aye8Tt4PTei6Yqw4+ok4BMfLwJ/V+1d27aykD0xtvKS/MxCvr6vW7EyM4pfq9n4ahZzFqAaT8Vtw7q5joVMaaZRaTkVG2o35hBu7WJeLfVPRWozNriIiitpnvySVhUP9y2gXFwXrvgL3fr9K07+4M/PWBpliPDFbkF+ubmkMatOmyjqra+AIX794/eCeTRdTdIqfX5z/AYZf4ltWL8OMfuWnRpkZdjBmGPdLg53wKBR10PeRzUUHQB1cjJlNN13YN8yoJyPxkg9cdC3v6rUkf52Vi606kfUjLwURDx/w0vIDjxpE34GU6t7CY/nIOrhRzNANwaaJnv4WpxsjMggizBeJn5Uw4SfEi+ZY5OyO9uoGxgwvmP7VlhjxSNujrFQKuALUhoOpzEe1brwda/ADrAM3JZy2zBxYU1Svp3Fm1wIBfYVVWUElvXLeyFCJ+BMivu8Q4GS4c4f8AalMh+qb5E88qeSHmB2WG4Y9WOAp1ie5gDLwVBJOTUA5mwkMvthoVd7F+yTgKrVGD51KqA/QqdfhYZRQAmOVIgyoNlsGEROydVcE2ofyR27puvi5MSeH9sgkVfKCOlXa1dDhyVRUkTRRx9fAi4t5yK5Y=",
-//                    "ewogICJ0aW1lc3RhbXAiIDogMTY1ODU3MjI4NTIwOSwKICAicHJvZmlsZUlkIiA6ICJlMjNkNWQ5YTUzM2Y0MTFmODFhZTFjMzQxZWJjODg1NiIsCiAgInByb2ZpbGVOYW1lIiA6ICJhZ29ueTIwMDEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjA0ODJjYzVhYzU2MGZhM2Q5ZDc3ZjYyOTRkNWQ2ZjdjMDBkMTFkZDMwOGJkNmNmMTIxYzQzYjVhM2Q4MzhiZSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9"
-//            );
-//        });
-//        npcList.add(npc);
+
+        npc = NPCs.createNPC(new Location(world, -217.5, 103, -14.5, 0, 0),
+                Arrays.asList(ColorParser.parse("&7&o在这里与其它玩家进行物品交易。"), ColorParser.parse("&b舰长")), 0.25, n -> {
+            n.data().set("kalos_spawn", "市场");
+            SkinTrait skinTrait = n.getOrAddTrait(SkinTrait.class);
+            skinTrait.setSkinPersistent(
+                    "cb6f3204b1204cc398ff444ff6a761bd",
+                    "wCeppxRGULUXL+Sw6QRlzv1RCpK2LawiaRqM3vhly+H2weaJFhpZi5iiOlBxJZNderTpdz0GxnYPW/P/COaYlE8zhY7RafKMQx2Ia+vFuL6i8zDnbG0oAku486Fhm0ZrkQQkmx9UstO6p29wrlMpwhZRYKXBv5z5feHAIkE4XIFKjVLlDzsmtGW8tMeRslyZAi77lDPO1oid9c1DcrJprv4nOeHwmeg9G5xtsh7U53vyEeUITogstZboSeCpVZvv5JVRBnSEmvijHsDCKzKAIz3KPLMuZXod1XHudI9QGAP+FiXZWl+GK4R1QqtOAFCLmMaj3h5R1U8QymTI2J06cGVecyqUKIbL5W3CLRddtCYk13pxxLxTlZiPmvAZz2D1FIFeQQCbi+EWSJF3P1jrh50WKNy7YVUlb2JkJcZMstoCNLT3UWEpZQIdd7qlxsy2rAL/23aencnI2QnfhUnUpMGHM+o8Y/Oz8V9wEe/4Ddr/300ok7TIcrKH8IZ9v7oHA9JotWMK+HtB0sGknXxzZFKa6GkBrtV48inZYSZKIlFzqdh1ueEVFXu0D98kCpqr8qnJDA7zft5245ttnxjW8mYiZSIIkE+EPoeJvxmHsj/ZF6ZpOXkcNpjHZLgjWOWVNIXOoLqoZLNDFGXU3xz73FMMcbrgRUNM0RXTIPb3bRo=",
+                    "ewogICJ0aW1lc3RhbXAiIDogMTY1NzgxNjUwNjEzOSwKICAicHJvZmlsZUlkIiA6ICJjYjZmMzIwNGIxMjA0Y2MzOThmZjQ0NGZmNmE3NjFiZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJ0cmFuZ2N1dGUxOXQ5Mms4IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzQ5YzMxYTBlMjFkZTUwNTM1MjhjNjhjOTQzMjk3YWRjNWM3MDE0ZjkzOTM0MDQzODFiMWM2ZGU4NzIzYjBkM2UiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfSwKICAgICJDQVBFIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8yMzQwYzBlMDNkZDI0YTExYjE1YThiMzNjMmE3ZTllMzJhYmIyMDUxYjI0ODFkMGJhN2RlZmQ2MzVjYTdhOTMzIgogICAgfQogIH0KfQ=="
+            );
+        });
+        npcList.add(npc);
+
+        npc = NPCs.createNPC(new Location(world, -189.5, 100, 7.5, -7, 0),
+                Arrays.asList(ColorParser.parse("&7&o你在寻找什么吗?也许我能帮助你。"), ColorParser.parse("&6老仙")), 0.25, n -> {
+                    n.data().set("kalos_spawn", "帮助");
+            SkinTrait skinTrait = n.getOrAddTrait(SkinTrait.class);
+            skinTrait.setSkinPersistent(
+                    "84ad42978f224043891ef8f86d0bc8f8",
+                    "dc5y2jruHMht9mQ9s78ldNk2Ydg8qlqWVLsbzLHOI0J548Ns+rLTQ6IDjGT1Ho+pvA0tr0DyuIZiU5/w1iivlG0Agk/U1H+bMhT6NOhxvC89UVnel8nN6nknH8/4rcRNr1fX0aRe87B2pHtKmLVGChcO9NcRVjEy5h5zTmXC4exULNl6loxq0lGyI7BpnumNSFM+n5fsjNnu/9x2Y6mNHoaDIECN1gUx07OF9oGP74wD+uiI6B8sm+RsUtH5OIlHFj/+NYTVLJeuANU9A1Vr3Xa4347Ai+zZHRCKNHXrLsKMriddF48kJiK+KXu7uAN2GaLdL/6Bs6FyeC3gHYEEwwpfhmqpZKiCi3/T3P/osyQtPOnBGDal6SUEAa7xPtP2cDf6VdBietDlmuqDs1FXOczEvVFBAJK4jw92cWKouhYjLPGBNs+ONE8IZEz6zINH2N+z4JybCRBnSIK4RDGgYRJ+zvNRtYMQ6Sq0szSYhppztQerl8XmplSZzSx71zUlde8ZLUsgX6S3RRD/opWIcqpMfIlYaQGsr1O/tVV9WrUBMbe7QTk+naV/BXfyPfZ57MGIv+hk3RUzbqGD4pC3VaV3f2uRK3OtXc5HfMEvUq8iygw/ky8IRZGR/HOJ7RJlNs7AMWUl+DYgyJbZTVYLGWOjeCXI+YtUNLCF+oPG8Yo=",
+                    "ewogICJ0aW1lc3RhbXAiIDogMTY1OTYyOTEwNDIyOSwKICAicHJvZmlsZUlkIiA6ICI4NGFkNDI5NzhmMjI0MDQzODkxZWY4Zjg2ZDBiYzhmOCIsCiAgInByb2ZpbGVOYW1lIiA6ICJNck92YWwiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzY5YmQ2ODkwODExYTlmNzdkOGIzZGM0NTk1NDdlNmE1MWU3MGUyZGZiOGY3NjgzYzIyOGIxZmExMjNkZGM5YyIKICAgIH0sCiAgICAiQ0FQRSIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjM0MGMwZTAzZGQyNGExMWIxNWE4YjMzYzJhN2U5ZTMyYWJiMjA1MWIyNDgxZDBiYTdkZWZkNjM1Y2E3YTkzMyIKICAgIH0KICB9Cn0="
+            );
+        });
+        npcList.add(npc);
     }
 
     public NPC getNpc(String npcType) {

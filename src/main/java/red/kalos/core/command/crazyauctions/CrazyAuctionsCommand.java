@@ -351,6 +351,7 @@ public class CrazyAuctionsCommand implements CommandExecutor {
             placeholders.put("%Price%", price + "");
             placeholders.put("%price%", price + "");
             player.sendMessage(Messages.ADDED_ITEM_TO_AUCTION.getMessage(placeholders));
+            Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7玩家 &a"+player.getName()+" &7向全球市场发布了一个 &a"+item.getItemMeta().getDisplayName()+" &7宝可梦。"));
             return false;
         }
         return false;
@@ -539,6 +540,7 @@ public class CrazyAuctionsCommand implements CommandExecutor {
             placeholders.put("%Price%", price + "");
             placeholders.put("%price%", price + "");
             player.sendMessage(Messages.ADDED_ITEM_TO_AUCTION.getMessage(placeholders));
+//            Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7玩家 &a"+player.getName()+" &7向全球市场发布了 &a"+item.name+" &7商品。"));
             if (item.getAmount() <= 1 || (item.getAmount() - amount) <= 0) {
                 Methods.setItemInHand(player, new ItemStack(Material.AIR));
             } else {

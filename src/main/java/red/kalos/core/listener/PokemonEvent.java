@@ -21,11 +21,6 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.enums.EnumGrowth;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
-import red.kalos.core.Main;
-import red.kalos.core.configFile.Data;
-import red.kalos.core.util.PokemonAPI;
-import red.kalos.core.manager.pokespawn.SpawnTime;
-import red.kalos.core.util.ColorParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -34,6 +29,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
+import red.kalos.core.Main;
+import red.kalos.core.configFile.Data;
+import red.kalos.core.util.ColorParser;
+import red.kalos.core.util.PokemonAPI;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -224,10 +223,10 @@ public class PokemonEvent implements Listener {
                             }
                         }
                     }
-                    //会员专属战斗结束后恢复精灵状态
-                    if (player.hasPermission("group.pikanium")||player.hasPermission("group.eevee")){
-                        PokemonAPI.setPokemonStater(player);
-                    }
+//                    //会员专属战斗结束后恢复精灵状态
+//                    if (player.hasPermission("group.pikanium")||player.hasPermission("group.eevee")){
+//                        PokemonAPI.setPokemonStater(player);
+//                    }
                 }
             }
 

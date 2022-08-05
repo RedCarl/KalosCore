@@ -7,6 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import red.kalos.core.manager.crazyauctions.api.Category;
+import red.kalos.core.manager.crazyauctions.api.ShopType;
+import red.kalos.core.manager.crazyauctions.controllers.GUI;
 import red.kalos.core.manager.kits.PlayerKits;
 
 /**
@@ -33,6 +36,10 @@ public class CitizensEvent implements Listener {
         if (npc.data().get("kalos_spawn").equals("礼物")){
             PlayerKits playerKits = new PlayerKits(player);
             playerKits.openInventory();
+        }
+
+        if (npc.data().get("kalos_spawn").equals("市场")){
+            GUI.openShop(player, ShopType.SELL, Category.NONE, 1);
         }
     }
 }

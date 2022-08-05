@@ -968,6 +968,61 @@ public class ItemBuy extends InventoryGUI {
         this.setButton(17, Night_VisionButton);
 
 
+        //许愿星
+        long WishingStarMoney = 190000;
+        int WishingStarPrice = 19;
+        ItemStack WishingStar = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_WISHING_STAR"),
+                ColorParser.parse("&c许愿星"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&r  &e■ &7售 价:"),
+                ColorParser.parse("&r      &7(左键) &c" + WishingStarMoney + " &7"+Data.SERVER_VAULT),
+                ColorParser.parse("&r      &7(右键) &c" + WishingStarPrice + " &7"+Data.SERVER_POINTS),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o这是一块在伽勒尔地区发现的蕴含着神奇力量的石头。听说捡到它的人能实现自己的愿望。。"));
+        Button WishingStarButton = new Button(WishingStar, type -> {
+            boolean varOn = true;
+            for (int i = 0; i < 36; i++) {
+                if (player.getInventory().getItem(i) == null) {
+                    varOn = false;
+                    break;
+                }
+            }
+            if (varOn){
+                player.closeInventory();
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+                return;
+            }
+            if (type.isLeftClick()) {
+                if (economy.getBalance(player)>WishingStarMoney){
+                    economy.withdrawPlayer(player,WishingStarMoney);
+                    player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_WISHING_STAR")));
+                    player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+WishingStar.getItemMeta().getDisplayName()+" &7请注意查收."));
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                }else {
+                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+economy.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
+                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                }
+            }
+            if (type.isRightClick()) {
+                try {
+                    if (playerPointsAPI.lookAsync(player.getUniqueId()).get()>=WishingStarPrice){
+                        playerPointsAPI.takeAsync(player.getUniqueId(),WishingStarPrice);
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_WISHING_STAR")));
+                        player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 "+WishingStar.getItemMeta().getDisplayName()+" &7请注意查收."));
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                    }else {
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+playerPointsAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                    }
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        this.setButton(18, WishingStarButton);
+
+
         ///改名卡
 //        long NickMoney = 15000;
 //        int NickPrice = 15;

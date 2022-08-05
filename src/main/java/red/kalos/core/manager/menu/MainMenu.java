@@ -14,6 +14,7 @@ import red.kalos.core.database.PlayerDataManager;
 import red.kalos.core.manager.armourers.guis.ArmourersGUI;
 import red.kalos.core.manager.homes.HomeMenu;
 import red.kalos.core.manager.plotadmin.gui.PlotMenu;
+import red.kalos.core.manager.pokeban.gui.BanList;
 import red.kalos.core.manager.pokeinfo.gui.PokemonInfoMenu;
 import red.kalos.core.manager.recharge.recharge.RechargeMenu;
 import red.kalos.core.manager.warps.WorldWarpMenu;
@@ -399,40 +400,18 @@ public class MainMenu extends InventoryGUI {
 //        this.setButton(51, MissionButton);
 //
 //
-//        ItemStack LiteSignIn = ItemFactoryAPI.getItemStack(Material.SIGN,
-//                ColorParser.parse("&f签到系统"),
-//                ColorParser.parse("&r"),
-//                ColorParser.parse("&7&o每日的打卡可以获得丰厚的奖励.")
-//        );
-//        Button LiteSignInButton = new Button(LiteSignIn, type -> {
-//            if (type.isLeftClick()) {
-//                Bukkit.dispatchCommand(player,"LiteSignIn gui");
-//            }
-//        });
-//        this.setButton(52, LiteSignInButton);
-//
-//        ItemStack BanList = ItemFactoryAPI.getItemStack(Material.BARRIER,
-//                ColorParser.parse("&f封禁列表"),
-//                ColorParser.parse("&r"),
-//                ColorParser.parse("&7&o查看服务器封禁了那些物品.")
-//        );
-//        Button BanListButton = new Button(BanList, type -> {
-//            if (type.isLeftClick()) {
-//                red.kalos.core.manager.pokeban.gui.BanList banMenu = new BanList(player,0);
-//                banMenu.openInventory();
-//            }
-//        });
-//        this.setButton(53, BanListButton);
-
-//        ItemStack Clock = ItemFactoryAPI.getItemStack(Material.FIREWORK,
-//                ColorParser.parse("&f娱乐活动"),
-//                ColorParser.parse("&r"),
-//                ColorParser.parse("&7&o您可以看到本服务器所有的娱乐活动详情.")
-//        );
-//        Button ClockButton = new Button(Clock, type -> {
-//            Bukkit.dispatchCommand(player,"GameCore:game");
-//        });
-//        this.setButton(37, ClockButton);
+        ItemStack BanList = ItemFactoryAPI.getItemStack(Material.BARRIER,
+                ColorParser.parse("&f封禁列表"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o查看服务器封禁了那些物品.")
+        );
+        Button BanListButton = new Button(BanList, type -> {
+            if (type.isLeftClick()) {
+                red.kalos.core.manager.pokeban.gui.BanList banMenu = new BanList(player,0);
+                banMenu.openInventory();
+            }
+        });
+        this.setButton(46, BanListButton);
 
 
 //        ItemStack Spyglass = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_CASH_REGISTER"),

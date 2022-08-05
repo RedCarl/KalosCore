@@ -2,6 +2,7 @@ package red.kalos.core.manager.recharge;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
+import de.tr7zw.nbtapi.NBTItem;
 import red.kalos.core.Main;
 import red.kalos.core.configFile.Data;
 import red.kalos.core.manager.menu.MainMenu;
@@ -204,7 +205,7 @@ public class GiftPackShop extends InventoryGUI {
         String PikaniumRankName="&e"+Data.SERVER_NAME_CN+"の皮卡丘";
         PlayerVIP PikaniumVIP = VIPBuy.checkRank(player,PikaniumRanks, Main.luckPerms.getServerName());
         if (PikaniumVIP!=null){
-            ItemStack Pikanium = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIKANIUM_Z"),
+            ItemStack Pikanium = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
                     ColorParser.parse(PikaniumRankName+" &f// &aVIP头衔"),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&f到期时间&c(续费)&f:"),
@@ -221,16 +222,19 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a5%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a7&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a2&7)"),
-                    ColorParser.parse("      &f战斗结束自动治疗 &7(被动)")
+                    ColorParser.parse("      &r"),
+                    ColorParser.parse("&c点击立即续费,仅支持 RMB 支付")
             );
-            Button PikaniumButton = new Button(Pikanium, type -> {
+            NBTItem nbtItem = new NBTItem(Pikanium);
+            nbtItem.setShort("ndex", (short)25);
+            Button PikaniumButton = new Button(nbtItem.getItem(), type -> {
                 player.closeInventory();
                 RechargeSelect rechargeSelect = new RechargeSelect(player, (double) PikaniumPrice);
                 rechargeSelect.openInventory();
             });
             this.setButton(0, PikaniumButton);
         }else {
-            ItemStack Pikanium = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIKANIUM_Z"),
+            ItemStack Pikanium = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
                     ColorParser.parse(PikaniumRankName+" &f// &aVIP头衔"),
                     ColorParser.parse("&f时效: &a30 &f天"),
                     ColorParser.parse("&r"),
@@ -245,9 +249,12 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a5%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a7&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a2&7)"),
-                    ColorParser.parse("      &f战斗结束自动治疗 &7(被动)")
+                    ColorParser.parse("      &r"),
+                    ColorParser.parse("&c点击立即购买,仅支持 RMB 支付")
             );
-            Button PikaniumButton = new Button(Pikanium, type -> {
+            NBTItem nbtItem = new NBTItem(Pikanium);
+            nbtItem.setShort("ndex", (short)25);
+            Button PikaniumButton = new Button(nbtItem.getItem(), type -> {
                 if (VIPBuy.checkRank(player,null, Main.luckPerms.getServerName())==null){
                     player.closeInventory();
                     RechargeSelect rechargeSelect = new RechargeSelect(player, (double) PikaniumPrice);
@@ -268,7 +275,7 @@ public class GiftPackShop extends InventoryGUI {
         String EeveeRankName="&6"+Data.SERVER_NAME_CN+"の伊布";
         PlayerVIP EeveeVIP = VIPBuy.checkRank(player,EeveeRanks, Main.luckPerms.getServerName());
         if (EeveeVIP!=null){
-            ItemStack Eevee = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_EEVIUM_Z"),
+            ItemStack Eevee = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
                     ColorParser.parse(EeveeRankName+" &f// &6MVP头衔"),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&f到期时间&c(续费)&f:"),
@@ -280,25 +287,25 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("&r  &c■ &7特 权:"),
                     ColorParser.parse("      &f飞行 &7(菜单)"),
                     ColorParser.parse("      &f签到 &7(额外的奖励 幸运方块)"),
-                    ColorParser.parse("      &f自动签到 &7(进入服务器自动签到)"),
                     ColorParser.parse("      &f月卡礼包 &7(每天签到领取 &c5 &7卡点)"),
                     ColorParser.parse("      &f每月礼包 &7(礼包系统查看)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a15%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a21&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a4&7)"),
-                    ColorParser.parse("      &f独特的世界 &7(累计充值 2000 以上可以获得)"),
                     ColorParser.parse("      &f传说宝可梦查询 &7(菜单)"),
-                    ColorParser.parse("      &f战斗结束自动治疗 &7(被动)"),
-                    ColorParser.parse("      &f建筑仓库 &7(木斧右键)")
+                    ColorParser.parse("      &r"),
+                    ColorParser.parse("&c点击立即续费,仅支持 RMB 支付")
             );
-            Button EeveeButton = new Button(Eevee, type -> {
+            NBTItem nbtItem = new NBTItem(Eevee);
+            nbtItem.setShort("ndex", (short)133);
+            Button EeveeButton = new Button(nbtItem.getItem(), type -> {
                 player.closeInventory();
                 RechargeSelect rechargeSelect = new RechargeSelect(player, (double) EeveePrice);
                 rechargeSelect.openInventory();
             });
             this.setButton(1, EeveeButton);
         }else {
-            ItemStack Eevee = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_EEVIUM_Z"),
+            ItemStack Eevee = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
                     ColorParser.parse(EeveeRankName+" &f// &6MVP头衔"),
                     ColorParser.parse("&f时效: &a30 &f天"),
                     ColorParser.parse("&r"),
@@ -308,18 +315,18 @@ public class GiftPackShop extends InventoryGUI {
                     ColorParser.parse("&r  &c■ &7特 权:"),
                     ColorParser.parse("      &f飞行 &7(菜单)"),
                     ColorParser.parse("      &f签到 &7(额外的奖励 幸运方块)"),
-                    ColorParser.parse("      &f自动签到 &7(进入服务器自动签到)"),
                     ColorParser.parse("      &f月卡礼包 &7(每天签到领取 &c5 &7卡点)"),
                     ColorParser.parse("      &f每月礼包 &7(礼包系统查看)"),
                     ColorParser.parse("      &f宝可梦回收 &7(额外的收益 &a15%&7)"),
                     ColorParser.parse("      &f更多的家园 &7(3 -> &a21&7)"),
                     ColorParser.parse("      &f更多的地皮 &7(1 -> &a4&7)"),
-                    ColorParser.parse("      &f独特的世界 &7(累计充值 2000 以上可以获得)"),
                     ColorParser.parse("      &f传说宝可梦查询 &7(菜单)"),
-                    ColorParser.parse("      &f战斗结束自动治疗 &7(被动)"),
-                    ColorParser.parse("      &f建筑仓库 &7(木斧右键)")
+                    ColorParser.parse("      &r"),
+                    ColorParser.parse("&c点击立即购买,仅支持 RMB 支付")
             );
-            Button EeveeButton = new Button(Eevee, type -> {
+            NBTItem nbtItem = new NBTItem(Eevee);
+            nbtItem.setShort("ndex", (short)133);
+            Button EeveeButton = new Button(nbtItem.getItem(), type -> {
                 player.closeInventory();
                 RechargeSelect rechargeSelect = new RechargeSelect(player, (double) EeveePrice);
                 rechargeSelect.openInventory();
