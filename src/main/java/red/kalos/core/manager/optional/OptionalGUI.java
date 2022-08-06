@@ -13,44 +13,53 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class MaxLegendGUI extends InventoryGUI {
-    public MaxLegendGUI(Player player) {
-        super(ColorParser.parse("&0" + Data.SERVER_NAME + " / 传奇宝可梦 (自选)"), player, 6);
-        String[] legend = {
-                "Mewtwo",
-                "Ho-Oh",
-                "Lugia",
-                "Kyogre",
-                "Groudon",
-                "Rayquaza",
-                "Dialga",
-                "Palkia",
-                "Giratina",
-                "Regigigas",
-                "Reshiram",
-                "Zekrom",
-                "Xerneas",
-                "Yveltal",
-                "Zygarde",
-                "Hoopa",
-                "Lunala",
-                "Solgaleo",
-                "Zacian",
-                "Zamazenta",
-                "Eternatus"
-        };
+public class OptionalGUI extends InventoryGUI {
+    public OptionalGUI(Player player, String Type) {
+        super(ColorParser.parse("&0" + Data.SERVER_NAME + " / 请选择宝可梦"), player, 6);
+        String[] poke = new String[0];
+
+        if (Type.equals("MaxLegend")){
+            poke = new String[]{
+                    "Mewtwo",
+                    "Ho-Oh",
+                    "Lugia",
+                    "Kyogre",
+                    "Groudon",
+                    "Rayquaza",
+                    "Dialga",
+                    "Palkia",
+                    "Giratina",
+                    "Regigigas",
+                    "Reshiram",
+                    "Zekrom",
+                    "Xerneas",
+                    "Yveltal",
+                    "Zygarde",
+                    "Hoopa",
+                    "Lunala",
+                    "Solgaleo",
+                    "Zacian",
+                    "Zamazenta",
+                    "Eternatus"
+            };
+        }
 
         int index = 0;
-        for (String s:legend) {
+        for (String s:poke) {
             Pokemon pokemon = PokemonAPI.SpawnPokemon(s);
             this.setButton(index,new Button(PokemonPhotoAPI.getPhotoItemSelect(pokemon), type -> {
-                if (CustomItem.useEncryptionItem(player,player.getItemInHand())){
+                if (CustomItem.useEncryptionItem(player,player.getItemInHand())!=null){
                     PokemonAPI.GivePokemon(player,false,2,0,false,pokemon);
                 }
                 player.closeInventory();
             }));
             index++;
         }
+
+
+
+
+
 
 
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));

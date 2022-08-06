@@ -17,11 +17,18 @@ import java.io.File;
 import java.io.IOException;
 
 public class CustomItem {
-    public static ItemStack MaxLegend = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/78d62f18b744e7fbfd6f1f8dad17e0a2a0b608b1186f40cee7bee572117c7930",
-            ColorParser.parse("&cKalos &f// &c顶级传奇宝可梦"),
+    public static ItemStack MaxLegend = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/c285dd77c64e2368fe77c31ff7c3d42b700fb7b74f2b463e696916c90f5d27ab",
+            ColorParser.parse("&cKalos &f// &b顶级传奇宝可梦"),
             ColorParser.parse("&8消耗品 (右键使用)"),
             ColorParser.parse("&r"),
             ColorParser.parse("&7使用该物品可以生成一只顶级传奇宝可梦。"),
+            ColorParser.parse("&7请谨慎选择，手滑概不负责，使用后物品消失。")
+    );
+    public static ItemStack Pokemon = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/56d7fdb50f14c731c727b0e0d189b6a874319fc0d79c8a099acfc77c7b2d9196",
+            ColorParser.parse("&cKalos &f// &e普通宝可梦"),
+            ColorParser.parse("&8消耗品 (右键使用)"),
+            ColorParser.parse("&r"),
+            ColorParser.parse("&7使用该物品可以生成一只指定范围的宝可梦。"),
             ColorParser.parse("&7请谨慎选择，手滑概不负责，使用后物品消失。")
     );
     public static ItemStack NickCard = ItemFactoryAPI.getItemStack(Material.NAME_TAG,
@@ -36,7 +43,7 @@ public class CustomItem {
 
 
     //对物品进行加密
-    public static ItemStack getEncryptionItem(ItemStack itemStack){
+    public static ItemStack getEncryptionItem(ItemStack itemStack,String type){
         NBTItem nbtItem = new NBTItem(itemStack);
         String id = PokemonAPI.getRandomString(16);
         nbtItem.setString("id", id);
@@ -45,6 +52,7 @@ public class CustomItem {
         File file = new File(Main.getInstance().getDataFolder(), "EncryptionItems/"+id+".kalos");
         FileConfiguration data = YamlConfiguration.loadConfiguration(file);
         data.set("kalos",true);
+        data.set("type",type);
         try {
             data.save(file);
         } catch (IOException e) {
@@ -55,7 +63,7 @@ public class CustomItem {
     }
 
     //对物品进行解密
-    public static Boolean useEncryptionItem(Player player, ItemStack itemStack){
+    public static String useEncryptionItem(Player player, ItemStack itemStack){
         NBTItem nbtItem = new NBTItem(itemStack);
         String id = nbtItem.getString("id");
         File file = new File(Main.getInstance().getDataFolder(), "EncryptionItems/"+id+".kalos");
@@ -68,11 +76,11 @@ public class CustomItem {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return true;
+            return data.getString("type");
         }
         player.getInventory().remove(itemStack);
         player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，你的这个物品无法使用，请联系管理员。"));
         Bukkit.broadcastMessage(ColorParser.parse("&7玩家 &c"+player.getName()+" &7使用了一个 &c违法 &7的物品。"));
-        return false;
+        return null;
     }
 }

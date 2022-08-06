@@ -43,7 +43,7 @@ public class SpawnTime {
                                     Bukkit.broadcastMessage(ColorParser.parse("&8[&c&l!&8] &7很遗憾，并没有传奇宝可梦出现在世界上。"));
                                 }
                             }
-                        }.runTaskLater(Main.getInstance(),60);
+                        }.runTaskLater(Main.getInstance(),120);
                     }
                 }
 

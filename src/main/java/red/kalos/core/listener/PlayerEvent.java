@@ -5,10 +5,14 @@ import eos.moe.dragoncore.api.KeyPressEvent;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -312,6 +316,27 @@ public class PlayerEvent implements Listener {
                 player.sendTitle(ColorParser.parse("&cKalos &f// &c宝可梦训练场"),ColorParser.parse("&f尽情的训练您的宝可梦去吧."),10,60,10);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                 break;
+        }
+    }
+
+    @EventHandler
+    public void EntityDamageEvent(EntityDamageEvent event){
+        if (event.getEntity().getType().equals(EntityType.PLAYER)){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void EntityDamageEvent(EntityDamageByBlockEvent event){
+        if (event.getEntity().getType().equals(EntityType.PLAYER)){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void EntityDamageEvent(EntityDamageByEntityEvent event){
+        if (event.getEntity().getType().equals(EntityType.PLAYER)){
+            event.setCancelled(true);
         }
     }
 }

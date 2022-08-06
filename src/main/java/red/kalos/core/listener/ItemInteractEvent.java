@@ -1,7 +1,7 @@
 package red.kalos.core.listener;
 
-import red.kalos.core.manager.optional.MaxLegendGUI;
-import red.kalos.core.util.api.CustomItem;
+import de.tr7zw.nbtapi.NBTItem;
+import red.kalos.core.manager.optional.OptionalGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,10 +17,11 @@ public class ItemInteractEvent implements Listener {
         if (event.getAction().equals(Action.RIGHT_CLICK_AIR)||event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
             Player player = event.getPlayer();
             ItemStack i = event.getItem();
+            NBTItem nbtItem = new NBTItem(i);
 
-            if (i!=null&&i.getItemMeta().getDisplayName()!=null&&i.getItemMeta().getDisplayName().equals(CustomItem.MaxLegend.getItemMeta().getDisplayName())){
-                MaxLegendGUI maxLegendGUI = new MaxLegendGUI(player);
-                maxLegendGUI.openInventory();
+            if (nbtItem.getString("type") != null){
+                OptionalGUI optionalGUI = new OptionalGUI(player,nbtItem.getString("type"));
+                optionalGUI.openInventory();
                 event.setCancelled(true);
             }
         }

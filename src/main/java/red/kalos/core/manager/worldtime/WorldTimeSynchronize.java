@@ -1,6 +1,7 @@
 package red.kalos.core.manager.worldtime;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import red.kalos.core.Main;
@@ -31,5 +32,10 @@ public class WorldTimeSynchronize {
                 }
             }
         }.runTaskTimer(Main.getInstance(),20,20);
+
+        for (World w:Main.getInstance().getServer().getWorlds()) {
+            w.getWorldBorder().setCenter(new Location(w,0,0,0));
+            w.getWorldBorder().setSize(20000);
+        }
     }
 }
