@@ -410,7 +410,7 @@ public class Day {
         DailyQuest daily_h = new DailyQuest();
         CatchRequirement daily_catch_h = daily_h.addCatchRequirement(
                 "daily_catch_h",
-                1, pokemon -> pokemon.getLocalizedName().equals("百变怪")
+                1, pokemon -> pokemon.getPokemonData().getLocalizedName().equals("百变怪")
         );
         daily_h.setItemCreator((player) -> {
             int state = daily_h.getState(player.getName());

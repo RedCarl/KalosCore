@@ -597,8 +597,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                             ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                             ColorParser.parse("&r"),
                             ColorParser.parse("&r  &e■ &7售 价:"),
-                            ColorParser.parse("&r      &7(左键 随机) &c" + AbilityMoney + " &7"+Data.SERVER_VAULT),
-                            ColorParser.parse("&r      &7(右键 自选) &c" + AbilityPoints + " &7"+Data.SERVER_POINTS),
+                            ColorParser.parse("&r      &7(左键 MT) &c" + AbilityMoney + " &7"+Data.SERVER_VAULT),
+                            ColorParser.parse("&r      &7(右键 MT) &c" + AbilityPoints + " &7"+Data.SERVER_POINTS),
                             ColorParser.parse("&r")
                     );
                     Button AbilityButton = new Button(Ability, type -> {
@@ -614,8 +614,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                             ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
                             ColorParser.parse("&r"),
                             ColorParser.parse("&r  &e■ &7售 价:"),
-                            ColorParser.parse("&r      &7(左键 随机) &c" + AbilityMoney + " &7"+Data.SERVER_VAULT),
-                            ColorParser.parse("&r      &7(右键 自选) &c" + AbilityPoints + " &7"+Data.SERVER_POINTS),
+                            ColorParser.parse("&r      &7(左键 MT) &c" + AbilityMoney + " &7"+Data.SERVER_VAULT),
+                            ColorParser.parse("&r      &7(右键 MT) &c" + AbilityPoints + " &7"+Data.SERVER_POINTS),
                             ColorParser.parse("&r")
                     );
                     Button AbilityButton = new Button(Ability, type -> {

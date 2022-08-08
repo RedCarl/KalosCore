@@ -112,7 +112,15 @@ public class PokemonEvent implements Listener {
             Player player = PokemonAPI.getRandPlayer(location);
 
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-            Bukkit.broadcastMessage(ColorParser.parse("&8[&6&l!&8] &7一只传说宝可梦 &c"+pokemon.getLocalizedName()+" &7出现在玩家 &c"+player.getName()+" &7附近快去寻找它。"));
+            Bukkit.broadcastMessage(ColorParser.parse("&r"));
+            Bukkit.broadcastMessage(ColorParser.parse("&r"));
+            Bukkit.broadcastMessage(ColorParser.parse("&7------ [ &6传奇宝可梦 &7] ------"));
+            Bukkit.broadcastMessage(ColorParser.parse("&7宝可梦名称: &c"+pokemon.getLocalizedName()));
+            Bukkit.broadcastMessage(ColorParser.parse("&7附近的玩家: &a"+player.getName()));
+            Bukkit.broadcastMessage(ColorParser.parse("&7宝可梦坐标: &f"+location.getBlockX()+"&7,&f"+location.getBlockY()+"&7,&f"+location.getBlockZ()));
+            Bukkit.broadcastMessage(ColorParser.parse("&r"));
+            Bukkit.broadcastMessage(ColorParser.parse("&r"));
+//            Bukkit.broadcastMessage(ColorParser.parse("&8[&6&l!&8] &7一只传说宝可梦 &c"+pokemon.getLocalizedName()+" &7出现在玩家 &c"+player.getName()+" &7附近快去寻找它。"));
             SpawnTime.isSpawner = true;
         }
 
