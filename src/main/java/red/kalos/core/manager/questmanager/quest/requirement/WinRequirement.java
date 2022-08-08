@@ -2,6 +2,7 @@ package red.kalos.core.manager.questmanager.quest.requirement;
 
 import com.google.common.collect.Maps;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.entities.pixelmon.EntityPixelmon;
 import org.bukkit.configuration.ConfigurationSection;
 import red.kalos.core.manager.questmanager.quest.QuestState;
 import red.kalos.core.manager.questmanager.quest.TaskType;
@@ -27,8 +28,8 @@ public class WinRequirement extends Requirement{
         if(message_id == TaskType.WIN_MESSAGE){
             if(quest.getState(player_id)== QuestState.ACCEPTED_STATE && quest.isDependsFinished(player_id)){
                 int count = getCount(player_id);
-                List<Pokemon> pokemons = (List<Pokemon>)message[0];
-                for (Pokemon pokemon : pokemons) {
+                List<EntityPixelmon> pokemons = (List<EntityPixelmon>)message[0];
+                for (EntityPixelmon pokemon : pokemons) {
                     if(handle(pokemon)){
                         count++;
                     }
@@ -77,7 +78,7 @@ public class WinRequirement extends Requirement{
         this.requireCount = requireCount;
     }
 
-    public boolean handle(Pokemon pokemon){
+    public boolean handle(EntityPixelmon pokemon){
         return requirementHandler.handle(pokemon);
     };
 

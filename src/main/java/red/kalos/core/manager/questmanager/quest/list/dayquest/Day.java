@@ -1,16 +1,16 @@
 package red.kalos.core.manager.questmanager.quest.list.dayquest;
 
-import red.kalos.core.Main;
-import red.kalos.core.util.ColorParser;
-import red.kalos.core.util.api.ItemFacAPI;
+import com.pixelmonmod.pixelmon.entities.pixelmon.Entity1Base;
 import org.bukkit.Material;
+import red.kalos.core.Main;
 import red.kalos.core.manager.questmanager.manager.QuestManager;
 import red.kalos.core.manager.questmanager.quest.QuestState;
 import red.kalos.core.manager.questmanager.quest.quest.DailyQuest;
 import red.kalos.core.manager.questmanager.quest.requirement.CatchRequirement;
-import red.kalos.core.manager.questmanager.quest.requirement.CraftRequirement;
 import red.kalos.core.manager.questmanager.quest.requirement.HatchRequirement;
 import red.kalos.core.manager.questmanager.quest.requirement.WinRequirement;
+import red.kalos.core.util.ColorParser;
+import red.kalos.core.util.api.ItemFacAPI;
 
 public class Day {
 
@@ -22,13 +22,13 @@ public class Day {
         DailyQuest daily_a = new DailyQuest();
         CatchRequirement daily_catch_a = daily_a.addCatchRequirement(
                 "daily_catch_a",
-                15, pokemon -> pokemon.getLevel() > 5
+                15, pokemon -> pokemon.getPokemonData().getLevel() > 5
         );
         daily_a.setItemCreator((player) -> {
             int state = daily_a.getState(player.getName());
             if (state == QuestState.UNACCEPTED_STATE) {
                 return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_POKE_BALL"),
-                        ColorParser.parse("&a寻找野外的口袋妖怪!"),
+                        ColorParser.parse("&a抓捕野外的口袋妖怪!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7任务内容: "),
                         ColorParser.parse("&r  &f抓捕 &a15 &f只等级大于 &a5 &f的宝可梦!"),
@@ -67,7 +67,7 @@ public class Day {
         });
         daily_a.setReward((player) -> {
             player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_POKE_BALL"), 30));
-            Main.econ.depositPlayer(player,500);
+            Main.getEcon().depositPlayer(player,500);
         });
         QuestManager.registerQuest("daily_a", daily_a);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ public class Day {
         DailyQuest daily_b = new DailyQuest();
         WinRequirement daily_catch_b = daily_b.addWinRequirement(
                 "daily_catch_b",
-                25, pokemon -> pokemon.getLevel() > 10
+                25, pokemon -> pokemon.getPokemonData().getLevel() > 10
         );
         daily_b.setItemCreator((player) -> {
             int state = daily_b.getState(player.getName());
@@ -122,7 +122,7 @@ public class Day {
         });
         daily_b.setReward((player) -> {
             player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_ULTRA_BALL"), 10));
-            Main.econ.depositPlayer(player,888);
+            Main.getEcon().depositPlayer(player,888);
         });
         QuestManager.registerQuest("daily_b", daily_b);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,24 +130,23 @@ public class Day {
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         DailyQuest daily_c = new DailyQuest();
-        CraftRequirement daily_catch_c = daily_c.addCraftRequirement(
+        CatchRequirement daily_catch_c = daily_c.addCatchRequirement(
                 "daily_catch_c",
-                70, itemStack -> itemStack.getType().equals(Material.getMaterial("PIXELMON_ULTRA_BALL"))
-
+                1, pokemon -> pokemon.getPokemonData().isLegendary()
         );
         daily_c.setItemCreator((player) -> {
             int state = daily_c.getState(player.getName());
             if (state == QuestState.UNACCEPTED_STATE) {
                 return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_POKE_BALL"),
-                        ColorParser.parse("&c一起制作高级球!"),
+                        ColorParser.parse("&c它是传奇宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7任务内容: "),
-                        ColorParser.parse("&r  &f制作 &a70 &f个 &a高级球 &f完成任务!"),
+                        ColorParser.parse("&r  &f捕捉 &a1 &f只 &6传奇宝可梦 &f完成任务!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &a■ &7任务奖励:"),
                         ColorParser.parse("&r          &c糖果*30"),
                         ColorParser.parse("&r          &c公园球*1"),
-                        ColorParser.parse("&r          &c卡洛币*666"),
+                        ColorParser.parse("&r          &c卡洛币*5000"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&c点击接受任务,并开始任务")
                 );
@@ -155,17 +154,17 @@ public class Day {
 
             if (state == QuestState.ACCEPTED_STATE) {
                 return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),
-                        ColorParser.parse("&c一起制作高级球!"),
+                        ColorParser.parse("&c它是传奇宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7任务内容: "),
-                        ColorParser.parse("&r  &f制作 &a70 &f个 &a高级球 &f完成任务!"),
+                        ColorParser.parse("&r  &f捕捉 &a1 &f只 &6传奇宝可梦 &f完成任务!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &e■ &7任务进度:"),
                         ColorParser.parse("&r          &c"+ daily_catch_c.getText(player.getName())),
                         ColorParser.parse("&r  &a■ &7任务奖励:"),
                         ColorParser.parse("&r          &c糖果*30"),
                         ColorParser.parse("&r          &c公园球*1"),
-                        ColorParser.parse("&r          &c卡洛币*666"),
+                        ColorParser.parse("&r          &c卡洛币*5000"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&c点击完成任务,并领取奖励")
                 );
@@ -181,64 +180,66 @@ public class Day {
         daily_c.setReward((player) -> {
             player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_RARE_CANDY"), 30));
             player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_PARK_BALL"), 1));
-            Main.econ.depositPlayer(player,666);
+            Main.getEcon().depositPlayer(player,5000);
         });
         QuestManager.registerQuest("daily_c", daily_c);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    DailyQuest daily_d = new DailyQuest();
-    CraftRequirement daily_catch_d = daily_d.addCraftRequirement(
-            "daily_catch_d",
-            80, itemStack -> itemStack.getType().equals(Material.getMaterial("PIXELMON_POKE_BALL"))
-
-    );
+        DailyQuest daily_d = new DailyQuest();
+        CatchRequirement daily_catch_d = daily_d.addCatchRequirement(
+                "daily_catch_d",
+                1, pokemon -> pokemon.getPokemonData().isShiny()
+        );
         daily_d.setItemCreator((player) -> {
-        int state = daily_d.getState(player.getName());
-        if (state == QuestState.UNACCEPTED_STATE) {
-            return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_POKE_BALL"),
-                    ColorParser.parse("&d一起制作精灵球!"),
-                    ColorParser.parse("&r"),
-                    ColorParser.parse("&7任务内容: "),
-                    ColorParser.parse("&r  &f制作 &a80 &f个 &a精灵球 &f完成任务!"),
-                    ColorParser.parse("&r"),
-                    ColorParser.parse("&r  &a■ &7任务奖励:"),
-                    ColorParser.parse("&r          &c高级球*30"),
-                    ColorParser.parse("&r          &c卡洛币*239"),
-                    ColorParser.parse("&r"),
-                    ColorParser.parse("&c点击接受任务,并开始任务")
-            );
-        }
+            int state = daily_d.getState(player.getName());
+            if (state == QuestState.UNACCEPTED_STATE) {
+                return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_POKE_BALL"),
+                        ColorParser.parse("&d这是闪光宝可梦!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7任务内容: "),
+                        ColorParser.parse("&r  &f抓捕 &a1 &f只 &a闪光宝可梦 &f完成任务!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&r  &a■ &7任务奖励:"),
+                        ColorParser.parse("&r          &c糖果*5"),
+                        ColorParser.parse("&r          &c高级球*32"),
+                        ColorParser.parse("&r          &c卡洛币*2000"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&c点击接受任务,并开始任务")
+                );
+            }
 
-        if (state == QuestState.ACCEPTED_STATE) {
-            return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),
-                    ColorParser.parse("&d一起制作精灵球!"),
-                    ColorParser.parse("&r"),
-                    ColorParser.parse("&7任务内容: "),
-                    ColorParser.parse("&r  &f制作 &a80 &f个 &a精灵球 &f完成任务!"),
-                    ColorParser.parse("&r"),
-                    ColorParser.parse("&r  &e■ &7任务进度:"),
-                    ColorParser.parse("&r          &c"+ daily_catch_d.getText(player.getName())),
-                    ColorParser.parse("&r  &a■ &7任务奖励:"),
-                    ColorParser.parse("&r          &c高级球*30"),
-                    ColorParser.parse("&r          &c卡洛币*239"),
-                    ColorParser.parse("&r"),
-                    ColorParser.parse("&c点击完成任务,并领取奖励")
-            );
-        }
-        if (state == QuestState.CLOSE_STATE) {
-            return ItemFacAPI.getItemStack(Material.BARRIER,
-                    ColorParser.parse("&c任务已经完成!")
-            );
+            if (state == QuestState.ACCEPTED_STATE) {
+                return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),
+                        ColorParser.parse("&d这是闪光宝可梦!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7任务内容: "),
+                        ColorParser.parse("&r  &f抓捕 &a1 &f只 &a闪光宝可梦 &f完成任务!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&r  &e■ &7任务进度:"),
+                        ColorParser.parse("&r          &c"+ daily_catch_d.getText(player.getName())),
+                        ColorParser.parse("&r  &a■ &7任务奖励:"),
+                        ColorParser.parse("&r          &c糖果*5"),
+                        ColorParser.parse("&r          &c高级球*32"),
+                        ColorParser.parse("&r          &c卡洛币*2000"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&c点击完成任务,并领取奖励")
+                );
+            }
+            if (state == QuestState.CLOSE_STATE) {
+                return ItemFacAPI.getItemStack(Material.BARRIER,
+                        ColorParser.parse("&c任务已经完成!")
+                );
 
-        }
-        return null;
-    });
+            }
+            return null;
+        });
         daily_d.setReward((player) -> {
-        player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_RARE_CANDY"), 10));
-        Main.econ.depositPlayer(player,666);
-    });
+            player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_RARE_CANDY"), 5));
+            player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_ULTRA_BALL"), 32));
+            Main.getEcon().depositPlayer(player,2000);
+        });
         QuestManager.registerQuest("daily_d", daily_d);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -247,20 +248,19 @@ public class Day {
         DailyQuest daily_e = new DailyQuest();
         HatchRequirement daily_catch_e = daily_e.addHatchRequirement(
                 "daily_catch_e",
-                2, pokemon -> pokemon.getLevel() > 0
+                2, pokemon -> pokemon.getPokemonData().getLevel() > 0
         );
         daily_e.setItemCreator((player) -> {
             int state = daily_e.getState(player.getName());
             if (state == QuestState.UNACCEPTED_STATE) {
                 return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_POKE_BALL"),
-                        ColorParser.parse("&e孵化一个宝可梦!"),
+                        ColorParser.parse("&e孵化宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7任务内容: "),
                         ColorParser.parse("&r  &f孵化 &a2 &f个 &a蛋 &f完成任务!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &a■ &7任务奖励:"),
-                        ColorParser.parse("&r          &c银沙漏*2"),
-                        ColorParser.parse("&r          &c卡洛币*123"),
+                        ColorParser.parse("&r          &c卡洛币*2000"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&c点击接受任务,并开始任务")
                 );
@@ -268,7 +268,7 @@ public class Day {
 
             if (state == QuestState.ACCEPTED_STATE) {
                 return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),
-                        ColorParser.parse("&e孵化一个宝可梦!"),
+                        ColorParser.parse("&e孵化宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7任务内容: "),
                         ColorParser.parse("&r  &f孵化 &a2 &f个 &a蛋 &f完成任务!"),
@@ -276,8 +276,7 @@ public class Day {
                         ColorParser.parse("&r  &e■ &7任务进度:"),
                         ColorParser.parse("&r          &c"+ daily_catch_e.getText(player.getName())),
                         ColorParser.parse("&r  &a■ &7任务奖励:"),
-                        ColorParser.parse("&r          &c银沙漏*2"),
-                        ColorParser.parse("&r          &c卡洛币*123"),
+                        ColorParser.parse("&r          &c卡洛币*2000"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&c点击完成任务,并领取奖励")
                 );
@@ -291,8 +290,7 @@ public class Day {
             return null;
         });
         daily_e.setReward((player) -> {
-            player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_HOURGLASS_SILVER"), 2));
-            Main.econ.depositPlayer(player,123);
+            Main.getEcon().depositPlayer(player,2000);
         });
         QuestManager.registerQuest("daily_e", daily_e);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -300,22 +298,21 @@ public class Day {
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         DailyQuest daily_f = new DailyQuest();
-        CatchRequirement daily_catch_f = daily_f.addCatchRequirement(
+        WinRequirement daily_catch_f = daily_f.addWinRequirement(
                 "daily_catch_f",
-                2, pokemon -> pokemon.getLevel() > 50&&pokemon.getLocalizedName().equals("巨金怪")
+                3, Entity1Base::isBossPokemon
         );
         daily_f.setItemCreator((player) -> {
             int state = daily_f.getState(player.getName());
             if (state == QuestState.UNACCEPTED_STATE) {
                 return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_POKE_BALL"),
-                        ColorParser.parse("&f寻找野外的巨金怪!"),
+                        ColorParser.parse("&f战胜野外 BOSS 宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7任务内容: "),
-                        ColorParser.parse("&r  &f抓捕 &a2 &f只等级大于 &a50 &f的 &a巨金怪 &f宝可梦!"),
+                        ColorParser.parse("&r  &f战胜 &a3 &f只 &aBOSS &f级别的宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &a■ &7任务奖励:"),
-                        ColorParser.parse("&r          &c大师球*1"),
-                        ColorParser.parse("&r          &c卡洛币*3000"),
+                        ColorParser.parse("&r          &c卡洛币*1000"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&c点击接受任务,并开始任务")
                 );
@@ -323,16 +320,15 @@ public class Day {
 
             if (state == QuestState.ACCEPTED_STATE) {
                 return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),
-                        ColorParser.parse("&f寻找野外的巨金怪!"),
+                        ColorParser.parse("&f战胜野外 BOSS 宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7任务内容: "),
-                        ColorParser.parse("&r  &f抓捕 &a2 &f只等级大于 &a50 &f的 &a巨金怪 &f宝可梦!"),
+                        ColorParser.parse("&r  &f战胜 &a3 &f只 &aBOSS &f级别的宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &e■ &7任务进度:"),
                         ColorParser.parse("&r          &c"+ daily_catch_f.getText(player.getName())),
                         ColorParser.parse("&r  &a■ &7任务奖励:"),
-                        ColorParser.parse("&r          &c大师球*1"),
-                        ColorParser.parse("&r          &c卡洛币*3000"),
+                        ColorParser.parse("&r          &c卡洛币*1000"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&c点击完成任务,并领取奖励")
                 );
@@ -346,8 +342,7 @@ public class Day {
             return null;
         });
         daily_f.setReward((player) -> {
-            player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_MASTER_BALL"), 1));
-            Main.econ.depositPlayer(player,3000);
+            Main.getEcon().depositPlayer(player,1000);
         });
         QuestManager.registerQuest("daily_f", daily_f);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -355,22 +350,23 @@ public class Day {
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         DailyQuest daily_g = new DailyQuest();
-        CatchRequirement daily_catch_g = daily_g.addCatchRequirement(
+        WinRequirement daily_catch_g = daily_g.addWinRequirement(
                 "daily_catch_g",
-                1, pokemon -> pokemon.getLevel() > 1&&pokemon.getLocalizedName().equals("多边兽")
+                1, pokemon -> pokemon.isBossPokemon() && pokemon.getBossMode().getExtraLevels()==50 && pokemon.getPokemonData().isShiny()
         );
         daily_g.setItemCreator((player) -> {
             int state = daily_g.getState(player.getName());
             if (state == QuestState.UNACCEPTED_STATE) {
                 return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_POKE_BALL"),
-                        ColorParser.parse("&f寻找野外的多边兽!"),
+                        ColorParser.parse("&f战胜终极 BOSS 宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7任务内容: "),
-                        ColorParser.parse("&r  &f抓捕 &a1 &f只等级大于 &a1 &f的 &a多边兽 &f宝可梦!"),
+                        ColorParser.parse("&r  &f战胜 &a1 &f只 &a终极异色 &f的 &aBOSS &f宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &a■ &7任务奖励:"),
-                        ColorParser.parse("&r          &c高级球*15"),
-                        ColorParser.parse("&r          &c卡洛币*2000"),
+                        ColorParser.parse("&r          &c糖果*5"),
+                        ColorParser.parse("&r          &c高级球*32"),
+                        ColorParser.parse("&r          &c卡洛币*3000"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&c点击接受任务,并开始任务")
                 );
@@ -378,16 +374,17 @@ public class Day {
 
             if (state == QuestState.ACCEPTED_STATE) {
                 return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),
-                        ColorParser.parse("&f寻找野外的多边兽!"),
+                        ColorParser.parse("&f战胜终极 BOSS 宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7任务内容: "),
-                        ColorParser.parse("&r  &f抓捕 &a1 &f只等级大于 &a1 &f的 &a多边兽 &f宝可梦!"),
+                        ColorParser.parse("&r  &f战胜 &a1 &f只 &a终极异色 &f的 &aBOSS &f宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &e■ &7任务进度:"),
                         ColorParser.parse("&r          &c"+ daily_catch_g.getText(player.getName())),
                         ColorParser.parse("&r  &a■ &7任务奖励:"),
-                        ColorParser.parse("&r          &c高级球*15"),
-                        ColorParser.parse("&r          &c卡洛币*2000"),
+                        ColorParser.parse("&r          &c糖果*5"),
+                        ColorParser.parse("&r          &c高级球*32"),
+                        ColorParser.parse("&r          &c卡洛币*3000"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&c点击完成任务,并领取奖励")
                 );
@@ -401,14 +398,123 @@ public class Day {
             return null;
         });
         daily_g.setReward((player) -> {
-            player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_ULTRA_BALL"), 15));
-            Main.econ.depositPlayer(player,2000);
+            player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_RARE_CANDY"), 5));
+            player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_ULTRA_BALL"), 32));
+            Main.getEcon().depositPlayer(player,3000);
         });
         QuestManager.registerQuest("daily_g", daily_g);
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        DailyQuest daily_h = new DailyQuest();
+        CatchRequirement daily_catch_h = daily_h.addCatchRequirement(
+                "daily_catch_h",
+                1, pokemon -> pokemon.getLocalizedName().equals("百变怪")
+        );
+        daily_h.setItemCreator((player) -> {
+            int state = daily_h.getState(player.getName());
+            if (state == QuestState.UNACCEPTED_STATE) {
+                return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_POKE_BALL"),
+                        ColorParser.parse("&d它是谁? 百变怪!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7任务内容: "),
+                        ColorParser.parse("&r  &f抓捕 &a1 &f只 &a百变怪 &f完成任务!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&r  &a■ &7任务奖励:"),
+                        ColorParser.parse("&r          &c糖果*10"),
+                        ColorParser.parse("&r          &c公园球*1"),
+                        ColorParser.parse("&r          &c卡洛币*10000"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&c点击接受任务,并开始任务")
+                );
+            }
 
+            if (state == QuestState.ACCEPTED_STATE) {
+                return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),
+                        ColorParser.parse("&d它是谁? 百变怪!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7任务内容: "),
+                        ColorParser.parse("&r  &f抓捕 &a1 &f只 &a百变怪 &f完成任务!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&r  &e■ &7任务进度:"),
+                        ColorParser.parse("&r          &c"+ daily_catch_h.getText(player.getName())),
+                        ColorParser.parse("&r  &a■ &7任务奖励:"),
+                        ColorParser.parse("&r          &c糖果*10"),
+                        ColorParser.parse("&r          &c公园球*1"),
+                        ColorParser.parse("&r          &c卡洛币*10000"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&c点击完成任务,并领取奖励")
+                );
+            }
+            if (state == QuestState.CLOSE_STATE) {
+                return ItemFacAPI.getItemStack(Material.BARRIER,
+                        ColorParser.parse("&c任务已经完成!")
+                );
 
+            }
+            return null;
+        });
+        daily_h.setReward((player) -> {
+            player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_RARE_CANDY"), 10));
+            player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_PARK_BALL"), 1));
+            Main.getEcon().depositPlayer(player,10000);
+        });
+        QuestManager.registerQuest("daily_h", daily_h);
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        DailyQuest daily_i = new DailyQuest();
+        CatchRequirement daily_catch_i = daily_i.addCatchRequirement(
+                "daily_catch_i",
+                1, pokemon -> pokemon.getPokemonData().getMaxHealth()>=120
+        );
+        daily_i.setItemCreator((player) -> {
+            int state = daily_i.getState(player.getName());
+            if (state == QuestState.UNACCEPTED_STATE) {
+                return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_POKE_BALL"),
+                        ColorParser.parse("&d血量越多皮越厚?"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7任务内容: "),
+                        ColorParser.parse("&r  &f抓捕 &a1 &f只血量超过 &a120 &f的宝可梦完成任务!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&r  &a■ &7任务奖励:"),
+                        ColorParser.parse("&r          &c高级球*32"),
+                        ColorParser.parse("&r          &c卡洛币*2500"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&c点击接受任务,并开始任务")
+                );
+            }
 
+            if (state == QuestState.ACCEPTED_STATE) {
+                return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),
+                        ColorParser.parse("&d血量越多皮越厚?"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7任务内容: "),
+                        ColorParser.parse("&r  &f抓捕 &a1 &f只血量超过 &a180 &f的宝可梦完成任务!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&r  &e■ &7任务进度:"),
+                        ColorParser.parse("&r          &c"+ daily_catch_i.getText(player.getName())),
+                        ColorParser.parse("&r  &a■ &7任务奖励:"),
+                        ColorParser.parse("&r          &c高级球*32"),
+                        ColorParser.parse("&r          &c卡洛币*2500"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&c点击完成任务,并领取奖励")
+                );
+            }
+            if (state == QuestState.CLOSE_STATE) {
+                return ItemFacAPI.getItemStack(Material.BARRIER,
+                        ColorParser.parse("&c任务已经完成!")
+                );
 
-
+            }
+            return null;
+        });
+        daily_i.setReward((player) -> {
+            player.getInventory().addItem(ItemFacAPI.getItemStackWithDurability(Material.getMaterial("PIXELMON_ULTRA_BALL"), 32));
+            Main.getEcon().depositPlayer(player,2500);
+        });
+        QuestManager.registerQuest("daily_i", daily_i);
 }
 }

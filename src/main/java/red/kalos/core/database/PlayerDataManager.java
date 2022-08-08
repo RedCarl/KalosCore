@@ -13,11 +13,8 @@ import java.util.*;
 
 public class PlayerDataManager {
 
-//    private final Set<PlayerData> playerDataSet;
     private static final PlayerDataManager instance = new PlayerDataManager();
-//    public PlayerDataManager() {
-//        playerDataSet = new HashSet<>(getAllPlayerData());
-//    }
+
     public static PlayerDataManager getInstance() {
         return instance;
     }
@@ -42,9 +39,6 @@ public class PlayerDataManager {
      * 添加玩家数据
      */
     public void setPlayerData(PlayerData playerData){
-//        if (getPlayerData(UUID.fromString(playerData.getUuid())).getUuid() == null) {
-//            playerDataSet.add(playerData);
-//        }
         try {
             File file = new File(Main.getInstance().getDataFolder(), "PlayerData/"+playerData.getUuid()+".yml");
             FileConfiguration data = YamlConfiguration.loadConfiguration(file);

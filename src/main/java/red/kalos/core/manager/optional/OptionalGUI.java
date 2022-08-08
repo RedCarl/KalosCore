@@ -43,6 +43,20 @@ public class OptionalGUI extends InventoryGUI {
                     "Eternatus"
             };
         }
+        if (Type.equals("累充128")){
+            poke = new String[]{
+                    "Tyranitar",
+                    "Lucario",
+                    "Salamence",
+            };
+        }
+        if (Type.equals("累充328")){
+            poke = new String[]{
+                    "Kartana",
+                    "Celesteela",
+            };
+        }
+
 
         int index = 0;
         for (String s:poke) {
@@ -55,11 +69,6 @@ public class OptionalGUI extends InventoryGUI {
             }));
             index++;
         }
-
-
-
-
-
 
 
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));

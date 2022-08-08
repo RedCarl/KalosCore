@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class Vault {
     
-    public static Economy econ = Main.econ;
+    public static Economy econ = Main.getEcon();
     public static EconomyResponse r;
     
     public static Long getMoney(Player player) {

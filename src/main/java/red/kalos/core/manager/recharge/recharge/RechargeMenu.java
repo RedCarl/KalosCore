@@ -75,9 +75,9 @@ public class RechargeMenu extends InventoryGUI {
         this.setButton(45, RechargeButton);
 
         //礼包商店
-        ItemStack GiftPackShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/b99dc01dcf28445576f2268882a77706fcb9353ab0c954f96045561a79244c1e",ColorParser.parse("&a礼包商店"),
+        ItemStack GiftPackShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/b99dc01dcf28445576f2268882a77706fcb9353ab0c954f96045561a79244c1e",ColorParser.parse("&a会员商店"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o可以购买一些商品，作为赞助的回报."));
+                ColorParser.parse("&7&o在这里可以开通会员享受更多内容。"));
         Button GiftPackShopButton = new Button(GiftPackShop, type -> {
             if (type.isLeftClick()) {
                 red.kalos.core.manager.recharge.GiftPackShop giftPackShop = new GiftPackShop(player);
@@ -86,53 +86,29 @@ public class RechargeMenu extends InventoryGUI {
         });
         this.setButton(46, GiftPackShopButton);
 
-        //道具出售
-        ItemStack ItemBuy = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/786f6feb285b53e7a85f924dc032d2e5816f5042a4530eecc5c034bee17b1bd0",ColorParser.parse("&e道具出售"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o这里可以购买一些常用的物品道具."));
-        Button ItemBuyButton = new Button(ItemBuy, type -> {
-            if (type.isLeftClick()) {
-                red.kalos.core.manager.shop.ItemBuy itemBuy = new ItemBuy(player);
-                itemBuy.openInventory();
-            }
-        });
-        this.setButton(47, ItemBuyButton);
-
-        //道具回收
-        ItemStack ItemSell = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/45a654f38302d245e59ec5f9f6cb46748c8342cb552d79653f1198a5faa0a468",ColorParser.parse("&9道具回收"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o这里可以回收一些不常用的物品道具."));
-        Button ItemSellButton = new Button(ItemSell, type -> {
-            if (type.isLeftClick()) {
-                red.kalos.core.manager.shop.ItemSell itemSell = new ItemSell(player);
-                itemSell.openInventory();
-            }
-        });
-        this.setButton(48, ItemSellButton);
-
         //累计充值
         ItemStack GrandTotal = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/13b08f083df8306fa86817dd08dfa024377b80e92c0800e91f292c2aba44ad3e",ColorParser.parse("&6累计充值"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励."));
+                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励。"));
         Button GrandTotalButton = new Button(GrandTotal, type -> {
             if (type.isLeftClick()) {
                 red.kalos.core.manager.recharge.GrandTotal grandTotal = new GrandTotal(player);
                 grandTotal.openInventory();
             }
         });
-        this.setButton(49, GrandTotalButton);
+        this.setButton(47, GrandTotalButton);
 
-        //累计充值
+        //时装商店
         ItemStack ArmourersShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励."));
+                ColorParser.parse("&7&o可以在这里购买时装。"));
         Button ArmourersShopButton = new Button(ArmourersShop, type -> {
             if (type.isLeftClick()) {
                 red.kalos.core.manager.recharge.ArmourersShop armourersShop = new ArmourersShop(player);
                 armourersShop.openInventory();
             }
         });
-        this.setButton(50, ArmourersShopButton);
+        this.setButton(48, ArmourersShopButton);
 
         //返回主菜单
         ItemStack Close = ItemFactoryAPI.getItemStack(Material.BARRIER,ColorParser.parse("&c返回"),

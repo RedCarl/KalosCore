@@ -25,12 +25,14 @@ public class CustomItem {
             ColorParser.parse("&7请谨慎选择，手滑概不负责，使用后物品消失。")
     );
     public static ItemStack Pokemon = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/56d7fdb50f14c731c727b0e0d189b6a874319fc0d79c8a099acfc77c7b2d9196",
-            ColorParser.parse("&cKalos &f// &e普通宝可梦"),
+            ColorParser.parse("&cKalos &f// &e宝可梦自选包"),
             ColorParser.parse("&8消耗品 (右键使用)"),
             ColorParser.parse("&r"),
             ColorParser.parse("&7使用该物品可以生成一只指定范围的宝可梦。"),
             ColorParser.parse("&7请谨慎选择，手滑概不负责，使用后物品消失。")
     );
+
+
     public static ItemStack NickCard = ItemFactoryAPI.getItemStack(Material.NAME_TAG,
             ColorParser.parse("&6Kalos &f// &6改名卡"),
             ColorParser.parse("&8消耗品 (右键使用)"),
@@ -83,4 +85,5 @@ public class CustomItem {
         Bukkit.broadcastMessage(ColorParser.parse("&7玩家 &c"+player.getName()+" &7使用了一个 &c违法 &7的物品。"));
         return null;
     }
+
 }

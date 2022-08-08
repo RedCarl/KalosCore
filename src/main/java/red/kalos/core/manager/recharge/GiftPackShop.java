@@ -28,9 +28,9 @@ import org.bukkit.inventory.ItemStack;
 import java.util.concurrent.ExecutionException;
 
 public class GiftPackShop extends InventoryGUI {
-    PlayerPointsAPI playerPointsAPI = Main.ppAPI;
+    PlayerPointsAPI playerPointsAPI = Main.getPpAPI();
     public GiftPackShop(Player player) {
-        super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 礼包商店"), player, 6);
+        super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 会员商店"), player, 6);
 //        //传说宝可梦
 //        long RandomLegendaryMoney=480000;
 //        int RandomLegendaryPrice=48;
@@ -45,8 +45,8 @@ public class GiftPackShop extends InventoryGUI {
 //                ColorParser.parse("&7&o随机获取一只传说宝可梦，属性也是随机."));
 //        Button RandomLegendaryButton = new Button(RandomLegendary, type -> {
 //            if (type.isLeftClick()) {
-//                if (Main.econ.getBalance(player)>=RandomLegendaryMoney){
-//                    Main.econ.withdrawPlayer(player,RandomLegendaryMoney);
+//                if (Main.getEcon().getBalance(player)>=RandomLegendaryMoney){
+//                    Main.getEcon().withdrawPlayer(player,RandomLegendaryMoney);
 //                    player.closeInventory();
 //                    new Thread(()->{
 //                        for (int i = 0; i <= 50; i++) {
@@ -85,7 +85,7 @@ public class GiftPackShop extends InventoryGUI {
 //                        }
 //                    }).start();
 //                }else {
-//                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+ Main.econ.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
+//                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+ Main.getEcon().getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
 //                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
 //                }
 //            }
@@ -170,12 +170,12 @@ public class GiftPackShop extends InventoryGUI {
 //                return;
 //            }
 //            if (type.isLeftClick()) {
-//                if (Main.econ.getBalance(player)>=RandomEvolutionMoney){
-//                    Main.econ.withdrawPlayer(player,RandomEvolutionMoney);
+//                if (Main.getEcon().getBalance(player)>=RandomEvolutionMoney){
+//                    Main.getEcon().withdrawPlayer(player,RandomEvolutionMoney);
 //                    String name = PokemonAPI.getRandomEvolution(player);
 //                    player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过购买宝可梦进化石获得了一个 &c"+name+" &7超进化石."));
 //                }else {
-//                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+ Main.econ.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
+//                    player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+ Main.getEcon().getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
 //                    player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
 //                }
 //            }
@@ -203,7 +203,7 @@ public class GiftPackShop extends InventoryGUI {
         int PikaniumPrice=15;
         String PikaniumRanks="pikanium";
         String PikaniumRankName="&e"+Data.SERVER_NAME_CN+"の皮卡丘";
-        PlayerVIP PikaniumVIP = VIPBuy.checkRank(player,PikaniumRanks, Main.luckPerms.getServerName());
+        PlayerVIP PikaniumVIP = VIPBuy.checkRank(player,PikaniumRanks, Main.getLuckPerms().getServerName());
         if (PikaniumVIP!=null){
             ItemStack Pikanium = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
                     ColorParser.parse(PikaniumRankName+" &f// &aVIP头衔"),
@@ -253,7 +253,7 @@ public class GiftPackShop extends InventoryGUI {
             NBTItem nbtItem = new NBTItem(Pikanium);
             nbtItem.setShort("ndex", (short)25);
             Button PikaniumButton = new Button(nbtItem.getItem(), type -> {
-                if (VIPBuy.checkRank(player,null, Main.luckPerms.getServerName())==null){
+                if (VIPBuy.checkRank(player,null, Main.getLuckPerms().getServerName())==null){
                     player.closeInventory();
                     RechargeSelect rechargeSelect = new RechargeSelect(player, (double) PikaniumPrice);
                     rechargeSelect.openInventory();
@@ -271,7 +271,7 @@ public class GiftPackShop extends InventoryGUI {
         int EeveePrice=45;
         String EeveeRanks="eevee";
         String EeveeRankName="&6"+Data.SERVER_NAME_CN+"の伊布";
-        PlayerVIP EeveeVIP = VIPBuy.checkRank(player,EeveeRanks, Main.luckPerms.getServerName());
+        PlayerVIP EeveeVIP = VIPBuy.checkRank(player,EeveeRanks, Main.getLuckPerms().getServerName());
         if (EeveeVIP!=null){
             ItemStack Eevee = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_PIXELMON_SPRITE"),
                     ColorParser.parse(EeveeRankName+" &f// &6MVP头衔"),
@@ -332,13 +332,19 @@ public class GiftPackShop extends InventoryGUI {
             this.setButton(1, EeveeButton);
         }
 
+
+
+
+
+
+
+
+
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));
         for (int i = 0; i < 9; i++) {
             this.setButton(36+i, new Button(Line));
         }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         //"+Data.SERVER_POINTS+"充值
         ItemStack Recharge = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/76c9c0b2b1e74b70847e551be14c81b58fc6011017f8922b5fe6f66a6dc77066",ColorParser.parse("&c"+Data.SERVER_POINTS+"充值"),
                 ColorParser.parse("&r"),
@@ -352,64 +358,40 @@ public class GiftPackShop extends InventoryGUI {
         this.setButton(45, RechargeButton);
 
         //礼包商店
-        ItemStack GiftPackShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/b99dc01dcf28445576f2268882a77706fcb9353ab0c954f96045561a79244c1e",ColorParser.parse("&a礼包商店"),
+        ItemStack GiftPackShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/b99dc01dcf28445576f2268882a77706fcb9353ab0c954f96045561a79244c1e",ColorParser.parse("&a会员商店"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o可以购买一些商品，作为赞助的回报."));
+                ColorParser.parse("&7&o在这里可以开通会员享受更多内容。"));
         Button GiftPackShopButton = new Button(GiftPackShop, type -> {
             if (type.isLeftClick()) {
-                GiftPackShop giftPackShop = new GiftPackShop(player);
+                red.kalos.core.manager.recharge.GiftPackShop giftPackShop = new GiftPackShop(player);
                 giftPackShop.openInventory();
             }
         });
         this.setButton(46, GiftPackShopButton);
 
-        //道具出售
-        ItemStack ItemBuy = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/786f6feb285b53e7a85f924dc032d2e5816f5042a4530eecc5c034bee17b1bd0",ColorParser.parse("&e道具出售"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o这里可以购买一些常用的物品道具."));
-        Button ItemBuyButton = new Button(ItemBuy, type -> {
-            if (type.isLeftClick()) {
-                red.kalos.core.manager.shop.ItemBuy itemBuy = new ItemBuy(player);
-                itemBuy.openInventory();
-            }
-        });
-        this.setButton(47, ItemBuyButton);
-
-        //道具回收
-        ItemStack ItemSell = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/45a654f38302d245e59ec5f9f6cb46748c8342cb552d79653f1198a5faa0a468",ColorParser.parse("&9道具回收"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o这里可以回收一些不常用的物品道具."));
-        Button ItemSellButton = new Button(ItemSell, type -> {
-            if (type.isLeftClick()) {
-                red.kalos.core.manager.shop.ItemSell itemSell = new ItemSell(player);
-                itemSell.openInventory();
-            }
-        });
-        this.setButton(48, ItemSellButton);
-
         //累计充值
         ItemStack GrandTotal = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/13b08f083df8306fa86817dd08dfa024377b80e92c0800e91f292c2aba44ad3e",ColorParser.parse("&6累计充值"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励."));
+                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励。"));
         Button GrandTotalButton = new Button(GrandTotal, type -> {
             if (type.isLeftClick()) {
-                GrandTotal grandTotal = new GrandTotal(player);
+                red.kalos.core.manager.recharge.GrandTotal grandTotal = new GrandTotal(player);
                 grandTotal.openInventory();
             }
         });
-        this.setButton(49, GrandTotalButton);
+        this.setButton(47, GrandTotalButton);
 
-        //累计充值
+        //时装商店
         ItemStack ArmourersShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o可以购买时装来进行穿戴."));
+                ColorParser.parse("&7&o可以在这里购买时装。"));
         Button ArmourersShopButton = new Button(ArmourersShop, type -> {
             if (type.isLeftClick()) {
-                ArmourersShop armourersShop = new ArmourersShop(player);
+                red.kalos.core.manager.recharge.ArmourersShop armourersShop = new ArmourersShop(player);
                 armourersShop.openInventory();
             }
         });
-        this.setButton(50, ArmourersShopButton);
+        this.setButton(48, ArmourersShopButton);
 
         //返回主菜单
         ItemStack Close = ItemFactoryAPI.getItemStack(Material.BARRIER,ColorParser.parse("&c返回"),

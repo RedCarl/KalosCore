@@ -23,7 +23,7 @@ public class NameTag extends InventoryGUI {
     public NameTag(Player player) {
         super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 头衔系统"), player, 6);
 
-        User user= Main.luckPerms.getUserManager().getUser(player.getUniqueId());
+        User user= Main.getLuckPerms().getUserManager().getUser(player.getUniqueId());
 
         ArrayList<TagEntity> tagEntities = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class NameTag extends InventoryGUI {
                 if (type.isLeftClick()) {
                     if (player.hasPermission(tagEntity.getPermission())){
                         if (user!=null&&!Objects.equals(user.getCachedData().getMetaData().getPrefix(), tagEntity.getPrefix())){
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" meta addprefix "+tagEntity.getPriority()+" "+tagEntity.getPrefix()+" server="+ Main.luckPerms.getServerName());
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" meta addprefix "+tagEntity.getPriority()+" "+tagEntity.getPrefix()+" server="+ Main.getLuckPerms().getServerName());
                             player.sendTitle(ColorParser.parse("&b卡洛斯の头衔系统"),ColorParser.parse("&f您成功更换 "+tagEntity.getPrefix()+" &f头衔."),0,60,0);
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                             player.closeInventory();
@@ -79,7 +79,7 @@ public class NameTag extends InventoryGUI {
                 ColorParser.parse("&7&o将您的头衔恢复至默认状态."));
         Button ClearTagButton = new Button(ClearTag, type -> {
             if (type.isLeftClick()) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" meta clear server="+ Main.luckPerms.getServerName());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" meta clear server="+ Main.getLuckPerms().getServerName());
                 player.sendTitle(ColorParser.parse("&b卡洛斯の头衔系统"),ColorParser.parse("&f您成功将您的头衔重置为默认."),0,60,0);
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                 player.closeInventory();

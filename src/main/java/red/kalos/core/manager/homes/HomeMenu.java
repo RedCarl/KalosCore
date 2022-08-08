@@ -38,6 +38,7 @@ public class HomeMenu extends InventoryGUI {
                 }
                 if (type.isRightClick()){
                     Bukkit.dispatchCommand(player,"removehome "+cmiHome.getName());
+                    new HomeMenu(player).openInventory();
                 }
             });
             this.setButton(j, HomeButton);
@@ -55,6 +56,7 @@ public class HomeMenu extends InventoryGUI {
             if (type.isLeftClick()) {
                 player.closeInventory();
                 Bukkit.dispatchCommand(player,("sethome "+ finalJ));
+                new HomeMenu(player).openInventory();
             }
         });
         this.setButton(j, CreateHomeButton);

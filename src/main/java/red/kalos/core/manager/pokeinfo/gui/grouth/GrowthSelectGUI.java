@@ -36,8 +36,8 @@ public class GrowthSelectGUI extends InventoryGUI {
             Button GrowthButton = new Button(Growth, type -> {
                 if (type.isLeftClick()){
                     try {
-                        if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=GrowthPoints){
-                            Main.ppAPI.takeAsync(player.getUniqueId(), GrowthPoints);
+                        if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=GrowthPoints){
+                            Main.getPpAPI().takeAsync(player.getUniqueId(), GrowthPoints);
                             pokemon.setGrowth(enumGrowth);
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                             PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,pokemon);

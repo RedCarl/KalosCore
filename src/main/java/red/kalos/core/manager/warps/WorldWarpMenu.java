@@ -75,7 +75,7 @@ public class WorldWarpMenu extends InventoryGUI {
                 ColorParser.parse("&7&o天空会随着时间的推移会慢慢改变颜色."));
         Button UltraSpaceButton = new Button(UltraSpace, type -> {
             player.closeInventory();
-            Location location = new Location(Bukkit.getWorld("DIM72"),new Random().nextInt(268),120,new Random().nextInt(268));
+            Location location = new Location(Bukkit.getWorld("DIM72"),new Random().nextInt(2680),120,new Random().nextInt(2680));
             player.teleport(location);
         });
         this.setButton(3, UltraSpaceButton);

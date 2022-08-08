@@ -70,7 +70,7 @@ public class Newbie extends InventoryGUI {
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
 
                             PokemonAPI.GivePokemon(player,false,3,0,false,PokemonAPI.SpawnPokemon("Zangoose"));
-                            Main.econ.depositPlayer(player,500);
+                            Main.getEcon().depositPlayer(player,500);
                             player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过新手签到领取了 &a500 &7卡洛币，请注意查收。"));
                         }else {
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
@@ -95,7 +95,7 @@ public class Newbie extends InventoryGUI {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set "+B_Permission+" true");
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
 
-                            Main.econ.depositPlayer(player,300);
+                            Main.getEcon().depositPlayer(player,300);
                             player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过新手签到领取了 &a300 &7卡洛币，请注意查收。"));
                         }else {
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
@@ -120,7 +120,7 @@ public class Newbie extends InventoryGUI {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set "+C_Permission+" true");
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
 
-                            Main.econ.depositPlayer(player,400);
+                            Main.getEcon().depositPlayer(player,400);
                             player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过新手签到领取了 &a400 &7卡洛币，请注意查收。"));
                         }else {
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
@@ -147,7 +147,7 @@ public class Newbie extends InventoryGUI {
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
 
                             player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_EXP_SHARE"),1));
-                            Main.econ.depositPlayer(player,500);
+                            Main.getEcon().depositPlayer(player,500);
                             player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过新手签到领取了 &a学习装置*1 &7和 &a500 &7卡洛币，请注意查收。"));
                         }else {
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
@@ -172,7 +172,7 @@ public class Newbie extends InventoryGUI {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set "+E_Permission+" true");
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
 
-                            Main.econ.depositPlayer(player,600);
+                            Main.getEcon().depositPlayer(player,600);
                             player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过新手签到领取了 &a600 &7卡洛币，请注意查收。"));
                         }else {
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
@@ -198,7 +198,7 @@ public class Newbie extends InventoryGUI {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set "+F_Permission+" true");
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
 
-                            Main.econ.depositPlayer(player,700);
+                            Main.getEcon().depositPlayer(player,700);
                             player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ULTRA_BALL"),64));
                             player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过新手签到领取了 &a高级球*64 &7和 700 &7卡洛币，请注意查收。"));
                         }else {

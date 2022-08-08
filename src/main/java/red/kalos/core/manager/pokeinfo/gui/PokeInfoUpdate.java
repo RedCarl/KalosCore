@@ -2,6 +2,7 @@ package red.kalos.core.manager.pokeinfo.gui;
 
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.entities.pixelmon.stats.EVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.enums.EnumGrowth;
 import com.pixelmonmod.pixelmon.enums.EnumNature;
@@ -54,8 +55,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                 }
                 Button HPButton = new Button(HP, type -> {
                     if (type.isLeftClick()) {
-                        if (Main.econ.getBalance(player)>=IVsMoney){
-                            Main.econ.withdrawPlayer(player, IVsMoney);
+                        if (Main.getEcon().getBalance(player)>=IVsMoney){
+                            Main.getEcon().withdrawPlayer(player, IVsMoney);
                             int value = new Random().nextInt(30)+1;
                             p.getIVs().setStat(StatsType.HP,value);
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -69,8 +70,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                     if (type.isRightClick()){
                         try {
-                            if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=IVsPoints){
-                                Main.ppAPI.takeAsync(player.getUniqueId(), IVsPoints);
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=IVsPoints){
+                                Main.getPpAPI().takeAsync(player.getUniqueId(), IVsPoints);
                                 int value = 31;
                                 p.getIVs().setStat(StatsType.HP,value);
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -103,8 +104,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                 }
                 Button AttackButton = new Button(Attack, type -> {
                     if (type.isLeftClick()) {
-                        if (Main.econ.getBalance(player)>=IVsMoney){
-                            Main.econ.withdrawPlayer(player, IVsMoney);
+                        if (Main.getEcon().getBalance(player)>=IVsMoney){
+                            Main.getEcon().withdrawPlayer(player, IVsMoney);
                             int value = new Random().nextInt(30)+1;
                             p.getIVs().setStat(StatsType.Attack,value);
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -118,8 +119,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                     if (type.isRightClick()){
                         try {
-                            if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=IVsPoints){
-                                Main.ppAPI.takeAsync(player.getUniqueId(), IVsPoints);
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=IVsPoints){
+                                Main.getPpAPI().takeAsync(player.getUniqueId(), IVsPoints);
                                 int value = 31;
                                 p.getIVs().setStat(StatsType.Attack,value);
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -152,8 +153,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                 }
                 Button DefenceButton = new Button(Defence, type -> {
                     if (type.isLeftClick()) {
-                        if (Main.econ.getBalance(player)>=IVsMoney){
-                            Main.econ.withdrawPlayer(player, IVsMoney);
+                        if (Main.getEcon().getBalance(player)>=IVsMoney){
+                            Main.getEcon().withdrawPlayer(player, IVsMoney);
                             int value = new Random().nextInt(30)+1;
                             p.getIVs().setStat(StatsType.Defence,value);
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -167,8 +168,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                     if (type.isRightClick()){
                         try {
-                            if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=IVsPoints){
-                                Main.ppAPI.takeAsync(player.getUniqueId(), IVsPoints);
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=IVsPoints){
+                                Main.getPpAPI().takeAsync(player.getUniqueId(), IVsPoints);
                                 int value = 31;
                                 p.getIVs().setStat(StatsType.Defence,value);
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -201,8 +202,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                 }
                 Button SpeedButton = new Button(Speed, type -> {
                     if (type.isLeftClick()) {
-                        if (Main.econ.getBalance(player)>=IVsMoney){
-                            Main.econ.withdrawPlayer(player, IVsMoney);
+                        if (Main.getEcon().getBalance(player)>=IVsMoney){
+                            Main.getEcon().withdrawPlayer(player, IVsMoney);
                             int value = new Random().nextInt(30)+1;
                             p.getIVs().setStat(StatsType.Speed,value);
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -216,8 +217,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                     if (type.isRightClick()){
                         try {
-                            if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=IVsPoints){
-                                Main.ppAPI.takeAsync(player.getUniqueId(), IVsPoints);
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=IVsPoints){
+                                Main.getPpAPI().takeAsync(player.getUniqueId(), IVsPoints);
                                 int value = 31;
                                 p.getIVs().setStat(StatsType.Speed,value);
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -250,8 +251,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                 }
                 Button SpecialAttackButton = new Button(SpecialAttack, type -> {
                     if (type.isLeftClick()) {
-                        if (Main.econ.getBalance(player)>=IVsMoney){
-                            Main.econ.withdrawPlayer(player, IVsMoney);
+                        if (Main.getEcon().getBalance(player)>=IVsMoney){
+                            Main.getEcon().withdrawPlayer(player, IVsMoney);
                             int value = new Random().nextInt(30)+1;
                             p.getIVs().setStat(StatsType.SpecialAttack,value);
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -265,8 +266,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                     if (type.isRightClick()){
                         try {
-                            if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=IVsPoints){
-                                Main.ppAPI.takeAsync(player.getUniqueId(), IVsPoints);
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=IVsPoints){
+                                Main.getPpAPI().takeAsync(player.getUniqueId(), IVsPoints);
                                 int value = 31;
                                 p.getIVs().setStat(StatsType.SpecialAttack,value);
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -299,8 +300,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                 }
                 Button SpecialDefenceButton = new Button(SpecialDefence, type -> {
                     if (type.isLeftClick()) {
-                        if (Main.econ.getBalance(player)>=IVsMoney){
-                            Main.econ.withdrawPlayer(player, IVsMoney);
+                        if (Main.getEcon().getBalance(player)>=IVsMoney){
+                            Main.getEcon().withdrawPlayer(player, IVsMoney);
                             int value = new Random().nextInt(30)+1;
                             p.getIVs().setStat(StatsType.SpecialDefence,value);
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -314,8 +315,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                     if (type.isRightClick()){
                         try {
-                            if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=IVsPoints){
-                                Main.ppAPI.takeAsync(player.getUniqueId(), IVsPoints);
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=IVsPoints){
+                                Main.getPpAPI().takeAsync(player.getUniqueId(), IVsPoints);
                                 int value = 31;
                                 p.getIVs().setStat(StatsType.SpecialDefence,value);
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
@@ -354,8 +355,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     );
                     Button ShinyButton = new Button(Shiny, type -> {
                         if (type.isLeftClick()) {
-                            if (Main.econ.getBalance(player)>=ShinyMoney){
-                                Main.econ.withdrawPlayer(player, ShinyMoney);
+                            if (Main.getEcon().getBalance(player)>=ShinyMoney){
+                                Main.getEcon().withdrawPlayer(player, ShinyMoney);
                                 int value = new Random().nextInt(2);
                                 if (value==1){
                                     p.setShiny(true);
@@ -373,8 +374,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                         }
                         if (type.isRightClick()){
                             try {
-                                if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=ShinyPoints){
-                                    Main.ppAPI.takeAsync(player.getUniqueId(), ShinyPoints);
+                                if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=ShinyPoints){
+                                    Main.getPpAPI().takeAsync(player.getUniqueId(), ShinyPoints);
                                     p.setShiny(true);
                                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                     PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,p);
@@ -412,8 +413,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                         return;
                     }
                     if (type.isLeftClick()) {
-                        if (Main.econ.getBalance(player)>=GrowthMoney){
-                            Main.econ.withdrawPlayer(player, GrowthMoney);
+                        if (Main.getEcon().getBalance(player)>=GrowthMoney){
+                            Main.getEcon().withdrawPlayer(player, GrowthMoney);
                             p.setGrowth(EnumGrowth.getRandomGrowth());
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                             PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,p);
@@ -426,7 +427,7 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                     if (type.isRightClick()){
                         try {
-                            if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=GrowthPoints){
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=GrowthPoints){
                                 GrowthSelectGUI growthSelectGUI = new GrowthSelectGUI(player,pokemon);
                                 growthSelectGUI.openInventory();
                             }else {
@@ -440,6 +441,60 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                 });
                 this.setButton(15, GrowthButton);
+
+                //努力值清空
+                long EmptyEffortMoney = 50000;
+                int EmptyEffortPoints = 5;
+                ItemStack EmptyEffort = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_POMEG_BERRY") , ColorParser.parse("&f努力值: &a清空"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键 清空) &c" + EmptyEffortMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键 清空) &c" + EmptyEffortPoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
+                Button EmptyEffortButton = new Button(EmptyEffort, type -> {
+                    if (type.isLeftClick()) {
+                        if (Main.getEcon().getBalance(player)>=EmptyEffortMoney){
+                            Main.getEcon().withdrawPlayer(player, EmptyEffortMoney);
+
+                            for (StatsType e:StatsType.getStatValues()) {
+                                p.getEVs().setStat(e,0);
+                            }
+
+                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                            PokemonInfoMenu pokemonInfoMenu = new PokemonInfoMenu(player);
+                            pokemonInfoMenu.openInventory();
+                        }else {
+                            player.closeInventory();
+                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您没有足够的 &c"+Data.SERVER_VAULT+" &7来进行本次的操作."));
+                        }
+                    }
+                    if (type.isRightClick()){
+                        try {
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=EmptyEffortPoints){
+                                Main.getPpAPI().takeAsync(player.getUniqueId(),EmptyEffortPoints);
+
+                                for (StatsType e:StatsType.getStatValues()) {
+                                    p.getEVs().setStat(e,0);
+                                }
+
+                                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                                PokemonInfoMenu pokemonInfoMenu = new PokemonInfoMenu(player);
+                                pokemonInfoMenu.openInventory();
+                            }else {
+                                player.closeInventory();
+                                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您没有足够的 &c"+Data.SERVER_POINTS+" &7来进行本次的操作."));
+                            }
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                this.setButton(16, EmptyEffortButton);
 
                 //克隆
                 long CloneMoney = 2480000;
@@ -455,8 +510,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                 );
                 Button CloneButton = new Button(Clone, type -> {
                     if (type.isLeftClick()) {
-                        if (Main.econ.getBalance(player)>=CloneMoney){
-                            Main.econ.withdrawPlayer(player, CloneMoney);
+                        if (Main.getEcon().getBalance(player)>=CloneMoney){
+                            Main.getEcon().withdrawPlayer(player, CloneMoney);
 
                             PokemonAPI.getCloningMachine(player,playerPartyStorage,p, playerPartyStorage.getSlot(p.getUUID()),false);
 
@@ -469,8 +524,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                     if (type.isRightClick()){
                         try {
-                            if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=ClonePoints){
-                                Main.ppAPI.takeAsync(player.getUniqueId(),ClonePoints);
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=ClonePoints){
+                                Main.getPpAPI().takeAsync(player.getUniqueId(),ClonePoints);
 
                                 PokemonAPI.getCloningMachine(player,playerPartyStorage,p, playerPartyStorage.getSlot(p.getUUID()),true);
 
@@ -504,8 +559,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                 );
                 Button NatureButton = new Button(Nature, type -> {
                     if (type.isLeftClick()) {
-                        if (Main.econ.getBalance(player)>=NatureMoney){
-                            Main.econ.withdrawPlayer(player, NatureMoney);
+                        if (Main.getEcon().getBalance(player)>=NatureMoney){
+                            Main.getEcon().withdrawPlayer(player, NatureMoney);
                             p.setNature(EnumNature.getRandomNature());
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                             PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,p);
@@ -518,7 +573,7 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                     if (type.isRightClick()){
                         try {
-                            if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=NaturePoints){
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=NaturePoints){
                                 NatureSelectGUI natureSelectGUI = new NatureSelectGUI(player,pokemon);
                                 natureSelectGUI.openInventory();
                             }else {
@@ -565,8 +620,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     );
                     Button AbilityButton = new Button(Ability, type -> {
                         if (type.isLeftClick()){
-                            if (Main.econ.getBalance(player)>=AbilityMoney){
-                                Main.econ.withdrawPlayer(player, AbilityMoney);
+                            if (Main.getEcon().getBalance(player)>=AbilityMoney){
+                                Main.getEcon().withdrawPlayer(player, AbilityMoney);
                                 pokemon.setAbilitySlot(2);
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,pokemon);
@@ -579,8 +634,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                         }
                         if (type.isRightClick()){
                             try {
-                                if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=AbilityPoints){
-                                    Main.ppAPI.takeAsync(player.getUniqueId(), AbilityPoints);
+                                if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=AbilityPoints){
+                                    Main.getPpAPI().takeAsync(player.getUniqueId(), AbilityPoints);
                                     pokemon.setAbilitySlot(2);
                                     player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                     PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,pokemon);

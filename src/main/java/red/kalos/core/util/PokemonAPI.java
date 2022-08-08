@@ -912,14 +912,14 @@ public class PokemonAPI {
             money = 500;
         }
 
-        if (Main.econ.getBalance(player)>=money){
-            Main.econ.withdrawPlayer(player,money);
+        if (Main.getEcon().getBalance(player)>=money){
+            Main.getEcon().withdrawPlayer(player,money);
             player.sendMessage(ColorParser.parse("&r"));
             player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7正在为您查询这片区域的传说宝可梦..."));
             Bukkit.dispatchCommand(player,"checkspawns legendary");
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
         }else {
-            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+Main.econ.getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
+            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+Main.getEcon().getBalance(player)+" &7"+Data.SERVER_VAULT+"，不足以支付."));
             player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
         }
     }

@@ -3,7 +3,7 @@ package red.kalos.core.manager.shop.entity;
 import org.bukkit.Material;
 
 public class ItemInfo {
-    public ItemInfo(String name,Material material,double money,double points){
+    public ItemInfo(String name,Material material,double money,int points){
         this.setName(name);
         this.setMaterial(material);
         this.setMoney(money);
@@ -13,7 +13,7 @@ public class ItemInfo {
     private String name;
     private Material material;
     private double money;
-    private double points;
+    private int points;
 
 
     public Material getMaterial() {
@@ -32,11 +32,11 @@ public class ItemInfo {
         this.money = money;
     }
 
-    public double getPoints() {
+    public int getPoints() {
         return points;
     }
 
-    public void setPoints(double points) {
+    public void setPoints(int points) {
         this.points = points;
     }
 

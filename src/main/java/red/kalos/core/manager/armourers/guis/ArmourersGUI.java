@@ -124,7 +124,7 @@ public class ArmourersGUI extends InventoryGUI {
                             player.closeInventory();
                             Armourers.setAmount(stringIntegerHashMap.get(name));
                             player.getInventory().removeItem(Armourers);
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.armourers."+name+" server="+ Main.luckPerms.getServerName());
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set kim.armourers."+name+" server="+ Main.getLuckPerms().getServerName());
                             player.sendTitle(ColorParser.parse("&b卡洛斯の时装系统"), ColorParser.parse("&f恭喜您,获得了 &b"+name+" &f时装,请前往个人中心查看."),0,60,0);
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                         }else {
@@ -196,15 +196,15 @@ public class ArmourersGUI extends InventoryGUI {
             }
             if (type.isRightClick()) {
                 try {
-                    if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=ArmourersPrice){
-                        Main.ppAPI.takeAsync(player.getUniqueId(),ArmourersPrice);
+                    if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=ArmourersPrice){
+                        Main.getPpAPI().takeAsync(player.getUniqueId(),ArmourersPrice);
                         int amount = (new Random().nextInt(9)+1);
                         Armourers.setAmount(amount);
                         player.getInventory().addItem(Armourers);
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 &c"+Data.SERVER_NAME_CN+"の时装碎片*"+amount+" &7请注意查收."));
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                     }else {
-                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+Main.ppAPI.lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您只有 &c"+Main.getPpAPI().lookAsync(player.getUniqueId()).get()+" &7"+Data.SERVER_POINTS+"，不足以支付."));
                         player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
                     }
                 } catch (InterruptedException | ExecutionException e) {

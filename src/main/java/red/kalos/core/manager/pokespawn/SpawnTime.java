@@ -17,34 +17,28 @@ public class SpawnTime {
 
                 if (KalosUtil.getLegendarySpawnerTime()==12000){
                     Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传奇宝可梦将在 &c"+ KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试刷新。"));
-                }
-                if (KalosUtil.getLegendarySpawnerTime()==8000){
+                }else if (KalosUtil.getLegendarySpawnerTime()==8000){
                     Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传奇宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试刷新。"));
-                }
-                if (KalosUtil.getLegendarySpawnerTime()==6000){
+                }else if (KalosUtil.getLegendarySpawnerTime()==6000){
                     Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传奇宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试刷新。"));
-                }
-                if (KalosUtil.getLegendarySpawnerTime()==3000){
+                }else if (KalosUtil.getLegendarySpawnerTime()==3000){
                     Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传奇宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试刷新。"));
-                }
-                if (KalosUtil.getLegendarySpawnerTime()==600){
+                }else if (KalosUtil.getLegendarySpawnerTime()==600){
                     Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传奇宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试刷新。"));
-                }
-                if (KalosUtil.getLegendarySpawnerTime()==60){
+                }else if (KalosUtil.getLegendarySpawnerTime()==60){
                     Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传奇宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()/60+" &7分钟后尝试刷新。"));
-                }
-                if (KalosUtil.getLegendarySpawnerTime()<=10&&KalosUtil.getLegendarySpawnerTime()>0){
+                }else if (KalosUtil.getLegendarySpawnerTime()<=10&&KalosUtil.getLegendarySpawnerTime()>1){
                     Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传奇宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()+" &7秒后尝试刷新。"));
-                    if (KalosUtil.getLegendarySpawnerTime()==1){
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                if (!isSpawner){
-                                    Bukkit.broadcastMessage(ColorParser.parse("&8[&c&l!&8] &7很遗憾，并没有传奇宝可梦出现在世界上。"));
-                                }
+                }else if (KalosUtil.getLegendarySpawnerTime()==1){
+                    Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7传奇宝可梦将在 &c"+KalosUtil.getLegendarySpawnerTime()+" &7秒后尝试刷新。"));
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (!isSpawner){
+                                Bukkit.broadcastMessage(ColorParser.parse("&8[&c&l!&8] &7很遗憾，并没有传奇宝可梦出现在世界上。"));
                             }
-                        }.runTaskLater(Main.getInstance(),120);
-                    }
+                        }
+                    }.runTaskLater(Main.getInstance(),120);
                 }
 
             }

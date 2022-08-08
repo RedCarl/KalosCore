@@ -1,5 +1,6 @@
 package red.kalos.core.listener;
 
+import com.Zrips.CMI.Modules.Sheduler.SchedulerManager;
 import com.glazed7.glazedpay.bukkit.event.OrderShipEvent;
 import eos.moe.dragoncore.api.KeyPressEvent;
 import org.bukkit.*;
@@ -19,6 +20,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import red.kalos.core.Main;
 import red.kalos.core.database.PlayerDataManager;
 import red.kalos.core.entity.PlayerData;
@@ -27,9 +29,11 @@ import red.kalos.core.manager.menu.MainMenu;
 import red.kalos.core.manager.premium.VIPBuy;
 import red.kalos.core.manager.premium.entity.PlayerVIP;
 import red.kalos.core.util.ColorParser;
+import red.kalos.core.util.api.CubeAPI;
 import red.kalos.core.util.api.PokemonPhotoAPI;
 import studio.trc.bukkit.litesignin.event.custom.PlayerSignInEvent;
 
+import java.awt.dnd.DropTargetEvent;
 import java.io.File;
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -90,8 +94,8 @@ public class PlayerEvent implements Listener {
 //        }
 
         //检查会员状态
-        VIPBuy.checkRank(player,"eevee",Main.luckPerms.getServerName());
-        VIPBuy.checkRank(player,"pikanium",Main.luckPerms.getServerName());
+        VIPBuy.checkRank(player,"eevee",Main.getLuckPerms().getServerName());
+        VIPBuy.checkRank(player,"pikanium",Main.getLuckPerms().getServerName());
     }
 
     //蹲下+F 打开菜单
@@ -202,35 +206,35 @@ public class PlayerEvent implements Listener {
             PlayerVIP rank = new PlayerVIP();
             switch (money){
                 case "15.0":
-                    PlayerVIP PikaniumVIP = VIPBuy.checkRank(player,"pikanium", Main.luckPerms.getServerName());
+                    PlayerVIP PikaniumVIP = VIPBuy.checkRank(player,"pikanium", Main.getLuckPerms().getServerName());
                     rank.setName(player.getName());
                     rank.setRank("pikanium");
                     if (PikaniumVIP!=null){
                         rank.setTime(new Timestamp(PikaniumVIP.getTime().getTime()+ 2592000000L));
-                        rank.setServer(Main.luckPerms.getServerName());
+                        rank.setServer(Main.getLuckPerms().getServerName());
                         VIPBuy.updateRank(rank);
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功续费了 &e卡洛斯の皮卡丘*30天 &7请注意查收."));
                     }else {
                         rank.setTime(new Timestamp(System.currentTimeMillis()+ 2592000000L));
-                        rank.setServer(Main.luckPerms.getServerName());
+                        rank.setServer(Main.getLuckPerms().getServerName());
                         VIPBuy.addRank(rank);
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 &e卡洛斯の皮卡丘*30天 &7请注意查收."));
                     }
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                     break;
                 case "45.0":
-                    PlayerVIP EeveeVIP = VIPBuy.checkRank(player,"eevee", Main.luckPerms.getServerName());
+                    PlayerVIP EeveeVIP = VIPBuy.checkRank(player,"eevee", Main.getLuckPerms().getServerName());
                     rank.setName(player.getName());
                     rank.setRank("eevee");
                     if (EeveeVIP!=null){
                         rank.setTime(new Timestamp(EeveeVIP.getTime().getTime()+ 2592000000L));
-                        rank.setServer(Main.luckPerms.getServerName());
+                        rank.setServer(Main.getLuckPerms().getServerName());
                         VIPBuy.updateRank(rank);
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功续费了 &6卡洛斯の伊布*30天 &7请注意查收."));
                     }else {
                         VIPBuy.deleteRank(player);
                         rank.setTime(new Timestamp(System.currentTimeMillis()+ 2592000000L));
-                        rank.setServer(Main.luckPerms.getServerName());
+                        rank.setServer(Main.getLuckPerms().getServerName());
                         VIPBuy.addRank(rank);
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 &6卡洛斯の伊布*30天 &7请注意查收."));
                     }
@@ -264,7 +268,7 @@ public class PlayerEvent implements Listener {
 
         //月卡礼包
         if (player.hasPermission("group.eevee")){
-            Main.ppAPI.giveAsync(player.getUniqueId(),1);
+            Main.getPpAPI().giveAsync(player.getUniqueId(),1);
             player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7尊贵的 伊布月卡会员 成功领取今天的月卡奖励。 &a(卡点*1)"));
         }
     }
@@ -275,7 +279,7 @@ public class PlayerEvent implements Listener {
         Player player = event.getEntity();
         event.setKeepInventory(true);
         int money = new Random().nextInt(45);
-        Main.econ.withdrawPlayer(player,money);
+        Main.getEcon().withdrawPlayer(player,money);
         player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很遗憾您在探险的过程中失败了，您丢失了 &c"+money+" &7卡洛币，不要灰心。"));
     }
 
@@ -338,5 +342,19 @@ public class PlayerEvent implements Listener {
         if (event.getEntity().getType().equals(EntityType.PLAYER)){
             event.setCancelled(true);
         }
+    }
+
+
+    CubeAPI sulaoxian = new CubeAPI(new Location(Bukkit.getWorld("spawn"), -188, 0, 10), new Location(Bukkit.getWorld("spawn"), -190, 256, 8));
+    @EventHandler
+    public void PlayerDropItemEvent(PlayerDropItemEvent event){
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (sulaoxian.isLocationInCube(event.getItemDrop().getLocation())){
+                    event.getPlayer().sendMessage(ColorParser.parse("&6苏老仙 &f> &c老板大气！ 老板身体健康！"));
+                }
+            }
+        }.runTaskLater(Main.getInstance(),10);
     }
 }

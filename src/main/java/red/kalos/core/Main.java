@@ -28,6 +28,7 @@ import red.kalos.core.manager.ranking.RankingManager;
 import red.kalos.core.manager.worldtime.WorldTimeSynchronize;
 import red.kalos.core.packetlistener.AdvanceAdapter;
 import red.kalos.core.packetlistener.MessageAdapter;
+import red.kalos.core.placeholder.PlaceHolder;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.api.PokemonPhotoAPI;
 import red.kalos.core.util.gui.listener.ButtonClickListener;
@@ -52,10 +53,18 @@ public class Main extends JavaPlugin {
         return instance;
     }
 
-    public static Economy econ = null;
-    public static PlayerPointsAPI ppAPI;
-    public static LuckPerms luckPerms;
-
+    private static Economy econ = null;
+    public static Economy getEcon() {
+        return econ;
+    }
+    private static PlayerPointsAPI ppAPI;
+    public static PlayerPointsAPI getPpAPI() {
+        return ppAPI;
+    }
+    private static LuckPerms luckPerms;
+    public static LuckPerms getLuckPerms() {
+        return luckPerms;
+    }
     @Override
     public void onEnable() {
 
@@ -109,6 +118,15 @@ public class Main extends JavaPlugin {
         }else {
             log("未安装 LuckPerms 不进行数据包注册...");
             log("若您想使用全部功能，请安装LuckPerms！");
+        }
+
+        //PlaceholderAPI
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            log("注册变量...");
+            new PlaceHolder().register();
+        }else {
+            log("未安装 PlaceholderAPI 不进行变量注册...");
+            log("若您想使用变量显示，请安装PlaceholderAPI！");
         }
 
         log("正在注册监听器...");
@@ -170,9 +188,7 @@ public class Main extends JavaPlugin {
         KitsManager.onLoadKitsEvent();
 
         log("加载玩家Ranking系统...");
-        RankingManager.LoadAllPlayerData();
-        RankingManager.LoadTimeRankingData();
-        RankingManager.LoadMoneyRankingData();
+        RankingManager.init();
 
         log("加载 AutoSave 模块...");
         AutoSave.onEnable();

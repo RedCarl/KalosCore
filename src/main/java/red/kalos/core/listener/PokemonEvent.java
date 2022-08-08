@@ -2,10 +2,7 @@ package red.kalos.core.listener;
 
 import catserver.api.bukkit.event.ForgeEvent;
 import com.pixelmonmod.pixelmon.Pixelmon;
-import com.pixelmonmod.pixelmon.api.events.BreedEvent;
-import com.pixelmonmod.pixelmon.api.events.CaptureEvent;
-import com.pixelmonmod.pixelmon.api.events.KeyEvent;
-import com.pixelmonmod.pixelmon.api.events.PixelmonDeletedEvent;
+import com.pixelmonmod.pixelmon.api.events.*;
 import com.pixelmonmod.pixelmon.api.events.battles.BattleEndEvent;
 import com.pixelmonmod.pixelmon.api.events.spawning.LegendaryCheckSpawnsEvent;
 import com.pixelmonmod.pixelmon.api.events.spawning.LegendarySpawnEvent;
@@ -17,6 +14,7 @@ import com.pixelmonmod.pixelmon.battles.controller.participants.BattleParticipan
 import com.pixelmonmod.pixelmon.battles.controller.participants.ParticipantType;
 import com.pixelmonmod.pixelmon.comm.packetHandlers.EnumKeyPacketMode;
 import com.pixelmonmod.pixelmon.entities.pixelmon.EntityPixelmon;
+import com.pixelmonmod.pixelmon.entities.pixelmon.drops.DroppedItem;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.enums.EnumGrowth;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
@@ -163,7 +161,7 @@ public class PokemonEvent implements Listener {
             //特性管辖
             if (egg.getAbilitySlot()>0){
                 int b = new Random().nextInt(100);
-                if (b<=95){
+                if (b<=97){
                     egg.setAbilitySlot(0);
                 }
             }
@@ -181,6 +179,7 @@ public class PokemonEvent implements Listener {
                     a++;
                 }
             }
+
             switch (a){
                 case 6:
                     PokemonAPI.setIv(egg, new Random().nextInt(3)+4);
@@ -201,6 +200,7 @@ public class PokemonEvent implements Listener {
                     PokemonAPI.setIv(egg, new Random().nextInt(2));
                     break;
             }
+
             event.setEgg(egg);
         }
 
@@ -212,7 +212,7 @@ public class PokemonEvent implements Listener {
             double money = PokemonAPI.getPokemonVault(pokemon);
             player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
             player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7系统回收了您的 &c"+pokemon.getLocalizedName()+" &7并给予您 &c"+money+" &7"+ Data.SERVER_VAULT+",请注意查收"));
-            Main.econ.depositPlayer(player,money);
+            Main.getEcon().depositPlayer(player,money);
         }
 
         //战斗结束
@@ -232,7 +232,7 @@ public class PokemonEvent implements Listener {
                                         int money = pixelmon.getStoragePokemonData().getLevel();
                                         player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您在战斗过程中获得了 &c"+money+" &7卡洛币。"));
-                                        Main.econ.depositPlayer(player,money);
+                                        Main.getEcon().depositPlayer(player,money);
                                     }
                                 }
                             }
@@ -286,6 +286,21 @@ public class PokemonEvent implements Listener {
             }
         }
 
+        //宝可梦掉落物
+        if (forgeEvent.getForgeEvent() instanceof DropEvent) {
+            DropEvent event = (DropEvent) forgeEvent.getForgeEvent();
+
+            //设置野外宝可梦掉落红线的概率
+            for (DroppedItem droppedItem:event.getDrops()) {
+                if (droppedItem.itemStack.field_151002_e.func_77658_a().equals("item.destiny_knot")){
+                    int a = new Random().nextInt(100);
+                    if (a<=80){
+                        event.player.getBukkitEntity().getPlayer().sendMessage("DeBug: 01");
+                        event.getDrops().remove(droppedItem);
+                    }
+                }
+            }
+        }
     }
 
 

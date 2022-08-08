@@ -58,7 +58,7 @@ public class VIPBuy {
                 if (Objects.equals(rank, vip.getRank())){
                     if (vip.getTime().getTime()>=System.currentTimeMillis()){
                         if (!player.hasPermission("group."+vip.getRank())){
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" parent set "+vip.getRank()+" server="+ Main.luckPerms.getServerName());
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" parent set "+vip.getRank()+" server="+ Main.getLuckPerms().getServerName());
                         }
                         return vip;
                     }else {
@@ -81,7 +81,7 @@ public class VIPBuy {
         PlayerData playerData = PlayerDataManager.getInstance().getPlayerData(player.getUniqueId());
         playerData.setRankData(new RankData("default",0));
         PlayerDataManager.getInstance().setPlayerData(playerData);
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" parent clear server="+ Main.luckPerms.getServerName());
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" parent clear server="+ Main.getLuckPerms().getServerName());
 
     }
 }

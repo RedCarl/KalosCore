@@ -70,7 +70,7 @@ public class MainMenu extends InventoryGUI {
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &e■ &7游戏余额:"),
                     ColorParser.parse("&r      &3" + CMI.getInstance().getPlayerManager().getUser(player).getBalance() + " &7"+Data.SERVER_VAULT),
-                    ColorParser.parse("&r      &3" + Main.ppAPI.lookAsync(player.getUniqueId()).get() + ".0 &7"+Data.SERVER_POINTS),
+                    ColorParser.parse("&r      &3" + Main.getPpAPI().lookAsync(player.getUniqueId()).get() + ".0 &7"+Data.SERVER_POINTS),
                     ColorParser.parse("&r  &6■ &7累计充值: &3"),
                     ColorParser.parse("&r      &3" + PlayerDataManager.getInstance().getPlayerData(player.getUniqueId()).getRecharge() + " &7RMB"),
                     ColorParser.parse("&r"),
@@ -231,8 +231,8 @@ public class MainMenu extends InventoryGUI {
                             HealSleep.put(player,System.currentTimeMillis());
                             PokemonAPI.setPokemonStater(player);
                         }else if (player.hasPermission("group.pikanium")){
-                            if (Main.econ.getBalance(player)>=24){
-                                Main.econ.withdrawPlayer(player,24);
+                            if (Main.getEcon().getBalance(player)>=24){
+                                Main.getEcon().withdrawPlayer(player,24);
                                 HealSleep.put(player,System.currentTimeMillis());
                                 PokemonAPI.setPokemonStater(player);
                             }else {
@@ -240,8 +240,8 @@ public class MainMenu extends InventoryGUI {
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
                             }
                         }else {
-                            if (Main.econ.getBalance(player)>=50){
-                                Main.econ.withdrawPlayer(player,50);
+                            if (Main.getEcon().getBalance(player)>=50){
+                                Main.getEcon().withdrawPlayer(player,50);
                                 HealSleep.put(player,System.currentTimeMillis());
                                 PokemonAPI.setPokemonStater(player);
                             }else {

@@ -1,6 +1,9 @@
 package red.kalos.core.manager.ranking;
 
+import org.bukkit.scheduler.BukkitRunnable;
+import red.kalos.core.Main;
 import red.kalos.core.database.PlayerDataManager;
+import red.kalos.core.entity.ComplexTop;
 import red.kalos.core.entity.PlayerData;
 import red.kalos.core.manager.ranking.entity.MoneyEntity;
 import red.kalos.core.manager.ranking.entity.TimeEntity;
@@ -15,7 +18,22 @@ public class RankingManager {
     public static List<TimeEntity> timeEntities = new ArrayList<>();
     public static List<MoneyEntity> moneyEntities = new ArrayList<>();
     public static List<PlayerData> playerDataList = new ArrayList<>();
-    public static List<UUID> complexList = new ArrayList<>();
+
+    public static List<ComplexTop> complexList = new ArrayList<>();
+
+
+    public static void init(){
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                LoadAllPlayerData();
+                LoadTimeRankingData();
+                LoadMoneyRankingData();
+                complexRankingData();
+            }
+        }.runTaskTimer(Main.getInstance(),0,100);
+    }
+
     //获取所有玩家数据
     public static void LoadAllPlayerData(){
         playerDataList.clear();

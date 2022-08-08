@@ -60,7 +60,7 @@ public class PlayerKits  extends InventoryGUI {
                             player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_GREAT_BALL"),64));
                             player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ULTRA_BALL"),32));
                             player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.COOKED_BEEF,64*3));
-                            Main.econ.depositPlayer(player,15000);
+                            Main.getEcon().depositPlayer(player,15000);
                             player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),10));
 
                             ////////////////////
@@ -106,7 +106,7 @@ public class PlayerKits  extends InventoryGUI {
                             player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_GREAT_BALL"),64*3));
                             player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ULTRA_BALL"),64*2));
                             player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.COOKED_BEEF,64*6));
-                            Main.econ.depositPlayer(player,50000);
+                            Main.getEcon().depositPlayer(player,50000);
                             player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),32));
 
                             ////////////////////

@@ -23,12 +23,13 @@ public class WorldTimeSynchronize {
             public void run() {
                 World world = Bukkit.getWorld("world");
                 for (World w:Main.getInstance().getServer().getWorlds()) {
-                    w.setTime(world.getTime());
-                    w.setStorm(world.hasStorm());
-                    w.setWeatherDuration(world.getWeatherDuration());
-                    w.setThundering(world.isThundering());
-                    w.setThunderDuration(world.getThunderDuration());
-
+                    if (!w.getName().equals("world")){
+                        w.setTime(world.getTime());
+                        w.setStorm(world.hasStorm());
+                        w.setWeatherDuration(world.getWeatherDuration());
+                        w.setThundering(world.isThundering());
+                        w.setThunderDuration(world.getThunderDuration());
+                    }
                 }
             }
         }.runTaskTimer(Main.getInstance(),20,20);

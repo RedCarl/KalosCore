@@ -81,7 +81,7 @@
 //                ),
 //                type -> {
 //                    if (signDate.size()!=0&&signDate.get(2)==daytime){
-//                        Main.econ.depositPlayer(player,300);
+//                        Main.getEcon().depositPlayer(player,300);
 //                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ULTRA_BALL"),22));
 //                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MACHO_BRACE"),1));
 //
@@ -108,7 +108,7 @@
 //                ),
 //                type -> {
 //                    if (signDate.size()!=0&&signDate.get(3)==daytime){
-//                        Main.econ.depositPlayer(player,500);
+//                        Main.getEcon().depositPlayer(player,500);
 //                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),36));
 //                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),1));
 //
@@ -136,7 +136,7 @@
 //                ),
 //                type -> {
 //                    if (signDate.size()!=0&&signDate.get(4)==daytime){
-//                        Main.econ.depositPlayer(player,600);
+//                        Main.getEcon().depositPlayer(player,600);
 //                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),38));
 //                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ULTRA_BALL"),32));
 //                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_EXP_SHARE"),1));
@@ -166,7 +166,7 @@
 //                ),
 //                type -> {
 //                    if (signDate.size()!=0&&signDate.get(5)==daytime){
-//                        Main.econ.depositPlayer(player,700);
+//                        Main.getEcon().depositPlayer(player,700);
 //                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),40));
 //                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ULTRA_BALL"),64));
 //                        PokemonAPI.GivePokemon(player,false,0,0,false,PokemonAPI.SpawnPokemon("Snorlax"));

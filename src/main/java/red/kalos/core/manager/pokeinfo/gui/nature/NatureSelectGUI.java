@@ -35,8 +35,8 @@ public class NatureSelectGUI extends InventoryGUI {
             Button NatureButton = new Button(Nature, type -> {
                 if (type.isLeftClick()){
                     try {
-                        if (Main.ppAPI.lookAsync(player.getUniqueId()).get()>=NaturePoints){
-                                Main.ppAPI.takeAsync(player.getUniqueId(), NaturePoints);
+                        if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=NaturePoints){
+                                Main.getPpAPI().takeAsync(player.getUniqueId(), NaturePoints);
                                 pokemon.setNature(enumNature);
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
                                 PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,pokemon);

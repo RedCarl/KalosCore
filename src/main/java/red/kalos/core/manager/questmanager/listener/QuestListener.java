@@ -10,6 +10,7 @@ import com.pixelmonmod.pixelmon.battles.controller.participants.BattleParticipan
 import com.pixelmonmod.pixelmon.battles.controller.participants.ParticipantType;
 import com.pixelmonmod.pixelmon.battles.controller.participants.PixelmonWrapper;
 import com.pixelmonmod.pixelmon.battles.controller.participants.WildPixelmonParticipant;
+import com.pixelmonmod.pixelmon.entities.pixelmon.EntityPixelmon;
 import red.kalos.core.Main;
 import red.kalos.core.manager.questmanager.manager.QuestManager;
 import red.kalos.core.manager.questmanager.quest.TaskType;
@@ -72,11 +73,11 @@ public class QuestListener implements Listener {
                             if (battleParticipant.checkPokemon()) {
                                 if (battleParticipant.getType().equals(ParticipantType.WildPokemon)) {
                                     WildPixelmonParticipant a = (WildPixelmonParticipant) battleParticipant;
-                                    ArrayList<Pokemon> pokemons = Lists.newArrayList();
+                                    ArrayList<EntityPixelmon> entityPixelmons = Lists.newArrayList();
                                     for (PixelmonWrapper pixelmonWrapper : a.allPokemon) {
-                                        pokemons.add(pixelmonWrapper.pokemon);
+                                        entityPixelmons.add(pixelmonWrapper.entity);
                                     }
-                                    QuestManager.handleMessage(player.getName(), TaskType.WIN_MESSAGE, new Object[]{pokemons});
+                                    QuestManager.handleMessage(player.getName(), TaskType.WIN_MESSAGE, new Object[]{entityPixelmons});
                                 }
                             }
                         }
@@ -91,7 +92,7 @@ public class QuestListener implements Listener {
         if (forgeEvent.getForgeEvent() instanceof BreedEvent.CollectEgg) {
             BreedEvent.CollectEgg event = (BreedEvent.CollectEgg) forgeEvent.getForgeEvent();
             Player player = Bukkit.getPlayer(event.owner);
-            QuestManager.handleMessage(player.getName(), TaskType.HATCH_MESSAGE, new Object[]{event.getEgg()});
+            QuestManager.handleMessage(player.getName(), TaskType.HATCH_MESSAGE, new Object[]{event.getEgg().getPixelmonIfExists()});
         }
     }
 
@@ -102,8 +103,8 @@ public class QuestListener implements Listener {
             UUID uuid = event.player.func_110124_au();
             Player player = Bukkit.getPlayer(uuid);
             String player_id = player.getName();
-            Pokemon pokemon = event.getPokemon().getPokemonData();
-            QuestManager.handleMessage(player_id, TaskType.CATCH_MESSAGE, new Object[]{pokemon});
+            EntityPixelmon entityPixelmon = event.getPokemon();
+            QuestManager.handleMessage(player_id, TaskType.CATCH_MESSAGE, new Object[]{entityPixelmon});
         }
     }
 
