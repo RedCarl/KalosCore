@@ -20,7 +20,7 @@
 //        super(ColorParser.parse("&0" + Data.SERVER_NAME + " / 新手签到"), player, 1);
 //
 //        Button A_Kit = new Button(
-//                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/a3e58ea7f3113caecd2b3a6f27af53b9cc9cfed7b043ba334b5168f1391d9",
+//                SkullAPI.getSkullItem("a3e58ea7f3113caecd2b3a6f27af53b9cc9cfed7b043ba334b5168f1391d9",
 //                        ColorParser.parse("&c#1 &f第一天"),
 //                        ColorParser.parse("&r"),
 //                        ColorParser.parse("&r  &a■ &7礼包内容:"),
@@ -46,7 +46,7 @@
 //
 //
 //        Button B_Kit = new Button(
-//                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/ee3a8fd0852977444d9fd7797cac07b8d3948addc43f0bb5ce25ae72d95dc",
+//                SkullAPI.getSkullItem("ee3a8fd0852977444d9fd7797cac07b8d3948addc43f0bb5ce25ae72d95dc",
 //                        ColorParser.parse("&c#2 &f第二天"),
 //                        ColorParser.parse("&r"),
 //                        ColorParser.parse("&r  &a■ &7礼包内容:"),
@@ -71,7 +71,7 @@
 //
 //
 //        Button C_Kit = new Button(
-//                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/75419fce506a495343a1d368a71d22413f08c6d67cb951d656cd03f80b4d3d3",
+//                SkullAPI.getSkullItem("75419fce506a495343a1d368a71d22413f08c6d67cb951d656cd03f80b4d3d3",
 //                        ColorParser.parse("&c#3 &f第三天"),
 //                        ColorParser.parse("&r"),
 //                        ColorParser.parse("&r  &a■ &7礼包内容:"),
@@ -98,7 +98,7 @@
 //
 //
 //        Button D_Kit = new Button(
-//                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/10c75a05b344ea043863974c180ba817aea68678cbea5e4ba395f74d4803d1d",
+//                SkullAPI.getSkullItem("10c75a05b344ea043863974c180ba817aea68678cbea5e4ba395f74d4803d1d",
 //                        ColorParser.parse("&c#4 &f第四天"),
 //                        ColorParser.parse("&r"),
 //                        ColorParser.parse("&r  &a■ &7礼包内容:"),
@@ -125,7 +125,7 @@
 //
 //
 //        Button E_Kit = new Button(
-//                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/ac3821d4f61b17f82f0d7a8e5312608ff50ede29b1b4dc89847be9427d36",
+//                SkullAPI.getSkullItem("ac3821d4f61b17f82f0d7a8e5312608ff50ede29b1b4dc89847be9427d36",
 //                        ColorParser.parse("&c#5 &f第五天"),
 //                        ColorParser.parse("&r"),
 //                        ColorParser.parse("&r  &a■ &7礼包内容:"),
@@ -154,7 +154,7 @@
 //
 //
 //        Button F_Kit = new Button(
-//                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/59f0743576bba4a2622480548970b721543d2c457955e8dd5c4f9ddb6a56b95c",
+//                SkullAPI.getSkullItem("59f0743576bba4a2622480548970b721543d2c457955e8dd5c4f9ddb6a56b95c",
 //                        ColorParser.parse("&c#6 &f第六天"),
 //                        ColorParser.parse("&r"),
 //                        ColorParser.parse("&r  &a■ &7礼包内容:"),
@@ -185,7 +185,7 @@
 //
 //
 //        Button G_Kit = new Button(
-//                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/ed97f4f44e796f79ca43097faa7b4fe91c445c76e5c26a5ad794f5e479837",
+//                SkullAPI.getSkullItem("ed97f4f44e796f79ca43097faa7b4fe91c445c76e5c26a5ad794f5e479837",
 //                        ColorParser.parse("&c#7 &f第七天"),
 //                        ColorParser.parse("&r"),
 //                        ColorParser.parse("&r  &a■ &7礼包内容:"),

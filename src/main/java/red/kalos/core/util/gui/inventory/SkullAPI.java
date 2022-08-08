@@ -34,7 +34,7 @@ public class SkullAPI {
       GameProfile profile = new GameProfile(UUID.randomUUID(), null);
       String before = "{\"textures\":{\"SKIN\":{\"url\":\"";
       String after = "\"}}}";
-      url = before + url + after;
+      url = before + ("http://textures.minecraft.net/texture/"+url) + after;
       profile.getProperties().put("textures", new Property("textures", encoder.encodeToString(url.getBytes())));
       try {
          profile_field.set(meta, profile);
@@ -46,6 +46,6 @@ public class SkullAPI {
    }
 
    public static ItemStack getPlayerSkull(String name, String... lores){
-      return getSkullItem("http://textures.minecraft.net/texture/e65ac43ca13db2703afcede4e8fdc9bf7d1c65d154cea8e195de59d05c73da82",name,lores);
+      return getSkullItem("e65ac43ca13db2703afcede4e8fdc9bf7d1c65d154cea8e195de59d05c73da82",name,lores);
    }
 }

@@ -45,7 +45,7 @@ public class HomeMenu extends InventoryGUI {
 
             j++;
         }
-        ItemStack CreateHome = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/ac4970ea91ab06ece59d45fce7604d255431f2e03a737b226082c4cce1aca1c4",
+        ItemStack CreateHome = SkullAPI.getSkullItem("ac4970ea91ab06ece59d45fce7604d255431f2e03a737b226082c4cce1aca1c4",
                 ColorParser.parse("&a创建家园 &7(随机名称)"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o您可以输入 &c/sethome 家园名称 &7&o创建它.")

@@ -29,7 +29,7 @@ public class PlayerKits  extends InventoryGUI {
         super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 礼包系统"), player, 6);
         //皮卡丘月礼包
         this.setButton(0,new Button(
-                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/a5c6944593820d13d7d47db2abcfcbf683bb74a07e1a982db9f32e0a8b5dc466",
+                SkullAPI.getSkullItem("a5c6944593820d13d7d47db2abcfcbf683bb74a07e1a982db9f32e0a8b5dc466",
                         ColorParser.parse("&e皮卡丘每月礼包 &7// &fPikachu Kits"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7给 &e皮卡丘 &7玩家准备的礼包，每个自然月可以领取一次。"),
@@ -75,7 +75,7 @@ public class PlayerKits  extends InventoryGUI {
 
         //伊布月礼包
         this.setButton(1,new Button(
-                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/80d8414cfcbbdfdb383a8b3f31d289146f38672d574e154296e110aad9e11428",
+                SkullAPI.getSkullItem("80d8414cfcbbdfdb383a8b3f31d289146f38672d574e154296e110aad9e11428",
                         ColorParser.parse("&6伊布每月礼包 &7// &fEevee Kits"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7给 &6伊布 &7玩家准备的礼包，每个自然月可以领取一次。"),

@@ -17,14 +17,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class CustomItem {
-    public static ItemStack MaxLegend = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/c285dd77c64e2368fe77c31ff7c3d42b700fb7b74f2b463e696916c90f5d27ab",
+    public static ItemStack MaxLegend = SkullAPI.getSkullItem("c285dd77c64e2368fe77c31ff7c3d42b700fb7b74f2b463e696916c90f5d27ab",
             ColorParser.parse("&cKalos &f// &b顶级传奇宝可梦"),
             ColorParser.parse("&8消耗品 (右键使用)"),
             ColorParser.parse("&r"),
             ColorParser.parse("&7使用该物品可以生成一只顶级传奇宝可梦。"),
             ColorParser.parse("&7请谨慎选择，手滑概不负责，使用后物品消失。")
     );
-    public static ItemStack Pokemon = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/56d7fdb50f14c731c727b0e0d189b6a874319fc0d79c8a099acfc77c7b2d9196",
+    public static ItemStack Pokemon = SkullAPI.getSkullItem("56d7fdb50f14c731c727b0e0d189b6a874319fc0d79c8a099acfc77c7b2d9196",
             ColorParser.parse("&cKalos &f// &e宝可梦自选包"),
             ColorParser.parse("&8消耗品 (右键使用)"),
             ColorParser.parse("&r"),

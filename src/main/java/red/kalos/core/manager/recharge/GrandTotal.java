@@ -35,7 +35,7 @@ public class GrandTotal extends InventoryGUI {
         double APrice = 6;
         String APermission = "A";
         Button A = new Button(
-                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/c9e89600ba75dc346b73762024ef25b0dd9dfc6fc4f26a684f8812a86ae3dbdc",
+                SkullAPI.getSkullItem("c9e89600ba75dc346b73762024ef25b0dd9dfc6fc4f26a684f8812a86ae3dbdc",
                         ColorParser.parse("&a充值礼包 &7// &f累计 &c"+APrice+" &f元"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &e■ &7当前进度:"),
@@ -75,7 +75,7 @@ public class GrandTotal extends InventoryGUI {
         double BPrice = 68;
         String BPermission = "B";
         Button B = new Button(
-                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/db80706f882e7762c11d5ab3cf190f828145dc30a64cb453c7f18842f0aa74d9",
+                SkullAPI.getSkullItem("db80706f882e7762c11d5ab3cf190f828145dc30a64cb453c7f18842f0aa74d9",
                         ColorParser.parse("&a充值礼包 &7// &f累计 &c"+BPrice+" &f元"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &e■ &7当前进度:"),
@@ -121,7 +121,7 @@ public class GrandTotal extends InventoryGUI {
         double CPrice = 128;
         String CPermission = "C";
         Button C = new Button(
-                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/e18af14cb4046c32678e9a97bd78461b97524b41022335a12bbc45bc6985a5b4",
+                SkullAPI.getSkullItem("e18af14cb4046c32678e9a97bd78461b97524b41022335a12bbc45bc6985a5b4",
                         ColorParser.parse("&a充值礼包 &7// &f累计 &c"+CPrice+" &f元"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &e■ &7当前进度:"),
@@ -163,7 +163,7 @@ public class GrandTotal extends InventoryGUI {
         double DPrice = 328;
         String DPermission = "D";
         Button D = new Button(
-                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/5e8d16836e13786469a77bd17983b909ef59a33b4d4dd67d7a9d76ae810a09f5",
+                SkullAPI.getSkullItem("5e8d16836e13786469a77bd17983b909ef59a33b4d4dd67d7a9d76ae810a09f5",
                         ColorParser.parse("&a充值礼包 &7// &f累计 &c"+DPrice+" &f元"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &e■ &7当前进度:"),
@@ -203,7 +203,7 @@ public class GrandTotal extends InventoryGUI {
         double EPrice = 648;
         String EPermission = "E";
         Button E = new Button(
-                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/aeae6fe18f27bbb3b62a03e7c0da2a3d88d30b655098feb377a32f672e33b7f4",
+                SkullAPI.getSkullItem("aeae6fe18f27bbb3b62a03e7c0da2a3d88d30b655098feb377a32f672e33b7f4",
                         ColorParser.parse("&a充值礼包 &7// &f累计 &c"+EPrice+" &f元"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &e■ &7当前进度:"),
@@ -243,7 +243,7 @@ public class GrandTotal extends InventoryGUI {
         double FPrice = 1280;
         String FPermission = "F";
         Button F = new Button(
-                SkullAPI.getSkullItem("http://textures.minecraft.net/texture/7984814a53275ddc5a21d2415b7ca50c05e3d2edceb001ca384878bf3171aaf6",
+                SkullAPI.getSkullItem("7984814a53275ddc5a21d2415b7ca50c05e3d2edceb001ca384878bf3171aaf6",
                         ColorParser.parse("&a充值礼包 &7// &f累计 &c"+FPrice+" &f元"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&r  &e■ &7当前进度:"),
@@ -292,7 +292,7 @@ public class GrandTotal extends InventoryGUI {
         }
 
         //"+Data.SERVER_POINTS+"充值
-        ItemStack Recharge = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/76c9c0b2b1e74b70847e551be14c81b58fc6011017f8922b5fe6f66a6dc77066",ColorParser.parse("&c"+Data.SERVER_POINTS+"充值"),
+        ItemStack Recharge = SkullAPI.getSkullItem("76c9c0b2b1e74b70847e551be14c81b58fc6011017f8922b5fe6f66a6dc77066",ColorParser.parse("&c"+Data.SERVER_POINTS+"充值"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o可以在这里进行赞助服务器."));
         Button RechargeButton = new Button(Recharge, type -> {
@@ -304,7 +304,7 @@ public class GrandTotal extends InventoryGUI {
         this.setButton(45, RechargeButton);
 
         //礼包商店
-        ItemStack GiftPackShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/b99dc01dcf28445576f2268882a77706fcb9353ab0c954f96045561a79244c1e",ColorParser.parse("&a会员商店"),
+        ItemStack GiftPackShop = SkullAPI.getSkullItem("b99dc01dcf28445576f2268882a77706fcb9353ab0c954f96045561a79244c1e",ColorParser.parse("&a会员商店"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o在这里可以开通会员享受更多内容。"));
         Button GiftPackShopButton = new Button(GiftPackShop, type -> {
@@ -316,7 +316,7 @@ public class GrandTotal extends InventoryGUI {
         this.setButton(46, GiftPackShopButton);
 
         //累计充值
-        ItemStack GrandTotal = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/13b08f083df8306fa86817dd08dfa024377b80e92c0800e91f292c2aba44ad3e",ColorParser.parse("&6累计充值"),
+        ItemStack GrandTotal = SkullAPI.getSkullItem("13b08f083df8306fa86817dd08dfa024377b80e92c0800e91f292c2aba44ad3e",ColorParser.parse("&6累计充值"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o累计赞助到一定数额的额外奖励。"));
         Button GrandTotalButton = new Button(GrandTotal, type -> {
@@ -328,7 +328,7 @@ public class GrandTotal extends InventoryGUI {
         this.setButton(47, GrandTotalButton);
 
         //时装商店
-        ItemStack ArmourersShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
+        ItemStack ArmourersShop = SkullAPI.getSkullItem("66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o可以在这里购买时装。"));
         Button ArmourersShopButton = new Button(ArmourersShop, type -> {

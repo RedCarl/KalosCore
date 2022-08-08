@@ -23,7 +23,7 @@ public class WorldWarpMenu extends InventoryGUI {
         super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 世界坐标"), player, 6);
 
         //主城世界
-        ItemStack Spawn = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/75e5b562b8c0028d929d011099a4ef30836c92a5312db21311b9067871ffdc6d",ColorParser.parse("&6精灵主城 &f// &7Spawn World"),
+        ItemStack Spawn = SkullAPI.getSkullItem("75e5b562b8c0028d929d011099a4ef30836c92a5312db21311b9067871ffdc6d",ColorParser.parse("&6精灵主城 &f// &7Spawn World"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o可以在这里训练宝可梦或者进行交易."));
         Button SpawnButton = new Button(Spawn, type -> {
@@ -38,7 +38,7 @@ public class WorldWarpMenu extends InventoryGUI {
 
 
         //精灵世界
-        ItemStack TheOverworld = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/212a03a4c11b4d472472e7e4593d2e126a6259e33cc81f44eb05cf042d076967",ColorParser.parse("&a主世界 &f// &7The Overworld"),
+        ItemStack TheOverworld = SkullAPI.getSkullItem("212a03a4c11b4d472472e7e4593d2e126a6259e33cc81f44eb05cf042d076967",ColorParser.parse("&a主世界 &f// &7The Overworld"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&oMinecraft的起始维度与主要维度."));
         Button TheOverworldButton = new Button(TheOverworld, type -> {
@@ -54,7 +54,7 @@ public class WorldWarpMenu extends InventoryGUI {
         this.setButton(1, TheOverworldButton);
 
         //末地世界末地（The End）
-        ItemStack TheEnd = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/46994d71b875f087e64dea9b4a0a5cb9f4eb9ab0e8d9060dfde7f6803baa1779",ColorParser.parse("&d末地 &f// &7The End"),
+        ItemStack TheEnd = SkullAPI.getSkullItem("46994d71b875f087e64dea9b4a0a5cb9f4eb9ab0e8d9060dfde7f6803baa1779",ColorParser.parse("&d末地 &f// &7The End"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o末地石是这里唯一会生成的方块."));
         Button TheEndButton = new Button(TheEnd, type -> {
@@ -70,7 +70,7 @@ public class WorldWarpMenu extends InventoryGUI {
         this.setButton(2, TheEndButton);
 
         //究极空间 (Ultra Space)
-        ItemStack UltraSpace = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/c3687e25c632bce8aa61e0d64c24e694c3eea629ea944f4cf30dcfb4fbce071",ColorParser.parse("&6究极空间 &f// &7Ultra Space"),
+        ItemStack UltraSpace = SkullAPI.getSkullItem("c3687e25c632bce8aa61e0d64c24e694c3eea629ea944f4cf30dcfb4fbce071",ColorParser.parse("&6究极空间 &f// &7Ultra Space"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o天空会随着时间的推移会慢慢改变颜色."));
         Button UltraSpaceButton = new Button(UltraSpace, type -> {
@@ -81,7 +81,7 @@ public class WorldWarpMenu extends InventoryGUI {
         this.setButton(3, UltraSpaceButton);
 
         //训练场
-        ItemStack DrownedWorld = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/e6799bfaa3a2c63ad85dd378e66d57d9a97a3f86d0d9f683c498632f4f5c",ColorParser.parse("&3训练场 &f// &7Training"),
+        ItemStack DrownedWorld = SkullAPI.getSkullItem("e6799bfaa3a2c63ad85dd378e66d57d9a97a3f86d0d9f683c498632f4f5c",ColorParser.parse("&3训练场 &f// &7Training"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o训练宝可梦的地方,快带着你的宝可梦来历练吧!"));
         Button DrownedWorldButton = new Button(DrownedWorld, type -> {
@@ -95,7 +95,7 @@ public class WorldWarpMenu extends InventoryGUI {
         this.setButton(4, DrownedWorldButton);
 
         //地皮
-        ItemStack PlotWorld = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/ed339d52393d5183a3664015c0b2c6c1012ea1b525ed952073311ca180a0e6",ColorParser.parse("&e地皮 &f// &7Plot"),
+        ItemStack PlotWorld = SkullAPI.getSkullItem("ed339d52393d5183a3664015c0b2c6c1012ea1b525ed952073311ca180a0e6",ColorParser.parse("&e地皮 &f// &7Plot"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o每人都可以领取一块属于自己的地皮!"));
         Button PlotWorldButton = new Button(PlotWorld, type -> {

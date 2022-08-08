@@ -49,7 +49,7 @@ public class PlotMenu extends InventoryGUI {
         }
 
         //创建地皮按钮
-        ItemStack CreatePlot = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/ac4970ea91ab06ece59d45fce7604d255431f2e03a737b226082c4cce1aca1c4",
+        ItemStack CreatePlot = SkullAPI.getSkullItem("ac4970ea91ab06ece59d45fce7604d255431f2e03a737b226082c4cce1aca1c4",
                 ColorParser.parse("&a创建地皮 &7("+plotPlayer.getPlots().size()+"/"+plotPlayer.getAllowedPlots()+")"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o您可以站在您喜欢的地皮上输入 &a/plot claim &7&o来领取它.")
@@ -115,7 +115,7 @@ public class PlotMenu extends InventoryGUI {
     }
 
     private Button getPlot(Plot plot,Player player,int i,String identity,String lore,String url){
-        ItemStack Plot = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/"+url,
+        ItemStack Plot = SkullAPI.getSkullItem(""+url,
                 ColorParser.parse("&fID: "+plot.getId()+identity),
                 ColorParser.parse(lore),
                 ColorParser.parse("&r"),

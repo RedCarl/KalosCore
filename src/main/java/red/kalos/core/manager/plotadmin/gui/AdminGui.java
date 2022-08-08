@@ -35,7 +35,8 @@ public class AdminGui extends InventoryGUI {
         }
 
 
-        ItemStack Apply = ItemFactoryAPI.getItemStack(Material.BARRIER,ColorParser.parse("&a邀请玩家"),
+        ItemStack Apply = SkullAPI.getSkullItem("3edd20be93520949e6ce789dc4f43efaeb28c717ee6bfcbbe02780142f716",
+                ColorParser.parse("&a邀请玩家"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o邀请其它玩家进入您的地皮中."));
         Button ApplyButton = new Button(Apply, type -> {
@@ -43,7 +44,8 @@ public class AdminGui extends InventoryGUI {
         this.setButton(45, ApplyButton);
 
         //删除地皮
-        ItemStack Delete = ItemFactoryAPI.getItemStack(Material.BARRIER,ColorParser.parse("&c删除地皮"),
+        ItemStack Delete = SkullAPI.getSkullItem("3edd20be93520949e6ce789dc4f43efaeb28c717ee6bfcbbe02780142f716",
+                ColorParser.parse("&c删除地皮"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o删除这个地皮,这将会让地皮回到初始状态. &c(谨慎操作,不可逆转)"));
         Button DeleteButton = new Button(Delete, type -> {
@@ -55,7 +57,8 @@ public class AdminGui extends InventoryGUI {
         this.setButton(46, DeleteButton);
 
         //返回地皮管理
-        ItemStack Close = ItemFactoryAPI.getItemStack(Material.BARRIER,ColorParser.parse("&c返回"),
+        ItemStack Close = SkullAPI.getSkullItem("865426a33df58b465f0601dd8b9bec3690b2193d1f9503c2caab78f6c2438",
+                ColorParser.parse("&c返回"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o返回至地皮管理."));
         Button CloseButton = new Button(Close, type -> {

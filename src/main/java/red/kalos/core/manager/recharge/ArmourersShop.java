@@ -143,7 +143,7 @@ public class ArmourersShop extends InventoryGUI {
         }
 
         //"+Data.SERVER_POINTS+"充值
-        ItemStack Recharge = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/76c9c0b2b1e74b70847e551be14c81b58fc6011017f8922b5fe6f66a6dc77066",ColorParser.parse("&c"+Data.SERVER_POINTS+"充值"),
+        ItemStack Recharge = SkullAPI.getSkullItem("76c9c0b2b1e74b70847e551be14c81b58fc6011017f8922b5fe6f66a6dc77066",ColorParser.parse("&c"+Data.SERVER_POINTS+"充值"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o可以在这里进行赞助服务器."));
         Button RechargeButton = new Button(Recharge, type -> {
@@ -155,7 +155,7 @@ public class ArmourersShop extends InventoryGUI {
         this.setButton(45, RechargeButton);
 
         //礼包商店
-        ItemStack GiftPackShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/b99dc01dcf28445576f2268882a77706fcb9353ab0c954f96045561a79244c1e",ColorParser.parse("&a会员商店"),
+        ItemStack GiftPackShop = SkullAPI.getSkullItem("b99dc01dcf28445576f2268882a77706fcb9353ab0c954f96045561a79244c1e",ColorParser.parse("&a会员商店"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o在这里可以开通会员享受更多内容。"));
         Button GiftPackShopButton = new Button(GiftPackShop, type -> {
@@ -167,7 +167,7 @@ public class ArmourersShop extends InventoryGUI {
         this.setButton(46, GiftPackShopButton);
 
         //累计充值
-        ItemStack GrandTotal = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/13b08f083df8306fa86817dd08dfa024377b80e92c0800e91f292c2aba44ad3e",ColorParser.parse("&6累计充值"),
+        ItemStack GrandTotal = SkullAPI.getSkullItem("13b08f083df8306fa86817dd08dfa024377b80e92c0800e91f292c2aba44ad3e",ColorParser.parse("&6累计充值"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o累计赞助到一定数额的额外奖励。"));
         Button GrandTotalButton = new Button(GrandTotal, type -> {
@@ -179,7 +179,7 @@ public class ArmourersShop extends InventoryGUI {
         this.setButton(47, GrandTotalButton);
 
         //时装商店
-        ItemStack ArmourersShop = SkullAPI.getSkullItem("http://textures.minecraft.net/texture/66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
+        ItemStack ArmourersShop = SkullAPI.getSkullItem("66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&7&o可以在这里购买时装。"));
         Button ArmourersShopButton = new Button(ArmourersShop, type -> {
