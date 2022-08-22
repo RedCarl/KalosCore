@@ -1,7 +1,11 @@
 package red.kalos.core.manager.menu;
 
 import com.Zrips.CMI.CMI;
+import com.pixelmonmod.pixelmon.Pixelmon;
+import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.api.pokemon.PokemonSpec;
 import com.pixelmonmod.pixelmon.config.PixelmonConfig;
+import com.pixelmonmod.pixelmon.config.PixelmonEntityList;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,16 +16,27 @@ import red.kalos.core.Main;
 import red.kalos.core.configFile.Data;
 import red.kalos.core.database.PlayerDataManager;
 import red.kalos.core.manager.armourers.guis.ArmourersGUI;
+import red.kalos.core.manager.buildmanager.BuildGUI;
+import red.kalos.core.manager.crazyauctions.api.Category;
+import red.kalos.core.manager.crazyauctions.api.ShopType;
+import red.kalos.core.manager.crazyauctions.controllers.GUI;
 import red.kalos.core.manager.homes.HomeMenu;
+import red.kalos.core.manager.kits.KitsGUI;
 import red.kalos.core.manager.plotadmin.gui.PlotMenu;
 import red.kalos.core.manager.pokeban.gui.BanList;
+import red.kalos.core.manager.pokedex.PokeDexManager;
 import red.kalos.core.manager.pokeinfo.gui.PokemonInfoMenu;
+import red.kalos.core.manager.questmanager.QuestGUI;
+import red.kalos.core.manager.questmanager.quest.QuestType;
 import red.kalos.core.manager.recharge.recharge.RechargeMenu;
+import red.kalos.core.manager.shop.ItemBuy;
+import red.kalos.core.manager.shop.ItemSell;
 import red.kalos.core.manager.warps.WorldWarpMenu;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.PokemonAPI;
 import red.kalos.core.util.api.DateUtil;
 import red.kalos.core.util.api.KalosUtil;
+import red.kalos.core.util.api.MoneyUtil;
 import red.kalos.core.util.gui.Button;
 import red.kalos.core.util.gui.InventoryGUI;
 import red.kalos.core.util.gui.inventory.ItemFactoryAPI;
@@ -67,9 +82,11 @@ public class MainMenu extends InventoryGUI {
                     ColorParser.parse("&r      &f" + player.getUniqueId()),
                     ColorParser.parse("&r  &d■ &7TIME(累计游玩时长):"),
                     ColorParser.parse("&r      &f" + PokemonAPI.getDate((int) PlayerDataManager.getInstance().getPlayerData(player.getUniqueId()).getPlayTime())),
+                    ColorParser.parse("&r  &5■ &7宝可梦图鉴:"),
+                    ColorParser.parse("&r      &f" + PokeDexManager.getInstance().getPokeDex(player).size()),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &e■ &7游戏余额:"),
-                    ColorParser.parse("&r      &3" + CMI.getInstance().getPlayerManager().getUser(player).getBalance() + " &7"+Data.SERVER_VAULT),
+                    ColorParser.parse("&r      &3" + KalosUtil.decimalFormat(CMI.getInstance().getPlayerManager().getUser(player).getBalance(),2) + " &7"+Data.SERVER_VAULT),
                     ColorParser.parse("&r      &3" + Main.getPpAPI().lookAsync(player.getUniqueId()).get() + ".0 &7"+Data.SERVER_POINTS),
                     ColorParser.parse("&r  &6■ &7累计充值: &3"),
                     ColorParser.parse("&r      &3" + PlayerDataManager.getInstance().getPlayerData(player.getUniqueId()).getRecharge() + " &7RMB"),
@@ -312,18 +329,7 @@ public class MainMenu extends InventoryGUI {
         });
         this.setButton(25, VIPFlyButton);
 
-        //时装系统
-        ItemStack Armourers = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RED_UMBRELLA"),
-                ColorParser.parse("&f时装仓库"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o这里储存着您拥有的时装，随时都可以穿戴."));
-        Button ArmourersButton = new Button(Armourers, type -> {
-            if (type.isLeftClick()) {
-                ArmourersGUI armourersGUI = new ArmourersGUI(player);
-                armourersGUI.openInventory();
-            }
-        });
-        this.setButton(30, ArmourersButton);
+
 
 //        //头衔系统
 //        ItemStack NameTag = ItemFactoryAPI.getItemStack(Material.NAME_TAG,
@@ -338,18 +344,7 @@ public class MainMenu extends InventoryGUI {
 //        });
 //        this.setButton(31, NameTagButton);
 
-//        //礼包系统
-//        ItemStack Kits = ItemFactoryAPI.getItemStack(Material.STORAGE_MINECART,
-//                ColorParser.parse("&f礼包系统"),
-//                ColorParser.parse("&r"),
-//                ColorParser.parse("&7&o这里有各种礼包可以供您领取."));
-//        Button KitsButton = new Button(Kits, type -> {
-//            if (type.isLeftClick()) {
-//                PlayerKits playerKits = new PlayerKits(player);
-//                playerKits.openInventory();
-//            }
-//        });
-//        this.setButton(32, KitsButton);
+
 
 //        //Job
 //        ItemStack Job = ItemFactoryAPI.getItemStack(Material.DIAMOND_AXE,
@@ -389,17 +384,8 @@ public class MainMenu extends InventoryGUI {
 //        });
 //        this.setButton(50, PokeRankButton);
 
-//        ItemStack Mission = ItemFactoryAPI.getItemStack(Material.LEASH,
-//                ColorParser.parse("&f任务系统 &c(Bate1.0)"),
-//                ColorParser.parse("&r"),
-//                ColorParser.parse("&7&o丰富的任务系统，完成并获得奖励.")
-//        );
-//        Button MissionButton = new Button(Mission, type -> {
-//            new QuestGUI(player, QuestType.DAILY).openInventory();
-//        });
-//        this.setButton(51, MissionButton);
-//
-//
+
+
         ItemStack BanList = ItemFactoryAPI.getItemStack(Material.BARRIER,
                 ColorParser.parse("&f封禁列表"),
                 ColorParser.parse("&r"),
@@ -413,22 +399,78 @@ public class MainMenu extends InventoryGUI {
         });
         this.setButton(46, BanListButton);
 
+        ItemStack BuildShop = ItemFactoryAPI.getItemStack(Material.BRICK_STAIRS,
+                ColorParser.parse("&f建筑商店"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o您可以在这里购买建筑材料。"));
+        Button BuildShopButton = new Button(BuildShop, type -> {
+            new BuildGUI(player,0).openInventory();
+        });
+        this.setButton(39, BuildShopButton);
 
-//        ItemStack Spyglass = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_CASH_REGISTER"),
-//                ColorParser.parse("&f全球市场"),
-//                ColorParser.parse("&r"),
-//                ColorParser.parse("&7&o在这里与全服的玩家更方便的进行 &a出售 &7&o或 &a拍卖 &7&o物品."),
-//                ColorParser.parse("&7&o左键点击进入 &a出售 &7&o市场,右键点击进入 &a拍卖 &7&o市场.")
-//        );
-//        Button SpyglassButton = new Button(Spyglass, type -> {
-//            if (type.isLeftClick()) {
-//                GUI.openShop(player, ShopType.SELL, Category.NONE, 1);
-//            }
-//            if (type.isRightClick()) {
-//                GUI.openShop(player, ShopType.BID, Category.NONE, 1);
-//            }
-//        });
-//        this.setButton(12, SpyglassButton);
+
+        ItemStack Spyglass = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_CASH_REGISTER"),
+                ColorParser.parse("&f全球市场"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o在这里与全服的玩家更方便的进行 &a出售 &7&o或 &a拍卖 &7&o物品."),
+                ColorParser.parse("&7&o左键点击进入 &a出售 &7&o市场,右键点击进入 &a拍卖 &7&o市场.")
+        );
+        Button SpyglassButton = new Button(Spyglass, type -> {
+            GUI.openShop(player, ShopType.SELL, Category.NONE, 1);
+        });
+        this.setButton(48, SpyglassButton);
+
+        ItemStack Mission = ItemFactoryAPI.getItemStack(Material.LEASH,
+                ColorParser.parse("&f任务系统 &c(Bate1.0)"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o丰富的任务系统，完成并获得奖励.")
+        );
+        Button MissionButton = new Button(Mission, type -> {
+            new QuestGUI(player, QuestType.DAILY).openInventory();
+        });
+        this.setButton(49, MissionButton);
+
+        //礼包系统
+        ItemStack Kits = ItemFactoryAPI.getItemStack(Material.STORAGE_MINECART,
+                ColorParser.parse("&f礼包系统"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o这里有各种礼包可以供您领取."));
+        Button KitsButton = new Button(Kits, type -> {
+            KitsGUI playerKits = new KitsGUI(player);
+            playerKits.openInventory();
+        });
+        this.setButton(50, KitsButton);
+
+        //时装系统
+        ItemStack Armourers = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RED_UMBRELLA"),
+                ColorParser.parse("&f时装仓库"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o这里储存着您拥有的时装，随时都可以穿戴."));
+        Button ArmourersButton = new Button(Armourers, type -> {
+            ArmourersGUI armourersGUI = new ArmourersGUI(player);
+            armourersGUI.openInventory();
+        });
+        this.setButton(51, ArmourersButton);
+
+
+        ItemStack SellShop = ItemFactoryAPI.getItemStack(Material.CARROT_ITEM,
+                ColorParser.parse("&f收购商店"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o您可以在这里出售您的物品。"));
+        Button SellShopButton = new Button(SellShop, type -> {
+            new ItemSell(player).openInventory();
+        });
+        this.setButton(52, SellShopButton);
+
+
+        ItemStack BuyShop = ItemFactoryAPI.getItemStack(Material.POTATO_ITEM,
+                ColorParser.parse("&f出售商店"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o您可以在这里购买物品。"));
+        Button BuyShopButton = new Button(BuyShop, type -> {
+            new ItemBuy(player).openInventory();
+        });
+        this.setButton(53, BuyShopButton);
     }
 
 }

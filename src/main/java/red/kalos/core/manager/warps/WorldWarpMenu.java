@@ -30,7 +30,6 @@ public class WorldWarpMenu extends InventoryGUI {
             if (type.isLeftClick()) {
                 player.closeInventory();
                 Location location = SpawnUtil.getSpawnPoint(player).getBukkitLoc();
-                location.setYaw(90);
                 player.teleport(location);
             }
         });

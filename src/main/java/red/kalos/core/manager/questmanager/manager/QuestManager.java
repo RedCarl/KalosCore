@@ -121,7 +121,8 @@ public class QuestManager {
             for(int i=0;i<5;i++){
                 if(all.size()==0)
                     break;
-                Quest q = all.get(r.nextInt(all.size()));
+                int c =r.nextInt(all.size());
+                Quest q = all.get(c);
                 selected.add(q);
                 all.remove(q);
             }

@@ -92,7 +92,7 @@ public class QuestListener implements Listener {
         if (forgeEvent.getForgeEvent() instanceof BreedEvent.CollectEgg) {
             BreedEvent.CollectEgg event = (BreedEvent.CollectEgg) forgeEvent.getForgeEvent();
             Player player = Bukkit.getPlayer(event.owner);
-            QuestManager.handleMessage(player.getName(), TaskType.HATCH_MESSAGE, new Object[]{event.getEgg().getPixelmonIfExists()});
+            QuestManager.handleMessage(player.getName(), TaskType.HATCH_MESSAGE, new Object[]{event.getEgg()});
         }
     }
 

@@ -1,5 +1,8 @@
 package red.kalos.core.listener;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import red.kalos.core.Main;
 import red.kalos.core.manager.menu.MainMenu;
 import red.kalos.core.util.ColorParser;
@@ -50,6 +53,14 @@ public class CommandEvent implements Listener {
                 }
                 event.setCancelled(true);
                 break;
+//            case "/补偿":
+//                if (player.getName().equals("Red_Carl")){
+//                    for (Player p:Bukkit.getOnlinePlayers()) {
+//                        p.getInventory().addItem(new ItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),10));
+//                        p.sendMessage(ColorParser.parse("&a补偿奖励已经发送，请查看背包。"));
+//                    }
+//                }
+//                break;
         }
 
         if (event.getMessage().contains("sethome")){

@@ -10,8 +10,6 @@ import red.kalos.core.database.PlayerDataManager;
 import red.kalos.core.entity.PlayerData;
 import red.kalos.core.listener.*;
 import red.kalos.core.manager.armourers.listener.ArmourersUpdateListener;
-import red.kalos.core.manager.autobroadcast.BroadCastMessage;
-import red.kalos.core.manager.autosave.AutoSave;
 import red.kalos.core.manager.citizens.CitizensManager;
 import red.kalos.core.manager.crazyauctions.CrazyAuctions;
 import red.kalos.core.manager.kitpvp.listener.KitPvpEvent;
@@ -24,7 +22,9 @@ import red.kalos.core.manager.questmanager.manager.ConfigManager;
 import red.kalos.core.manager.questmanager.manager.QuestManager;
 import red.kalos.core.manager.questmanager.quest.list.achievement.Achievement;
 import red.kalos.core.manager.questmanager.quest.list.dayquest.Day;
+import red.kalos.core.manager.questmanager.quest.list.weekquest.Week;
 import red.kalos.core.manager.ranking.RankingManager;
+import red.kalos.core.manager.recharge.recharge.RechargeCustomUI;
 import red.kalos.core.manager.worldtime.WorldTimeSynchronize;
 import red.kalos.core.packetlistener.AdvanceAdapter;
 import red.kalos.core.packetlistener.MessageAdapter;
@@ -75,6 +75,9 @@ public class Main extends JavaPlugin {
         log(getName() + " " + getDescription().getVersion() + " &7开始加载...");
 
         long startTime = System.currentTimeMillis();
+
+        log("正在注册跨服监听器...");
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         //Vault
         if (!setupEconomy() ) {
@@ -140,8 +143,8 @@ public class Main extends JavaPlugin {
         regListener(new Nick());
         regListener(new KitsManager());
         regListener(new ItemInteractEvent());
-        regListener(new AutoSave());
         regListener(new CitizensEvent());
+        regListener(new RechargeCustomUI());
 
         log("启动传奇宝可梦监控系统...");
         SpawnTime.start();
@@ -183,6 +186,7 @@ public class Main extends JavaPlugin {
 
         log("加载龙之核心组件...");
         saveYmlConfig("Nick/gui.yml");
+        saveYmlConfig("Recharge/gui.yml");
 
         log("加载礼包系统...");
         KitsManager.onLoadKitsEvent();
@@ -190,13 +194,11 @@ public class Main extends JavaPlugin {
         log("加载玩家Ranking系统...");
         RankingManager.init();
 
-        log("加载 AutoSave 模块...");
-        AutoSave.onEnable();
-
         log("加载 Quest 模块...");
         ConfigManager.initialize();
         new QuestListener().initialize();
         new Day().initialize();
+        new Week().initialize();
         new Achievement().initialize();
         QuestManager.initialize();
 
@@ -226,9 +228,6 @@ public class Main extends JavaPlugin {
         CrazyAuctions crazyAuctions = new CrazyAuctions();
         crazyAuctions.onDisable();
 
-        log("卸载 AutoSave 模块...");
-        AutoSave.onDisable();
-
         log("卸载 Citizens 模块...");
         CitizensManager.getInstance().clear();
 
@@ -236,6 +235,7 @@ public class Main extends JavaPlugin {
 
         showAD();
     }
+
     /**
      * 注册监听器
      *

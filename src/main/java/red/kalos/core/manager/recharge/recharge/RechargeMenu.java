@@ -2,11 +2,6 @@ package red.kalos.core.manager.recharge.recharge;
 
 import red.kalos.core.configFile.Data;
 import red.kalos.core.manager.menu.MainMenu;
-import red.kalos.core.manager.recharge.GiftPackShop;
-import red.kalos.core.manager.recharge.ArmourersShop;
-import red.kalos.core.manager.recharge.GrandTotal;
-import red.kalos.core.manager.shop.ItemBuy;
-import red.kalos.core.manager.shop.ItemSell;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.gui.Button;
 import red.kalos.core.util.gui.InventoryGUI;
@@ -40,22 +35,35 @@ public class RechargeMenu extends InventoryGUI {
         }
 
         int j = 0;
-        for (int i = 10; i <= 70; i=i+10) {
+        for (int i = 1; i <= 6; i++) {
             ItemStack Money = SkullAPI.getSkullItem("7095d0b895bd8b6f252534214d3f819b351e1987b52cbfc0afa424df1f00fa7a",
-                    ColorParser.parse("&f充值 &6"+(double) (6*i)+" &f"+ Data.SERVER_POINTS),
+                    ColorParser.parse("&f充值 &6"+(double) (68*i)+" &f"+ Data.SERVER_POINTS),
                     ColorParser.parse("&r"),
                     ColorParser.parse("&7&o您的赞助是对我们最大的支持."));
             Money.setAmount(i);
             int finalI = i;
             Button MoneyButton = new Button(Money, type -> {
                 if (type.isLeftClick()) {
-                    RechargeSelect rechargeSelect = new RechargeSelect(player, (double) (6* finalI));
+                    RechargeSelect rechargeSelect = new RechargeSelect(player, (double) (68* finalI));
                     rechargeSelect.openInventory();
                 }
             });
             this.setButton(19+j, MoneyButton);
             j++;
         }
+
+        ItemStack Money = SkullAPI.getSkullItem("631525274d2c6b9a5ad3e6a844a8319bca18bfbc9b78aecdfd84a39932135548",
+                ColorParser.parse("&c自定义充值数额"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o您的赞助是对我们最大的支持."));
+        Button MoneyButton = new Button(Money, type -> {
+            if (type.isLeftClick()) {
+                RechargeCustomUI.open(player);
+            }
+        });
+        this.setButton(25, MoneyButton);
+
+
 
         ItemStack Line = ItemFactoryAPI.getItemStackWithDurability(Material.STAINED_GLASS_PANE,(short)15, ColorParser.parse("&r"));
         for (int i = 0; i < 9; i++) {
@@ -80,35 +88,12 @@ public class RechargeMenu extends InventoryGUI {
                 ColorParser.parse("&7&o在这里可以开通会员享受更多内容。"));
         Button GiftPackShopButton = new Button(GiftPackShop, type -> {
             if (type.isLeftClick()) {
-                red.kalos.core.manager.recharge.GiftPackShop giftPackShop = new GiftPackShop(player);
-                giftPackShop.openInventory();
+                RankShop rankShop = new RankShop(player);
+                rankShop.openInventory();
             }
         });
         this.setButton(46, GiftPackShopButton);
 
-        //累计充值
-        ItemStack GrandTotal = SkullAPI.getSkullItem("13b08f083df8306fa86817dd08dfa024377b80e92c0800e91f292c2aba44ad3e",ColorParser.parse("&6累计充值"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o累计赞助到一定数额的额外奖励。"));
-        Button GrandTotalButton = new Button(GrandTotal, type -> {
-            if (type.isLeftClick()) {
-                red.kalos.core.manager.recharge.GrandTotal grandTotal = new GrandTotal(player);
-                grandTotal.openInventory();
-            }
-        });
-        this.setButton(47, GrandTotalButton);
-
-        //时装商店
-        ItemStack ArmourersShop = SkullAPI.getSkullItem("66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
-                ColorParser.parse("&r"),
-                ColorParser.parse("&7&o可以在这里购买时装。"));
-        Button ArmourersShopButton = new Button(ArmourersShop, type -> {
-            if (type.isLeftClick()) {
-                red.kalos.core.manager.recharge.ArmourersShop armourersShop = new ArmourersShop(player);
-                armourersShop.openInventory();
-            }
-        });
-        this.setButton(48, ArmourersShopButton);
 
         //返回主菜单
         ItemStack Close = ItemFactoryAPI.getItemStack(Material.BARRIER,ColorParser.parse("&c返回"),

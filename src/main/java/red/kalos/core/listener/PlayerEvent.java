@@ -1,6 +1,6 @@
 package red.kalos.core.listener;
 
-import com.Zrips.CMI.Modules.Sheduler.SchedulerManager;
+import com.Zrips.CMI.utils.SpawnUtil;
 import com.glazed7.glazedpay.bukkit.event.OrderShipEvent;
 import eos.moe.dragoncore.api.KeyPressEvent;
 import org.bukkit.*;
@@ -11,10 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -31,11 +29,13 @@ import red.kalos.core.manager.premium.entity.PlayerVIP;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.api.CubeAPI;
 import red.kalos.core.util.api.PokemonPhotoAPI;
+import red.kalos.morefish.MoreFish;
 import studio.trc.bukkit.litesignin.event.custom.PlayerSignInEvent;
 
 import java.awt.dnd.DropTargetEvent;
 import java.io.File;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
@@ -55,7 +55,7 @@ public class PlayerEvent implements Listener {
         //玩家进入游戏提示
         if (PlayerDataManager.getInstance().getPlayerData(player.getUniqueId()).getUuid()==null){
             PlayerDataManager.getInstance().setPlayerData(new PlayerData(player.getUniqueId().toString(),player.getName(),0,0,new RankData("default",0),"0"));
-            /*event.setJoinMessage(ColorParser.parse("&8[&a&l!&8] &7欢迎新玩家 &f"+player.getName()+" &7加入卡洛斯！"));*/
+            event.setJoinMessage(ColorParser.parse("&8[&a&l!&8] &7欢迎新玩家 &f"+player.getName()+" &7加入卡洛斯！"));
         }
 //        else {
 //            if (player.hasPermission("kim.grandtotal.L")&&!(player.hasPermission("group.admin"))){
@@ -139,6 +139,14 @@ public class PlayerEvent implements Listener {
 //            }
 //        }
 
+        if (itemStack!=null&&itemStack.getType().equals(Material.FISHING_ROD) && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)||event.getAction().equals(Action.RIGHT_CLICK_AIR)) && event.getPlayer().isSneaking()){
+            MoreFish moreFish = MoreFish.getInstance();
+            if (moreFish.getFishShopGUI()!=null){
+                moreFish.getFishShopGUI().openGUI(player);
+            }
+
+        }
+
     }
     //库存被打开的时候
     @EventHandler
@@ -182,9 +190,8 @@ public class PlayerEvent implements Listener {
         Player player = event.getPlayer();
 
         //掉入虚空拉回
-        if (player.getLocation().getWorld().getName().equals("spawn")&&player.getLocation().getY()<=-1){
-            Location location = new Location(Bukkit.getWorld("spawn"),-20.5,10,47.5);
-            location.setYaw(90);
+        if (player.getLocation().getY()<=-1){
+            Location location = SpawnUtil.getSpawnPoint(player).getBukkitLoc();
             player.teleport(location);
         }
     }
@@ -323,26 +330,26 @@ public class PlayerEvent implements Listener {
         }
     }
 
-    @EventHandler
-    public void EntityDamageEvent(EntityDamageEvent event){
-        if (event.getEntity().getType().equals(EntityType.PLAYER)){
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void EntityDamageEvent(EntityDamageByBlockEvent event){
-        if (event.getEntity().getType().equals(EntityType.PLAYER)){
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void EntityDamageEvent(EntityDamageByEntityEvent event){
-        if (event.getEntity().getType().equals(EntityType.PLAYER)){
-            event.setCancelled(true);
-        }
-    }
+//    @EventHandler
+//    public void EntityDamageEvent(EntityDamageEvent event){
+//        if (event.getEntity().getType().equals(EntityType.PLAYER)){
+//            event.setCancelled(true);
+//        }
+//    }
+//
+//    @EventHandler
+//    public void EntityDamageEvent(EntityDamageByBlockEvent event){
+//        if (event.getEntity().getType().equals(EntityType.PLAYER)){
+//            event.setCancelled(true);
+//        }
+//    }
+//
+//    @EventHandler
+//    public void EntityDamageEvent(EntityDamageByEntityEvent event){
+//        if (event.getEntity().getType().equals(EntityType.PLAYER)){
+//            event.setCancelled(true);
+//        }
+//    }
 
 
     CubeAPI sulaoxian = new CubeAPI(new Location(Bukkit.getWorld("spawn"), -188, 0, 10), new Location(Bukkit.getWorld("spawn"), -190, 256, 8));
@@ -357,4 +364,49 @@ public class PlayerEvent implements Listener {
             }
         }.runTaskLater(Main.getInstance(),10);
     }
+
+
+    @EventHandler
+    public void EntityPortalEvent(EntityPortalEvent event){
+        if (!event.getEntity().getType().equals(EntityType.PLAYER)){
+            event.setCancelled(true);
+        }
+    }
+
+
+    @EventHandler
+    public void InventoryClickEvent(InventoryClickEvent event){
+        String [] list = {
+                "_AXE",
+                "_HOE",
+                "_PICKAXE",
+                "_SHOVEL",
+                "_HAMMER",
+                "_HELM",
+                "_PLATE",
+                "_LEGS",
+                "_BOOTS",
+        };
+        if (event.getWhoClicked().getType().equals(EntityType.PLAYER)){
+            Player player = Bukkit.getPlayer(event.getWhoClicked().getUniqueId());
+            if (event.getClickedInventory()!=null&&event.getClickedInventory().getType().equals(InventoryType.ANVIL)){
+                if (event.getSlot()==2){
+                    for (String s:list) {
+                        if (event.getCurrentItem().getType().name().contains(s)){
+                            return;
+                        }
+                    }
+                    if (event.getCurrentItem().getType().name().contains("PIXELMON_")){
+                        event.setCancelled(true);
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您不可以重命名这个物品，请不要这样子做。"));
+                        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                        player.closeInventory();
+                    }
+                }
+            }
+        }
+    }
+
+
+
 }

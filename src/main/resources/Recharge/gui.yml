@@ -1,0 +1,88 @@
+#该GUI配置由DragonCore Editor生成
+match: "default"
+through: true
+allowEscClose: false
+hideHud:
+  - "HELMET"
+  - "PORTAL"
+  - "CROSSHAIRS"
+  - "BOSSHEALTH"
+  - "BOSSINFO"
+  - "ARMOR"
+  - "HEALTH"
+  - "FOOD"
+  - "AIR"
+  - "HOTBAR"
+  - "EXPERIENCE"
+  - "TEXT"
+  - "HEALTHMOUNT"
+  - "JUMPBAR"
+  - "CHAT"
+  - "PLAYER_LIST"
+  - "DEBUG"
+  - "POTION_ICONS"
+  - "SUBTITLES"
+  - "FPS_GRAPH"
+  - "VIGNETTE"
+Functions:
+  open: |-
+    方法.异步执行方法('每秒重新计算绘制起始点和更新变量');
+  每秒重新计算绘制起始点和更新变量: |-
+    界面变量.x=(方法.取屏幕宽度-方法.取组件值('背景_texture','width'))/2;
+    界面变量.y=(方法.取屏幕高度-方法.取组件值('背景_texture','height'))/2;
+    方法.延时(1000);
+    方法.异步执行方法('每秒重新计算绘制起始点和更新变量');
+backger:
+  type: "图片"
+  x: "w/2-226/2"
+  y: "h/2-150/2"
+  width: "226"
+  height: "150"
+  alpha: "1.0"
+  texture: "http://api.kalos.red/kalos/authme/背景.png"
+############################################
+value_images:
+  type: "图片"
+  x: "w/2-116/2"
+  y: "h/2-25/2-20"
+  width: "116"
+  height: "25"
+  texture: "http://api.kalos.red/kalos/authme/编辑框.png"
+  textureHovered: "http://api.kalos.red/kalos/authme/编辑框.png"
+value:
+  type: "文本框"
+  x: "w/2-116/2+5"
+  y: "h/2-25/2-12"
+  width: "116"
+  height: "25"
+  actions:
+    click_left: |-
+      方法.设置组件值('value','text','')
+  length: 5
+  drawBackground: false
+  text: ""
+  color: "0,0,0,255"
+############################################
+ok:
+  type: "图片"
+  x: "w/2-50/2-40"
+  y: "h/2-18/2+20+15"
+  width: "50"
+  height: "18"
+  actions:
+    click_left: |-
+      方法.发包('Dragon_Recharge_OK',方法.取组件值('value','text'),方法.取组件值('value','text'))
+  texture: "http://api.kalos.red/kalos/authme/确定.png"
+  textureHovered: "http://api.kalos.red/kalos/authme/确定_hover.png"
+############################################
+no:
+  type: "图片"
+  x: "w/2-50/2+40"
+  y: "h/2-18/2+20+15"
+  width: "50"
+  height: "18"
+  actions:
+    click_left: |-
+      方法.发包('Dragon_Recharge_Cancel')
+  texture: "http://api.kalos.red/kalos/authme/取消.png"
+  textureHovered: "http://api.kalos.red/kalos/authme/取消_hover.png"

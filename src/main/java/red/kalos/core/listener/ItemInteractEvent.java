@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import red.kalos.core.manager.props.SelectPokemon;
 
 import java.io.File;
 
@@ -28,14 +29,16 @@ public class ItemInteractEvent implements Listener {
                     File file = new File(Main.getInstance().getDataFolder(), "EncryptionItems/"+nbtItem.getString("id")+".kalos");
                     FileConfiguration data = YamlConfiguration.loadConfiguration(file);
                     if (data.getBoolean("kalos")){
+
+                        if (data.getString("type").equals("ivs")){
+                            new SelectPokemon(player,data.getString("type")).openInventory();
+                            return;
+                        }
                         OptionalGUI optionalGUI = new OptionalGUI(player,data.getString("type"));
                         optionalGUI.openInventory();
                         event.setCancelled(true);
                     }
                 }
-
-
-
             }
 
         }

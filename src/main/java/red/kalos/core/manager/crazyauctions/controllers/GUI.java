@@ -58,12 +58,14 @@ public class GUI implements Listener {
 
 	@SuppressWarnings("deprecation")
 	public static OfflinePlayer getOfflinePlayerFromUUID(String name) {
+		OfflinePlayer op = Bukkit.getOfflinePlayer(name);
+
 		for (OfflinePlayer p : offlinePlayers) {
-			if (p.getUniqueId().equals(UUID.fromString(name))) {
+			if (p.getUniqueId().equals(op.getUniqueId())) {
 				return p;
 			}
 		}
-		OfflinePlayer op = Bukkit.getOfflinePlayer(name);
+
 		offlinePlayers.add(op);
 		return op;
 	}

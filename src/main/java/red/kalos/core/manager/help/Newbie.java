@@ -19,7 +19,7 @@ public class Newbie extends InventoryGUI {
     public Newbie(Player player) {
         super(ColorParser.parse("&0" + Data.SERVER_NAME + " / 新手签到"), player, 1);
 
-        int i = Storage.getPlayer(player).getContinuousSignIn();
+        int i = Storage.getPlayer(player).getCumulativeNumber();
 
         Button Signin = new Button(
                 SkullAPI.getSkullItem("a92e711a1ddd2521314839f5f79af3679c982ad687460a5f7ea49fec90e9ce77",
@@ -224,7 +224,7 @@ public class Newbie extends InventoryGUI {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"lp user "+player.getName()+" permission set "+G_Permission+" true");
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
 
-                            player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),64));
+                            player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),1));
                             player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您通过新手签到领取了 &a大师球*1 &7请注意查收。"));
                         }else {
                             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);

@@ -2,6 +2,8 @@ package red.kalos.core.util.gui.inventory;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -37,11 +39,25 @@ public class ItemFactoryAPI {
       return is;
    }
 
-   public static ItemStack getItemStack(Material material, short d, String name, String... lores) {
+   public static ItemStack getItemStack(Material material, String name,boolean enchant, String... lores) {
       ItemStack is = new ItemStack(material);
 
       ItemMeta im = Bukkit.getItemFactory().getItemMeta(material);
       im.setDisplayName(name);
+      im.setLore(Arrays.asList(lores));
+      im.addEnchant(Enchantment.ARROW_FIRE, 1,enchant);
+      im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+      is.setItemMeta(im);
+      return is;
+   }
+
+   public static ItemStack getItemStack(Material material, short d, String name, String... lores) {
+      ItemStack is = new ItemStack(material);
+
+      ItemMeta im = Bukkit.getItemFactory().getItemMeta(material);
+      if (name!=null){
+         im.setDisplayName(name);
+      }
       im.setLore(Arrays.asList(lores));
       is.setDurability(d);
       is.setItemMeta(im);

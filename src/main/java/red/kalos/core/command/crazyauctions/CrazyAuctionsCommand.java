@@ -40,7 +40,7 @@ public class CrazyAuctionsCommand implements CommandExecutor {
             Player player = Bukkit.getPlayer(((Player) sender).getUniqueId());
             if (args.length > 1 && (args[0].equalsIgnoreCase("Sell") || args[0].equalsIgnoreCase("Bid"))) {
                 return SellItem(sender, args);
-            } else if (args.length == 3 && (args[0].equalsIgnoreCase("poke"))) {
+            } else if (args.length == 3 && (args[0].equalsIgnoreCase("poke") || args[0].equalsIgnoreCase("pokeBid"))) {
                 String numStr = args[1];
                 String moneyStr = args[2];
                 int num;
@@ -77,7 +77,7 @@ public class CrazyAuctionsCommand implements CommandExecutor {
                 }
                 ItemStack is = PokemonPhotoAPI.getPokeEggItem(pokemon,true,num-1,Pixelmon.storageManager.getParty(player.getUniqueId()),"CrazyAuctions/PokeEggs");
 
-                if(SellPokemon(sender, new String[]{"sell",moneyStr},is)){
+                if(SellPokemon(sender, new String[]{ args[0].equalsIgnoreCase("pokeBid") ? "bid" : "sell",moneyStr},is)){
                     PlayerPartyStorage pps = Pixelmon.storageManager.getParty(player.getUniqueId());
                     pps.set(num-1,pokemon);
                     PokemonPhotoAPI.deletePokemonFile(is,"CrazyAuctions/PokeEggs");
@@ -275,7 +275,7 @@ public class CrazyAuctionsCommand implements CommandExecutor {
                         }
                     }
                 }
-                if (args[0].equalsIgnoreCase("Sell")) {
+                if (args[0].equalsIgnoreCase("Sell") || args[0].equalsIgnoreCase("poke")) {
                     if (crazyAuctions.getItems(player, ShopType.SELL).size() >= SellLimit) {
                         player.sendMessage(Messages.MAX_ITEMS.getMessage());
                         return true;
@@ -540,7 +540,7 @@ public class CrazyAuctionsCommand implements CommandExecutor {
             placeholders.put("%Price%", price + "");
             placeholders.put("%price%", price + "");
             player.sendMessage(Messages.ADDED_ITEM_TO_AUCTION.getMessage(placeholders));
-//            Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7玩家 &a"+player.getName()+" &7向全球市场发布了 &a"+item.name+" &7商品。"));
+            Bukkit.broadcastMessage(ColorParser.parse("&8[&e&l!&8] &7玩家 &a"+player.getName()+" &7向全球市场发布了商品。"));
             if (item.getAmount() <= 1 || (item.getAmount() - amount) <= 0) {
                 Methods.setItemInHand(player, new ItemStack(Material.AIR));
             } else {

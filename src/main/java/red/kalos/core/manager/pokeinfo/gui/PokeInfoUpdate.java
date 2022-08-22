@@ -9,6 +9,7 @@ import com.pixelmonmod.pixelmon.enums.EnumNature;
 import com.pixelmonmod.pixelmon.enums.forms.IEnumForm;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import de.tr7zw.nbtapi.NBTItem;
+import org.bukkit.Bukkit;
 import red.kalos.core.util.PokemonAPI;
 import red.kalos.core.Main;
 import red.kalos.core.configFile.Data;
@@ -497,8 +498,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                 this.setButton(16, EmptyEffortButton);
 
                 //克隆
-                long CloneMoney = 2480000;
-                int ClonePoints = 248;
+                long CloneMoney = 1280000;
+                int ClonePoints = 128;
                 ItemStack Clone = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_CLONING_MACHINE") , ColorParser.parse("&d梦幻 &f> &c百变怪/超梦"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
@@ -541,7 +542,7 @@ public class PokeInfoUpdate extends InventoryGUI {
                     }
                 });
                 if (p.getLocalizedName().equals("梦幻")){
-                    this.setButton(16, CloneButton);
+                    this.setButton(17, CloneButton);
                 }
 
 
@@ -589,8 +590,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                 this.setButton(23, NatureButton);
 
                 //特性
-                long AbilityMoney = 880000;
-                int AbilityPoints = 88;
+                long AbilityMoney = 680000;
+                int AbilityPoints = 68;
                 if (pokemon.getAbilitySlot()==2){
                     ItemStack Ability = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_ABILITY_CAPSULE") , ColorParser.parse("&f特性: &a"+p.getAbility().getLocalizedName()),
                             ColorParser.parse("&r"),
@@ -663,6 +664,54 @@ public class PokeInfoUpdate extends InventoryGUI {
 
                 });
                 this.setButton(25, AwardButton);
+
+
+
+                //等级清除
+                long LevelMoney = 25000;
+                int LevelPoints = 5;
+                ItemStack Level = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY") , ColorParser.parse("&f当前等级: &a"+p.getLevel()+" &c(清空等级)"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&7&o这将会对您的宝可梦进行不可逆转的培养,谨慎操作!"),
+                        ColorParser.parse("&r"),
+                        ColorParser.parse("&r  &e■ &7售 价:"),
+                        ColorParser.parse("&r      &7(左键) &c" + LevelMoney + " &7"+Data.SERVER_VAULT),
+                        ColorParser.parse("&r      &7(右键) &c" + LevelPoints + " &7"+Data.SERVER_POINTS),
+                        ColorParser.parse("&r")
+                );
+                Button LevelButton = new Button(Level, type -> {
+                    if (type.isLeftClick()) {
+                        if (Main.getEcon().getBalance(player)>=LevelMoney){
+                            Main.getEcon().withdrawPlayer(player, LevelMoney);
+                            p.setLevel(1);
+                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                            PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,p);
+                            pokeInfoUpdate.openInventory();
+                        }else {
+                            player.closeInventory();
+                            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您没有足够的 &c"+Data.SERVER_VAULT+" &7来进行本次的操作."));
+                        }
+                    }
+                    if (type.isRightClick()){
+                        try {
+                            if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=LevelPoints){
+                                Main.getPpAPI().takeAsync(player.getUniqueId(),LevelPoints);
+                                p.setLevel(1);
+                                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                                PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,p);
+                                pokeInfoUpdate.openInventory();
+                            }else {
+                                player.closeInventory();
+                                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
+                                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很抱歉，您没有足够的 &c"+Data.SERVER_POINTS+" &7来进行本次的操作."));
+                            }
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                this.setButton(26, LevelButton);
             }
         }
 

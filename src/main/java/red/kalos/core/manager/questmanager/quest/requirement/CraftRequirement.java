@@ -98,7 +98,7 @@ public class CraftRequirement extends Requirement {
             cs.set(key,null);
         }
         for (String s : counter.keySet()) {
-            cs.set(s,counter.get(s).intValue());
+            cs.set(s, counter.get(s));
         }
     }
 }

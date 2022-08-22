@@ -26,10 +26,15 @@ public class PokemonInfoMenu extends InventoryGUI {
                 Pokemon pokemon = playerPartyStorage.get(i);
 
                 assert pokemon != null;
-                ItemStack PokemonPhoto =  PokemonPhotoAPI.getPhotoItem(pokemon,playerPartyStorage,i);
 
+
+
+                ItemStack PokemonPhoto =  PokemonPhotoAPI.getPhotoItem(pokemon,playerPartyStorage,i);
                 Button pokemonButton = new Button(PokemonPhoto, type -> {
                     if (type.isRightClick()){
+                        if (pokemon.isEgg()){
+                            return;
+                        }
                         PokeInfoUpdate pokeInfoUpdate = new PokeInfoUpdate(player,pokemon);
                         pokeInfoUpdate.openInventory();
                     }

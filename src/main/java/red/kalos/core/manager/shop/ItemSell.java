@@ -2,18 +2,12 @@ package red.kalos.core.manager.shop;
 
 import red.kalos.core.Main;
 import red.kalos.core.configFile.Data;
-import red.kalos.core.manager.menu.MainMenu;
-import red.kalos.core.manager.recharge.ArmourersShop;
-import red.kalos.core.manager.recharge.GiftPackShop;
-import red.kalos.core.manager.recharge.GrandTotal;
-import red.kalos.core.manager.recharge.recharge.RechargeMenu;
 import red.kalos.core.manager.shop.entity.ItemInfo;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.PokemonAPI;
 import red.kalos.core.util.gui.Button;
 import red.kalos.core.util.gui.InventoryGUI;
 import red.kalos.core.util.gui.inventory.ItemFactoryAPI;
-import red.kalos.core.util.gui.inventory.SkullAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Material;
@@ -39,8 +33,8 @@ public class ItemSell extends InventoryGUI {
         ItemList.add(new ItemInfo("&a马铃薯",Material.POTATO_ITEM,0.4,0));
         ItemList.add(new ItemInfo("&a小麦",Material.WHEAT,0.4,0));
 
-//        ItemList.add(new ItemInfo("&a甘蔗",Material.SUGAR_CANE,0.04,0));
-//        ItemList.add(new ItemInfo("&a仙人掌",Material.CACTUS,0.02,0));
+        ItemList.add(new ItemInfo("&a甘蔗",Material.SUGAR_CANE,0.04,0));
+        ItemList.add(new ItemInfo("&a仙人掌",Material.CACTUS,0.02,0));
 
         ItemList.add(new ItemInfo("&a南瓜",Material.PUMPKIN,0.7,0));
         ItemList.add(new ItemInfo("&a西瓜",Material.MELON_BLOCK,1.5,0));
@@ -68,7 +62,7 @@ public class ItemSell extends InventoryGUI {
             ItemStack Item = ItemFactoryAPI.getItemStack(ItemMaterial,
                     ColorParser.parse(itemInfo.getName()),
                     ColorParser.parse("&r"),
-                    ColorParser.parse("&r  &e■ &7售 价:"),
+                    ColorParser.parse("&r  &e■ &7收 购:"),
                     ColorParser.parse("&r      &7(左键单个) &c" + ItemMoney + " &7"+Data.SERVER_VAULT),
                     ColorParser.parse("&r      &7(右键全部) &c" + decimalFormat.format(ItemPlayer.getAmount()*ItemMoney) + " &7"+Data.SERVER_VAULT)
             );

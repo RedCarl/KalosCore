@@ -134,6 +134,9 @@ public class BuildGUI extends InventoryGUI {
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.GLOWSTONE,(short) 0,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.SEA_LANTERN,(short) 0,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.END_ROD,64));
+        itemStacks.add(ItemFactoryAPI.getItemStack(Material.PACKED_ICE,64));//Packed Ice
+        itemStacks.add(ItemFactoryAPI.getItemStack(Material.QUARTZ_BLOCK,64));//Packed Ice
+
         //设置当前页面的按钮
         for (int j = 0; j < 36; j++) {
             if(itemStacks.size()==(36*slot)+j){
@@ -141,7 +144,7 @@ public class BuildGUI extends InventoryGUI {
             }
 
             ItemStack Item = ItemFactoryAPI.getItemStack(itemStacks.get((36*slot)+j).getType(),itemStacks.get((36*slot)+j).getDurability(),
-                    ColorParser.parse("&f建筑方块"),
+                    null,
                     ColorParser.parse("&r"),
                     ColorParser.parse("&r  &e■ &7售 价:"),
                     ColorParser.parse("&r      &c 64&7"+Data.SERVER_VAULT)

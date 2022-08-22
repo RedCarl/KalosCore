@@ -18,7 +18,7 @@ Settings:
   Category-Page-Opens-First: false
   Feature-Toggle:
     Selling: true
-    Bidding: false
+    Bidding: true
   Sounds:
     Toggle: false
     Sound: CLICK
@@ -163,13 +163,7 @@ Settings:
         Slot: 53
         Name: '&c[ 商品分类 ]'
         Lore:
-          - '&7&o这里是交易系统,您可以在这里 &a出售 &7&o您的物品.'
-          - '&r'
-          - '&f物品上架:'
-          - '&r  &e■ &7/kim sell 价格 数量'
-          - '&r'
-          - '&f宝可梦上架:'
-          - '&r  &c■ &7/kim poke 位置(1-6) 价格'
+          - '&7当前分类: &c%Category%'
       Category2:
         Item: '340'
         Toggle: false
@@ -180,7 +174,7 @@ Settings:
       Bidding/Selling:
         Selling:
           Item: '421'
-          Toggle: false
+          Toggle: true
           Slot: 54
           Name: '&c[ 全球市场 ]'
           Lore:
@@ -195,7 +189,7 @@ Settings:
             - '&7点击可切换至 &c全球拍卖 &7系统.'
         Bidding:
           Item: '421'
-          Toggle: false
+          Toggle: true
           Slot: 54
           Name: '&c[ 全球拍卖 ]'
           Lore:
@@ -205,7 +199,7 @@ Settings:
             - '&r  &e■ &7/kim bid 价格 数量'
             - '&r'
             - '&f宝可梦上架:'
-            - '&r  &c■ &7/kim poke 位置(1-6) 价格'
+            - '&r  &c■ &7/kim pokeBid 位置(1-6) 价格'
             - '&r'
             - '&7点击可切换至 &c全球市场 &7系统.'
       WhatIsThis:

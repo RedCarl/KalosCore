@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import red.kalos.core.util.gui.inventory.SkullAPI;
 
 import java.io.File;
 import java.util.*;
@@ -107,9 +108,9 @@ public class ArmourersGUI extends InventoryGUI {
                 Button b = new Button(is_list.get(i), (type) -> {
                     if (type.isLeftClick()){
                         if (!playerLongHashMap.containsKey(player)){
-                            ArmourersManager.setPlayerTempArmourers(player,name,30);
+                            ArmourersManager.setPlayerTempArmourers(player,name,5);
                             DragonAPI.updatePlayerSkin(player);
-                            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7已临时展示时装，30秒后将复原, 按F5可切换视角."));
+                            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7已临时展示时装，5秒后将复原, 按F5可切换视角."));
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
                             player.closeInventory();
                         }else {
@@ -212,8 +213,20 @@ public class ArmourersGUI extends InventoryGUI {
                 }
             }
         });
-        this.setButton(51, ArmourersButton);
+        this.setButton(50, ArmourersButton);
 
+
+        //时装商店
+        ItemStack ArmourersShop = SkullAPI.getSkullItem("66e52b0ac7b34398ff200c48d9c4fdc6bb865aad6a1d5fcf02c8266358fbaf3",ColorParser.parse("&b时装商店"),
+                ColorParser.parse("&r"),
+                ColorParser.parse("&7&o可以在这里购买时装。"));
+        Button ArmourersShopButton = new Button(ArmourersShop, type -> {
+            if (type.isLeftClick()) {
+                ArmourersShop armourersShop = new ArmourersShop(player);
+                armourersShop.openInventory();
+            }
+        });
+        this.setButton(51, ArmourersShopButton);
 
 
         //重置时装

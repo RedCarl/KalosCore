@@ -1,5 +1,6 @@
 package red.kalos.core.manager.questmanager;
 
+import org.bukkit.Sound;
 import red.kalos.core.configFile.Data;
 import red.kalos.core.manager.menu.MainMenu;
 import red.kalos.core.manager.questmanager.manager.QuestManager;
@@ -42,8 +43,9 @@ public class QuestGUI extends InventoryGUI {
                 if(quest.getState(player.getName())== QuestState.UNACCEPTED_STATE){
                     quest.accept(player);
                     new QuestGUI(player,questType).openInventory();
-                }
-                if(quest.getState(player.getName())== QuestState.ACCEPTED_STATE){
+                    player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功接下了该任务，请在规定的时间内完成并领取它！"));
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                }else if(quest.getState(player.getName())== QuestState.ACCEPTED_STATE){
                     quest.tryFinish(player);
                     new QuestGUI(player,questType).openInventory();
                 }

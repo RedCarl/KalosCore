@@ -5,7 +5,7 @@ import eos.moe.armourers.api.DragonAPI;
 import red.kalos.core.Main;
 import red.kalos.core.configFile.Data;
 import red.kalos.core.util.ColorParser;
-import red.kalos.core.manager.recharge.ArmourersShop;
+import red.kalos.core.manager.armourers.guis.ArmourersShop;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -76,6 +76,6 @@ public class ArmourersManager {
                 p.sendMessage(ColorParser.parse("&8[&c&l!&8] &7试穿已经结束,恢复默认状态."));
                 p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
             }
-        }.runTaskLater(Main.getInstance(), 20L *temp);
+        }.runTaskLaterAsynchronously(Main.getInstance(), 20L *temp);
     }
 }

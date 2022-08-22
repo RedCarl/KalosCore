@@ -4,6 +4,7 @@ import catserver.api.bukkit.event.ForgeEvent;
 import com.pixelmonmod.pixelmon.api.events.DropEvent;
 import com.pixelmonmod.pixelmon.api.events.raids.RaidDropsEvent;
 import com.pixelmonmod.pixelmon.entities.npcs.registry.RaidSpawningRegistry;
+import com.pixelmonmod.pixelmon.entities.pixelmon.drops.DroppedItem;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import com.pixelmonmod.pixelmon.enums.forms.IEnumForm;
 import red.kalos.core.database.BanItemManager;
@@ -29,7 +30,7 @@ import java.util.*;
 public class PokemonBan implements Listener {
     //极具巢穴黑名单
     public static String[] RaidBlackList = new String[]{"MissingNo", "Ditto", "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", "Squirtle", "Wartortle", "Blastoise", "Chikorita", "Bayleef", "Meganium", "Cyndaquil", "Quilava", "Typhlosion", "Totodile", "Croconaw", "Feraligat", "Treecko", "Grovyle", "Sceptile", "Torchic", "Combusken", "Blaziken", "Mudkip", "Marshtomp", "Swampert", "Turtwig", "Grotle", "Torterra", "Chimchar", "Monferno", "Infernape", "Piplup", "Prinplup", "Empoleon", "Snivy", "Servine", "Serperior", "Tepig", "Pignite", "Emboar", "Oshawott", "Dewott", "Samurott", "Chespin", "Quilladin", "Chesnaught", "Fennekin", "Braixen", "Delphox", "Froakie", "Frogadier", "Greninja", "Rowlet", "Dartrix", "Decidueye", "Litten", "Torracat", "Incineroar", "Popplio", "Brionne", "Primarina", "Grookey", "Thwackey", "Rillaboom", "Scorbunny", "Raboot", "Cinderace", "Sobble", "Drizzile", "Inteleon"};
-
+    public static Map<String,Integer> DropRateReduction = new HashMap<>();
 
     public static void rua(){
 
@@ -45,37 +46,88 @@ public class PokemonBan implements Listener {
             }
         }));
 
+        DropRateReduction.put("PIXELMON_DESTINY_KNOT",65);
+        DropRateReduction.put("PIXELMON_MASTER_BALL",40);
+        DropRateReduction.put("PIXELMON_RARE_CANDY",45);
+        DropRateReduction.put("PIXELMON_ORB",50);
+        DropRateReduction.put("PIXELMON_GRISEOUS_ORB",20);
+        DropRateReduction.put("PIXELMON_ADAMANT_ORB",20);
+        DropRateReduction.put("PIXELMON_LUSTROUS_ORB",20);
+        DropRateReduction.put("PIXELMON_EARTH_PLATE",40);
+        DropRateReduction.put("PIXELMON_DREAD_PLATE",40);
+        DropRateReduction.put("PIXELMON_SPOOKY_PLATE",40);
+        DropRateReduction.put("PIXELMON_IRON_PLATE",40);
+        DropRateReduction.put("PIXELMON_FIST_PLATE",40);
+        DropRateReduction.put("PIXELMON_ICICLE_PLATE",40);
+        DropRateReduction.put("PIXELMON_DRACO_PLATE",40);
+        DropRateReduction.put("PIXELMON_PIXIE_PLATE",40);
+        DropRateReduction.put("PIXELMON_MEADOW_PLATE",40);
+        DropRateReduction.put("PIXELMON_FLAME_PLATE",40);
+        DropRateReduction.put("PIXELMON_SPLASH_PLATE",40);
+        DropRateReduction.put("PIXELMON_SKY_PLATE",40);
+        DropRateReduction.put("PIXELMON_INSECT_PLATE",40);
+        DropRateReduction.put("PIXELMON_TOXIC_PLATE",40);
+        DropRateReduction.put("PIXELMON_ZAP_PLATE",40);
+        DropRateReduction.put("PIXELMON_MIND_PLATE",40);
+        DropRateReduction.put("PIXELMON_STONE_PLATE",40);
+        DropRateReduction.put("PIXELMON_DYNAMAX_CANDY",40);
     }
+
 
     @EventHandler
     public void onBattleGetSpoil(ForgeEvent e) {
+
+        //封禁宝可梦掉落物品
         if (e.getForgeEvent() instanceof DropEvent) {
             DropEvent event = (DropEvent)e.getForgeEvent();
-            (new ArrayList<>(event.getDrops())).forEach((item) -> {
+            for (DroppedItem item:event.getDrops()) {
                 ItemStack is = CraftItemStack.asBukkitCopy(item.itemStack);
                 Material material = is.getType();
                 String materialName = material.name().toUpperCase();
+                //封禁名单物品
                 if (BanItemManager.getBanDrops().contains(materialName)) {
                     event.removeDrop(item);
+                    System.out.println("[宝可梦] "+event.player.displayName+" 掉了一个 "+materialName+" 被封禁了。");
                 }
-            });
-        }
-        if (e.getForgeEvent() instanceof RaidDropsEvent) {
-            RaidDropsEvent event = (RaidDropsEvent)e.getForgeEvent();
-            ArrayList<net.minecraft.item.ItemStack> arrayList = event.getDrops();
-            ArrayList<net.minecraft.item.ItemStack> itemStacks = event.getDrops();
-
-            try {
-                for (net.minecraft.item.ItemStack item: arrayList) {
-                    ItemStack is = CraftItemStack.asBukkitCopy(item);
-                    Material material = is.getType();
-                    String materialName = material.name().toUpperCase();
-                    if (BanItemManager.getBanDrops().contains(materialName)) {
-                        itemStacks.remove(item);
+                //物品爆率削减
+                if (DropRateReduction.containsKey(materialName)){
+                    int a = new Random().nextInt(100);
+                    if (a<=DropRateReduction.get(materialName)){
+                        event.removeDrop(item);
+                        System.out.println("[宝可梦] "+event.player.displayName+" 掉了一个 "+materialName+" 被削减了爆率。");
                     }
                 }
-            }catch (ConcurrentModificationException ignored){}
-            event.setDrops(itemStacks);
+            }
+        }
+
+        //封禁极具巢穴掉落物品
+        if (e.getForgeEvent() instanceof RaidDropsEvent) {
+            RaidDropsEvent event = (RaidDropsEvent)e.getForgeEvent();
+
+            ArrayList<net.minecraft.item.ItemStack> itemStacks = new ArrayList<>();
+
+            for (net.minecraft.item.ItemStack item:event.getDrops()) {
+                ItemStack is = CraftItemStack.asBukkitCopy(item);
+                Material material = is.getType();
+                String materialName = material.name().toUpperCase();
+                //封禁名单物品
+                if (BanItemManager.getBanDrops().contains(materialName)) {
+                    itemStacks.add(item);
+                    System.out.println("[极具巢穴] "+event.getPlayer().name+" 掉了一个 "+materialName+" 被封禁了。");
+                }
+                //物品爆率削减
+                if (DropRateReduction.containsKey(materialName)){
+                    int a = new Random().nextInt(100);
+                    if (a<=DropRateReduction.get(materialName)){
+                        itemStacks.add(item);
+                        System.out.println("[极具巢穴] "+event.getPlayer().name+" 掉了一个 "+materialName+" 被削减了爆率。");
+                    }
+                }
+            }
+
+            for (net.minecraft.item.ItemStack item:itemStacks) {
+                event.getDrops().remove(item);
+            }
         }
     }
 

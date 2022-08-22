@@ -53,6 +53,12 @@ public class PlaceHolder extends PlaceholderExpansion {
                 }
             }
         }
+
+        //等级
+        if (params.contains("level")){
+            return "ㄱ";
+        }
+
         return null;
     }
 

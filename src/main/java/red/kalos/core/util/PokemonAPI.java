@@ -20,6 +20,9 @@ import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import red.kalos.core.Main;
 import red.kalos.core.command.pokeaward.PokeFormCommand;
 import red.kalos.core.configFile.Data;
+import red.kalos.core.manager.pokedex.PokeDexManager;
+import red.kalos.core.util.api.CubeAPI;
+import red.kalos.core.util.api.KalosUtil;
 import red.kalos.core.util.gui.inventory.ItemFactoryAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -214,7 +217,21 @@ public class PokemonAPI {
      * @return 宝可梦
      */
     public static Pokemon getRandomLegendaryPokemon(){
-        PokemonSpec spec = PokemonSpec.from(EnumSpecies.randomLegendary().getPokemonName());
+        String[] PokeBlackList = new String[]{
+                "急冻鸟",
+                "火焰鸟",
+                "闪电鸟",
+                "时拉比"
+        };
+
+        EnumSpecies poke;
+
+        do {
+            poke = EnumSpecies.randomLegendary();
+        }while (Arrays.asList(PokeBlackList).contains(poke.getLocalizedName()));
+
+        PokemonSpec spec = PokemonSpec.from(poke.getPokemonName());
+
         return spec.create();
     }
 
@@ -525,6 +542,67 @@ public class PokemonAPI {
         return player;
     }
 
+    public static double getWinPokemonVault(EntityPixelmon pokemon){
+        double money = 3.22;
+
+        //等级计算
+        if (pokemon.isBossPokemon()){
+            money += pokemon.getPokemonData().getLevel()/2.0;
+        }else {
+            money += pokemon.getPokemonData().getLevel()/3.0;
+        }
+
+        //闪光计算
+        if (pokemon.getPokemonData().isShiny()){
+            money += new Random().nextInt(5);
+        }
+
+        //个体值估算
+        int a = 1;
+        for (int iv:pokemon.getPokemonData().getIVs().getArray()) {
+            if (iv==31){
+                a++;
+            }
+        }
+        money += a;
+
+        //传奇宝可梦
+        if (pokemon.isLegendary()){
+            money+=2000;
+        }
+
+        //BOSS品质额外奖励
+        switch (pokemon.getBossMode().getExtraLevels()){
+            case 5:
+                money+=50;
+                break;
+            case 10:
+                money+=100;
+                break;
+            case 20:
+                money+=200;
+                break;
+            case 30:
+                money+=300;
+                break;
+            case 40:
+                money+=400;
+                break;
+            case 50:
+                money+=500;
+                break;
+            case 25:
+                money+=25;
+                break;
+            case 75:
+                money+=750;
+                break;
+        }
+
+        money = Double.parseDouble(KalosUtil.decimalFormat(money,2));
+        return money;
+    }
+
     /**
      * 计算宝可梦价值
      * @param pokemon 宝可梦
@@ -604,6 +682,7 @@ public class PokemonAPI {
             money=10;
         }
 
+        money = Double.parseDouble(KalosUtil.decimalFormat(money,2));
         return money;
     }
 
@@ -792,16 +871,34 @@ public class PokemonAPI {
             playerPartyStorage.set(slot,Mewtwo);
             player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"), ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &6超梦 &f宝可梦."),0,60,0);
             player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+            for (Player pp: Bukkit.getOnlinePlayers()) {
+                if (pp!=player){
+                    pp.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜 &c"+player.getName()+" &f,克隆 &d梦幻 &7获得了 &6超梦 &f传说宝可梦."),0,60,0);
+                    pp.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                }
+            }
         }else {
             int i = new Random().nextInt(2);
             if (i==1){
                 playerPartyStorage.set(slot,Mewtwo);
                 player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"), ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &6超梦 &f宝可梦."),0,60,0);
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                for (Player pp: Bukkit.getOnlinePlayers()) {
+                    if (pp!=player){
+                        pp.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜 &c"+player.getName()+" &f,克隆 &d梦幻 &7获得了 &6百变怪 &f宝可梦."),0,60,0);
+                        pp.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                    }
+                }
             }else {
                 playerPartyStorage.set(slot,SpawnPokemon("Ditto"));
                 player.sendTitle(ColorParser.parse("&b卡洛斯の克隆机"), ColorParser.parse("&f成功将 &d梦幻 &f克隆为 &9百变怪 &f宝可梦."),0,60,0);
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_YES,1,1);
+                for (Player pp: Bukkit.getOnlinePlayers()) {
+                    if (pp!=player){
+                        pp.sendTitle(ColorParser.parse("&b卡洛斯の传说宝可梦"),ColorParser.parse("&f恭喜 &c"+player.getName()+" &f,克隆 &d梦幻 &7获得了 &6超梦 &f传说宝可梦."),0,60,0);
+                        pp.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                    }
+                }
             }
         }
 

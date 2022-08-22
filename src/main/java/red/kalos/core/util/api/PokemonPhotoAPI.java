@@ -41,8 +41,12 @@ public class PokemonPhotoAPI {
 
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setLore(lores.getItemMeta().getLore());
-        itemMeta.setDisplayName(PokemonAPI.getPokemonName(pokemon));
-                item.setItemMeta(itemMeta);
+        if (pokemon.isEgg()){
+            itemMeta.setDisplayName(ColorParser.parse("&f蛋"));
+        }else {
+            itemMeta.setDisplayName(PokemonAPI.getPokemonName(pokemon));
+        }
+        item.setItemMeta(itemMeta);
         if (remove) {
             pps.retrieveAll();
             pps.set(slot, null);
@@ -91,6 +95,13 @@ public class PokemonPhotoAPI {
                 ColorParser.parse("&7技能:"),
                 ColorParser.parse("&b"+PokemonAPI.getMove(pokemon.getMoveset().get(0))+" &7- &b"+PokemonAPI.getMove(pokemon.getMoveset().get(1))+" &7- &b"+PokemonAPI.getMove(pokemon.getMoveset().get(2))+" &7- &b"+PokemonAPI.getMove(pokemon.getMoveset().get(3)))
         );
+
+        if (pokemon.isEgg()){
+            PokemonInfo = CraftItemStack.asBukkitCopy(ItemPixelmonSprite.getPhoto(pokemon));
+            ItemMeta itemMeta = PokemonInfo.getItemMeta();
+            itemMeta.setDisplayName(ColorParser.parse("&f蛋"));
+            PokemonInfo.setItemMeta(itemMeta);
+        }
 
 
         NBTItem nbtItem = new NBTItem(PokemonInfo);
