@@ -251,7 +251,10 @@ public class PokemonEvent implements Listener {
                                         Main.getEcon().depositPlayer(player,money);
                                         PokeDexManager.getInstance().addPokeDex(pixelmon.getPokemonData(),player);
 
-                                        System.out.println(player.getName()+" 击杀了 "+pixelmon.getLocalizedName()+" Boss:"+pixelmon.isBossPokemon() +" Level:"+ pixelmon.getBossMode().getExtraLevels()==50 +" Shiny:"+ pixelmon.getPokemonData().isShiny());
+                                        System.out.println(player.getName()+" 击杀了 "+pixelmon.getLocalizedName());
+                                        System.out.println(" Boss:"+pixelmon.isBossPokemon());
+                                        System.out.println(" Level:"+ pixelmon.getBossMode().getExtraLevels());
+                                        System.out.println(" Shiny:"+ pixelmon.getPokemonData().isShiny());
                                     }
                                 }
                             }

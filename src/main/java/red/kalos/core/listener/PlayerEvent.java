@@ -130,15 +130,6 @@ public class PlayerEvent implements Listener {
             }
         }
 
-//        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)||event.getAction().equals(Action.RIGHT_CLICK_AIR)){
-//            if (itemStack!=null&&player.hasPermission("group.eevee")){
-//                if (itemStack.getType().equals(Material.WOOD_AXE)){
-//                    BuildGUI buildGUI = new BuildGUI(player,0);
-//                    buildGUI.openInventory();
-//                }
-//            }
-//        }
-
         if (itemStack!=null&&itemStack.getType().equals(Material.FISHING_ROD) && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)||event.getAction().equals(Action.RIGHT_CLICK_AIR)) && event.getPlayer().isSneaking()){
             MoreFish moreFish = MoreFish.getInstance();
             if (moreFish.getFishShopGUI()!=null){
