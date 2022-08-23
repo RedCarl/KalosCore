@@ -249,6 +249,8 @@ public class PokemonEvent implements Listener {
                                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您在战斗过程中获得了 &c"+money+" &7卡洛币。"));
                                         Main.getEcon().depositPlayer(player,money);
                                         PokeDexManager.getInstance().addPokeDex(pixelmon.getPokemonData(),player);
+
+                                        System.out.println(player.getName()+" 击杀了 "+pixelmon.getLocalizedName()+" Boss:"+pixelmon.isBossPokemon() +" Level:"+ pixelmon.getBossMode().getExtraLevels()==50 +" Shiny:"+ pixelmon.getPokemonData().isShiny());
                                     }
                                 }
                             }

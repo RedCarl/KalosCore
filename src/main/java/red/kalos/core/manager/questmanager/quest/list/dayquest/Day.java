@@ -364,7 +364,7 @@ public class Day {
             int state = daily_g.getState(player.getName());
             if (state == QuestState.UNACCEPTED_STATE) {
                 return ItemFacAPI.getItemStack(Material.getMaterial("PIXELMON_POKE_BALL"),
-                        ColorParser.parse("&f战胜终极 BOSS 宝可梦!"),
+                        ColorParser.parse("&f战胜终极异色 BOSS 宝可梦!"),
                         ColorParser.parse("&r"),
                         ColorParser.parse("&7任务内容: "),
                         ColorParser.parse("&r  &f战胜 &a1 &f只 &a终极异色 &f的 &aBOSS &f宝可梦!"),
