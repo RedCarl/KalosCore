@@ -45,7 +45,7 @@ public class SpawnTime {
 
             }
 
-        }.runTaskTimer(Main.getInstance(),0,20);
+        }.runTaskTimerAsynchronously(Main.getInstance(),0,20);
     }
 
 
