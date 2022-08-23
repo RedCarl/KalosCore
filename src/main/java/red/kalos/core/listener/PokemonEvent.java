@@ -238,7 +238,8 @@ public class PokemonEvent implements Listener {
             if ((event.getPlayers().size()==1)&&(!event.abnormal)){
                 if (event.results.size()<=2){
                     Player player = Bukkit.getPlayer(event.getPlayers().get(0).getPersistentID());
-                    if (!player.getLocation().getWorld().getName().equals("spawn")){
+                    World world = player.getLocation().getWorld();
+                    if (world!=null && !world.getName().equals("spawn")){
                         for (BattleParticipant battleParticipant: event.results.keySet()) {
                             if (battleParticipant.isDefeated){
                                 if (battleParticipant.checkPokemon()){
@@ -312,7 +313,7 @@ public class PokemonEvent implements Listener {
 
             Player player = Objects.requireNonNull(event.getPlayer()).getBukkitEntity();
 
-            System.out.println(player.getDisplayName());
+            System.out.println("笛子: "+player.getDisplayName());
 
             int i = new Random().nextInt(100)+1;
 

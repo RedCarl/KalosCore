@@ -126,7 +126,7 @@ public class MainMenu extends InventoryGUI {
         this.setButton(28, TeleportationButton);
 
         ItemStack VIPCheckSpawns = ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_POKEMON_EDITOR"),
-                ColorParser.parse("&f传说查询 &7(不能100%准确)"),
+                ColorParser.parse("&f传说查询"),
                 ColorParser.parse("&r"),
                 ColorParser.parse("&r  &e■ &7使用收费:"),
                 ColorParser.parse("&r      &7   普通&f|&7玩家: &f"+500+" &7"+Data.SERVER_VAULT+"/次 (冷却2分钟)"),
@@ -138,7 +138,7 @@ public class MainMenu extends InventoryGUI {
                 ColorParser.parse("&r      &7   刷新概率: &c"+(KalosUtil.decimalFormat(PixelmonConfig.legendarySpawnChance*100, 2))+"%"),
                 ColorParser.parse("&r      &7   下次刷新: "+DateUtil.getDate(KalosUtil.getLegendarySpawnerTime())),
                 ColorParser.parse("&r"),
-                ColorParser.parse("&7&o只能查询该区域的传说宝可梦,并不能代表您的脚下.")
+                ColorParser.parse("&7&o查询下次可能生成的神兽列表和概率，根据全部玩家的环境实时变化。")
         );
         Button VIPCheckSpawnsButton = new Button(VIPCheckSpawns, type -> {
             player.closeInventory();

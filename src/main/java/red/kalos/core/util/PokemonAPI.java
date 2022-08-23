@@ -168,9 +168,9 @@ public class PokemonAPI {
                 "calyrex",
         };
 
-        for (String s:PokeBlackList) {
-            System.out.println(SpawnPokemon(s).getLocalizedName());
-        }
+//        for (String s:PokeBlackList) {
+//            System.out.println(SpawnPokemon(s).getLocalizedName());
+//        }
 
         PokemonSpec spec = PokemonSpec.from(Arrays.asList(PokeBlackList).get(new Random().nextInt(Arrays.asList(PokeBlackList).size()-1)));
 
