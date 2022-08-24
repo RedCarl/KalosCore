@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import red.kalos.core.configFile.Data;
-import red.kalos.core.manager.props.IVs.IVsScroll;
+import red.kalos.core.manager.props.ivs.IVs;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.api.PokemonPhotoAPI;
 import red.kalos.core.util.gui.Button;
@@ -37,7 +37,7 @@ public class SelectPokemon extends InventoryGUI {
                     }
 
                     if (info.equals("ivs")){
-                        new IVsScroll(player,pokemon).openInventory();
+                        new IVs(player,pokemon).openInventory();
                     }
                 });
 

@@ -1,4 +1,4 @@
-package red.kalos.core.manager.props.IVs;
+package red.kalos.core.manager.props.ivs;
 
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
@@ -18,8 +18,8 @@ import red.kalos.core.util.gui.inventory.ItemFactoryAPI;
  * @Author: carl0
  * @DATE: 2022/8/12 22:17
  */
-public class IVsScroll extends InventoryGUI {
-    public IVsScroll(Player player, Pokemon pokemon) {
+public class IVs extends InventoryGUI {
+    public IVs(Player player, Pokemon pokemon) {
         super(ColorParser.parse("&0"+ Data.SERVER_NAME+" / 选择个体"), player, 1);
 
         //个体值修改

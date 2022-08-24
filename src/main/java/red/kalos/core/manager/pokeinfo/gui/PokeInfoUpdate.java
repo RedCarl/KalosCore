@@ -2,19 +2,17 @@ package red.kalos.core.manager.pokeinfo.gui;
 
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.entities.pixelmon.stats.EVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.enums.EnumGrowth;
 import com.pixelmonmod.pixelmon.enums.EnumNature;
 import com.pixelmonmod.pixelmon.enums.forms.IEnumForm;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import de.tr7zw.nbtapi.NBTItem;
-import org.bukkit.Bukkit;
 import red.kalos.core.util.PokemonAPI;
 import red.kalos.core.Main;
 import red.kalos.core.configFile.Data;
-import red.kalos.core.manager.pokeinfo.gui.grouth.GrowthSelectGUI;
-import red.kalos.core.manager.pokeinfo.gui.nature.NatureSelectGUI;
+import red.kalos.core.manager.props.grouth.Growth;
+import red.kalos.core.manager.props.nature.Nature;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.gui.Button;
 import red.kalos.core.util.gui.InventoryGUI;
@@ -429,8 +427,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     if (type.isRightClick()){
                         try {
                             if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=GrowthPoints){
-                                GrowthSelectGUI growthSelectGUI = new GrowthSelectGUI(player,pokemon);
-                                growthSelectGUI.openInventory();
+                                red.kalos.core.manager.props.grouth.Growth growth = new Growth(player,pokemon);
+                                growth.openInventory();
                             }else {
                                 player.closeInventory();
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
@@ -575,8 +573,8 @@ public class PokeInfoUpdate extends InventoryGUI {
                     if (type.isRightClick()){
                         try {
                             if (Main.getPpAPI().lookAsync(player.getUniqueId()).get()>=NaturePoints){
-                                NatureSelectGUI natureSelectGUI = new NatureSelectGUI(player,pokemon);
-                                natureSelectGUI.openInventory();
+                                red.kalos.core.manager.props.nature.Nature nature = new Nature(player,pokemon);
+                                nature.openInventory();
                             }else {
                                 player.closeInventory();
                                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
