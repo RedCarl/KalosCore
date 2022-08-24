@@ -131,11 +131,7 @@ public class PlayerEvent implements Listener {
         }
 
         if (itemStack!=null&&itemStack.getType().equals(Material.FISHING_ROD) && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)||event.getAction().equals(Action.RIGHT_CLICK_AIR)) && event.getPlayer().isSneaking()){
-            MoreFish moreFish = MoreFish.getInstance();
-            if (moreFish.getFishShopGUI()!=null){
-                moreFish.getFishShopGUI().openGUI(player);
-            }
-
+            Bukkit.dispatchCommand(player,"mf shop");
         }
 
     }

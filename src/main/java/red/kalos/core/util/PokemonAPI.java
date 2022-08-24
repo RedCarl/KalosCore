@@ -15,6 +15,7 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.stats.IVStore;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.StatsType;
 import com.pixelmonmod.pixelmon.enums.EnumGuiScreen;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
+import com.pixelmonmod.pixelmon.enums.battle.EnumBattleEndCause;
 import com.pixelmonmod.pixelmon.enums.forms.IEnumForm;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
 import red.kalos.core.Main;
@@ -785,7 +786,7 @@ public class PokemonAPI {
     public static void endBattle(Player player) {
         PlayerPartyStorage pps = Pixelmon.storageManager.getParty(player.getUniqueId());
         if (pps != null && BattleRegistry.getBattle(pps.getPlayer()) != null){
-            BattleRegistry.getBattle(pps.getPlayer()).endBattle();
+            BattleRegistry.getBattle(pps.getPlayer()).endBattle(EnumBattleEndCause.FORCE);
             BattleRegistry.deRegisterBattle(BattleRegistry.getBattle(pps.getPlayer()));
         }
     }
