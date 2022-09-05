@@ -669,7 +669,7 @@ public class PokemonAPI {
         }
 
         //等级估算
-        money+=(pokemon.getLevel()*0.6);
+        money+=(pokemon.getLevel()*0.3);
 
         //会员加成
         if (Bukkit.getPlayer(pokemon.getOwnerPlayerUUID()).hasPermission("group.pikanium")){

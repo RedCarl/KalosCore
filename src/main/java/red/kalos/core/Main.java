@@ -147,7 +147,7 @@ public class Main extends JavaPlugin {
         regListener(new RechargeCustomUI());
 
         log("启动传奇宝可梦监控系统...");
-        SpawnTime.start();
+        SpawnTime.getInstance().init();
 
         log("启动宝可梦封禁系统...");
         PokemonBan.rua();

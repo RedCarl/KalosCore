@@ -85,13 +85,13 @@ public class PokemonEvent implements Listener {
                 event.setCanceled(true);
             }
 
-            //设置野外宝可梦MT
-            if (entityPixelmon.getPokemonData().getAbilitySlot()>0){
-                int a = new Random().nextInt(100);
-                if (a<=30){
-                    entityPixelmon.getPokemonData().setAbilitySlot(0);
-                }
-            }
+//            //设置野外宝可梦MT
+//            if (entityPixelmon.getPokemonData().getAbilitySlot()>0){
+//                int a = new Random().nextInt(100);
+//                if (a<=30){
+//                    entityPixelmon.getPokemonData().setAbilitySlot(0);
+//                }
+//            }
 
             //设置野生宝可梦闪光
             if (entityPixelmon.getPokemonData().isShiny()){
@@ -110,25 +110,26 @@ public class PokemonEvent implements Listener {
             }
 
             Pokemon pokemon = ((SpawnActionPokemon)event.action).getOrCreateEntity().getStoragePokemonData();
+
+//            //传奇宝可梦刷新概率降低
+//            if (PokemonAPI.isLegendaryMaxPokemon(pokemon)){
+//                int a = new Random().nextInt(100);
+//                if (a<=50){
+//                    event.setCanceled(true);
+//                    return;
+//                }
+//            }
+
             MutableLocation mutableLocation = event.action.spawnLocation.location;
             World w = Bukkit.getWorld(mutableLocation.world.func_72912_H().func_76065_j());
             double x = mutableLocation.pos.func_177958_n();
             double y = mutableLocation.pos.func_177956_o();
             double z = mutableLocation.pos.func_177952_p();
+
             Location location = new Location(w, x, y, z);
             Player player = PokemonAPI.getRandPlayer(location);
 
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
-            Bukkit.broadcastMessage(ColorParser.parse("&r"));
-            Bukkit.broadcastMessage(ColorParser.parse("&r"));
-            Bukkit.broadcastMessage(ColorParser.parse("&7------ [ &6传奇宝可梦 &7] ------"));
-            Bukkit.broadcastMessage(ColorParser.parse("&7宝可梦名称: &c"+pokemon.getLocalizedName()));
-            Bukkit.broadcastMessage(ColorParser.parse("&7附近的玩家: &a"+player.getName()));
-            Bukkit.broadcastMessage(ColorParser.parse("&7宝可梦坐标: &f"+location.getBlockX()+"&7,&f"+location.getBlockY()+"&7,&f"+location.getBlockZ()));
-            Bukkit.broadcastMessage(ColorParser.parse("&r"));
-            Bukkit.broadcastMessage(ColorParser.parse("&r"));
-
-            SpawnTime.isSpawner = true;
+            SpawnTime.getInstance().setSpawner(player,location,pokemon);
         }
 
         //牧场孵化
@@ -176,7 +177,7 @@ public class PokemonEvent implements Listener {
             //特性管辖
             if (egg.getAbilitySlot()>0){
                 int b = new Random().nextInt(100);
-                if (b<=97){
+                if (b<=90){
                     egg.setAbilitySlot(0);
                 }
             }
@@ -251,10 +252,12 @@ public class PokemonEvent implements Listener {
                                         Main.getEcon().depositPlayer(player,money);
                                         PokeDexManager.getInstance().addPokeDex(pixelmon.getPokemonData(),player);
 
-                                        System.out.println(player.getName()+" 击杀了 "+pixelmon.getLocalizedName());
-                                        System.out.println(" Boss:"+pixelmon.isBossPokemon());
-                                        System.out.println(" Level:"+ pixelmon.getBossMode().getExtraLevels());
-                                        System.out.println(" Shiny:"+ pixelmon.getPokemonData().isShiny());
+                                        if (pixelmon.isBossPokemon()){
+                                            System.out.println(player.getName()+" 击杀了 "+pixelmon.getLocalizedName());
+                                            System.out.println(" Boss:"+pixelmon.isBossPokemon());
+                                            System.out.println(" Level:"+ pixelmon.getBossMode().getExtraLevels());
+                                            System.out.println(" Shiny:"+ pixelmon.getPokemonData().isShiny());
+                                        }
                                     }
                                 }
                             }
