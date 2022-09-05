@@ -11,8 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityPortalEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -315,26 +314,28 @@ public class PlayerEvent implements Listener {
         }
     }
 
-//    @EventHandler
-//    public void EntityDamageEvent(EntityDamageEvent event){
-//        if (event.getEntity().getType().equals(EntityType.PLAYER)){
-//            event.setCancelled(true);
-//        }
-//    }
-//
-//    @EventHandler
-//    public void EntityDamageEvent(EntityDamageByBlockEvent event){
-//        if (event.getEntity().getType().equals(EntityType.PLAYER)){
-//            event.setCancelled(true);
-//        }
-//    }
-//
-//    @EventHandler
-//    public void EntityDamageEvent(EntityDamageByEntityEvent event){
-//        if (event.getEntity().getType().equals(EntityType.PLAYER)){
-//            event.setCancelled(true);
-//        }
-//    }
+    @EventHandler
+    public void EntityDamageEvent(EntityDamageEvent event){
+        if (event.getEntity().getType().equals(EntityType.PLAYER)){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void EntityDamageByBlockEvent(EntityDamageByBlockEvent event){
+
+        if (event.getEntity().getType().equals(EntityType.PLAYER)){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event){
+
+        if (event.getEntity().getType().equals(EntityType.PLAYER)){
+            event.setCancelled(true);
+        }
+    }
 
 
     CubeAPI sulaoxian = new CubeAPI(new Location(Bukkit.getWorld("spawn"), -188, 0, 10), new Location(Bukkit.getWorld("spawn"), -190, 256, 8));

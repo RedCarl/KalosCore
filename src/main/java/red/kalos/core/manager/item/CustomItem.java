@@ -70,7 +70,21 @@ public class CustomItem {
             ColorParser.parse("&7您的地皮资格将会 &a+1 &7拥有更多的地皮。")
     );
 
+    public static ItemStack PikachuKit = SkullAPI.getSkullItem("a5c6944593820d13d7d47db2abcfcbf683bb74a07e1a982db9f32e0a8b5dc466",
+            ColorParser.parse("&eKalos &f// &e皮卡丘礼包"),
+            ColorParser.parse("&8消耗品 (右键使用)"),
+            ColorParser.parse("&r"),
+            ColorParser.parse("&7使用物品可以获得 &e皮卡丘 &7礼包。"),
+            ColorParser.parse("&7请注意背包空位，礼包内容很多，尽量清空背包。")
+    );
 
+    public static ItemStack EeveeKit = SkullAPI.getSkullItem("80d8414cfcbbdfdb383a8b3f31d289146f38672d574e154296e110aad9e11428",
+            ColorParser.parse("&6Kalos &f// &6伊布礼包"),
+            ColorParser.parse("&8消耗品 (右键使用)"),
+            ColorParser.parse("&r"),
+            ColorParser.parse("&7使用物品可以获得 &6伊布 &7礼包。"),
+            ColorParser.parse("&7请注意背包空位，礼包内容很多，尽量清空背包。")
+    );
 
 
     //对物品进行加密

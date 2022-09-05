@@ -10,6 +10,7 @@ import red.kalos.core.database.PlayerDataManager;
 import red.kalos.core.entity.PlayerData;
 import red.kalos.core.listener.*;
 import red.kalos.core.manager.armourers.listener.ArmourersUpdateListener;
+import red.kalos.core.manager.autobroadcast.BroadCastMessage;
 import red.kalos.core.manager.citizens.CitizensManager;
 import red.kalos.core.manager.crazyauctions.CrazyAuctions;
 import red.kalos.core.manager.kitpvp.listener.KitPvpEvent;
@@ -174,8 +175,8 @@ public class Main extends JavaPlugin {
         crazyAuctions.onEnable();
         Bukkit.getConsoleSender().sendMessage(ColorParser.parse("&c-------------------------------"));
 
-//        log("加载公告组件....");
-//        new BroadCastMessage(this);
+        log("加载公告组件....");
+        new BroadCastMessage(this);
 
 //        log("加载宝可梦皮肤信息...");
 //        saveYmlConfig("CustomSkin/config.yml");
@@ -187,9 +188,6 @@ public class Main extends JavaPlugin {
         log("加载龙之核心组件...");
         saveYmlConfig("Nick/gui.yml");
         saveYmlConfig("Recharge/gui.yml");
-
-        log("加载礼包系统...");
-        KitsManager.onLoadKitsEvent();
 
         log("加载玩家Ranking系统...");
         RankingManager.init();

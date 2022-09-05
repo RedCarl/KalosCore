@@ -21,22 +21,22 @@ public class BroadCastMessage {
             "&8[&c&l!&8] &7领取奖励的时候一定要先检查背包有没有多余的位置，否则会丢失物品哦!"
     };
     public BroadCastMessage(Plugin plugin) {
-//        new BukkitRunnable() {
-//            @Override
-//            public void run() {
-//                Bukkit.broadcastMessage(ColorParser.parse("&r"));
-//                Bukkit.broadcastMessage(ColorParser.parse(Arrays.asList(Message).get(new Random().nextInt((Message.length-1)))));
-//                Bukkit.broadcastMessage(ColorParser.parse("&r"));
-//            }
-//        }.runTaskTimer(plugin,0,12000);
-//
-//        new BukkitRunnable() {
-//            @Override
-//            public void run() {
-//                RankingManager.LoadAllPlayerData();
-//                RankingManager.LoadTimeRankingData();
-//                RankingManager.LoadMoneyRankingData();
-//            }
-//        }.runTaskTimer(plugin,0,36000);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.broadcastMessage(ColorParser.parse("&r"));
+                Bukkit.broadcastMessage(ColorParser.parse(Arrays.asList(Message).get(new Random().nextInt((Message.length-1)))));
+                Bukkit.broadcastMessage(ColorParser.parse("&r"));
+            }
+        }.runTaskTimer(plugin,0,12000);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                RankingManager.LoadAllPlayerData();
+                RankingManager.LoadTimeRankingData();
+                RankingManager.LoadMoneyRankingData();
+            }
+        }.runTaskTimer(plugin,0,36000);
     }
 }

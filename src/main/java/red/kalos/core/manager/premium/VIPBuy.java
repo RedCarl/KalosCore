@@ -4,6 +4,7 @@ import red.kalos.core.Main;
 import red.kalos.core.database.PlayerDataManager;
 import red.kalos.core.entity.PlayerData;
 import red.kalos.core.entity.RankData;
+import red.kalos.core.manager.item.CustomItem;
 import red.kalos.core.manager.premium.entity.PlayerVIP;
 import red.kalos.core.util.ColorParser;
 import org.bukkit.Bukkit;
@@ -24,18 +25,41 @@ public class VIPBuy {
         PlayerData playerData = PlayerDataManager.getInstance().getPlayerData(Bukkit.getPlayer(playerVIP.getName()).getUniqueId());
         playerData.setRankData(rankData);
 
+        Player player = Bukkit.getPlayer(playerVIP.getName());
+        //赠与对应的礼包
+        switch (playerVIP.getRank()){
+            case "eevee":
+                player.getInventory().addItem(CustomItem.getEncryptionItem(CustomItem.EeveeKit, "RandomEeveeKit"));
+                break;
+            case "pikanium":
+                player.getInventory().addItem(CustomItem.getEncryptionItem(CustomItem.PikachuKit, "RandomPikachuKit"));
+                break;
+        }
+
         PlayerDataManager.getInstance().setPlayerData(playerData);
     }
 
     /**
      * 续费Rank
      * @param playerVIP 续费玩家
+     * Todo PlayerVIP的存储方式有问题
      */
     public static void updateRank(PlayerVIP playerVIP){
         RankData rankData = new RankData(playerVIP.getRank(),playerVIP.getTime().getTime());
 
         PlayerData playerData = PlayerDataManager.getInstance().getPlayerData(Bukkit.getPlayer(playerVIP.getName()).getUniqueId());
         playerData.setRankData(rankData);
+
+        Player player = Bukkit.getPlayer(playerVIP.getName());
+        //赠与对应的礼包
+        switch (playerVIP.getRank()){
+            case "eevee":
+                player.getInventory().addItem(CustomItem.getEncryptionItem(CustomItem.EeveeKit, "RandomEeveeKit"));
+                break;
+            case "pikanium":
+                player.getInventory().addItem(CustomItem.getEncryptionItem(CustomItem.PikachuKit, "RandomPikachuKit"));
+                break;
+        }
 
         PlayerDataManager.getInstance().setPlayerData(playerData);
     }
