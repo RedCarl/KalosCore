@@ -18,13 +18,6 @@ import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import com.pixelmonmod.pixelmon.enums.battle.EnumBattleEndCause;
 import com.pixelmonmod.pixelmon.enums.forms.IEnumForm;
 import com.pixelmonmod.pixelmon.storage.PlayerPartyStorage;
-import red.kalos.core.Main;
-import red.kalos.core.command.pokeaward.PokeFormCommand;
-import red.kalos.core.configFile.Data;
-import red.kalos.core.manager.pokedex.PokeDexManager;
-import red.kalos.core.util.api.CubeAPI;
-import red.kalos.core.util.api.KalosUtil;
-import red.kalos.core.util.gui.inventory.ItemFactoryAPI;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -36,6 +29,11 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import red.kalos.core.Main;
+import red.kalos.core.command.pokeaward.PokeFormCommand;
+import red.kalos.core.configFile.Data;
+import red.kalos.core.util.api.KalosUtil;
+import red.kalos.core.util.gui.inventory.ItemFactoryAPI;
 
 import java.util.*;
 
