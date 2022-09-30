@@ -79,12 +79,10 @@ public class CitizensEvent implements Listener {
 
         if (npc.data().get("kalos_spawn").equals("锦标赛")){
             if (type==0) {
-                Bukkit.dispatchCommand(player,"pokemonrank:rank");
-                player.closeInventory();
+                Bukkit.dispatchCommand(player,"kalosrank:kalosrank rank");
             }
             if (type==1) {
-                Bukkit.dispatchCommand(player,"pokemonrank:rank cancel");
-                player.closeInventory();
+                Bukkit.dispatchCommand(player,"kalosrank:kalosrank cancel");
             }
         }
 

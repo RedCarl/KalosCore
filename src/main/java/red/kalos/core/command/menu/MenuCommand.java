@@ -21,10 +21,7 @@ public class MenuCommand implements CommandExecutor {
         if (player.hasPermission("kalos.admin") && strings.length==1){
             switch (strings[0]){
                 case "eevee":
-                    player.getInventory().addItem(CustomItem.getEncryptionItem(CustomItem.EeveeKit, "RandomEeveeKit"));
-                    break;
-                case "pikanium":
-                    player.getInventory().addItem(CustomItem.getEncryptionItem(CustomItem.PikachuKit, "RandomPikachuKit"));
+                    player.getInventory().addItem(CustomItem.SignCard,CustomItem.SignCard);
                     break;
             }
         }

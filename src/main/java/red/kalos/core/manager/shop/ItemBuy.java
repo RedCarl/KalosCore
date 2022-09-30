@@ -69,6 +69,7 @@ public class ItemBuy extends InventoryGUI {
         ItemList.add(new ItemInfo("&e宝可梦进化石&7[宝箱:随机]",Material.getMaterial("PIXELMON_AERODACTYLITE"),9*5000,9));
         ItemList.add(new ItemInfo("&b个体卷轴",Material.getMaterial("PIXELMON_HP_UP"),-1,18));
         ItemList.add(new ItemInfo("&e地皮扩充",Material.DIAMOND_HOE,10*5000,10));
+        ItemList.add(new ItemInfo("&d补签卡",Material.NAME_TAG,-1,5));
         int a = 0;
         for (ItemInfo itemInfo:ItemList) {
             Material ItemMaterial = itemInfo.getMaterial();
@@ -172,6 +173,9 @@ public class ItemBuy extends InventoryGUI {
                                     break;
                                 case "&e地皮扩充":
                                     player.getInventory().addItem(CustomItem.getEncryptionItem(CustomItem.PlotAdder, "RandomPlot"));
+                                    break;
+                                case "&d补签卡":
+                                    player.getInventory().addItem(CustomItem.SignCard);
                                     break;
                                 default:
                                     player.getInventory().addItem(ItemFactoryAPI.getItemStack(ItemMaterial));

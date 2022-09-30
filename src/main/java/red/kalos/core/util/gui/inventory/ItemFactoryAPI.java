@@ -10,6 +10,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 
 public class ItemFactoryAPI {
+
+   public static ItemStack getItemStack(ItemStack itemStack,int amount) {
+      itemStack.setAmount(amount);
+      return itemStack;
+   }
+
    public static ItemStack getItemStack(Material material) {
       ItemStack is = new ItemStack(material);
       return is;

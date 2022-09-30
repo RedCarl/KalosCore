@@ -44,7 +44,7 @@ public class PokemonEvent implements Listener {
 
     @EventHandler
     public void onForgeEvent(final ForgeEvent forgeEvent) {
-
+        String[] worlds= {"world","DIM-1","DIM1","DIM72","DIM73"};
         //普通生成事件
         if (forgeEvent.getForgeEvent() instanceof SpawnEvent) {
             String[] PokeBlackList = new String[]{
@@ -66,14 +66,10 @@ public class PokemonEvent implements Listener {
             world = event.action.spawnLocation.location.world.func_72912_H().func_76065_j();
             entityPixelmon = ((SpawnActionPokemon)event.action).getOrCreateEntity();
 
-            //指定世界不刷新的宝可梦类型
-            switch (world){
-                case "plot":
-                case "training":
-                case "pokerank":
-                case "spawn":
-                    event.setCanceled(true);
-                    break;
+            //禁止宝可梦在除了主世界的其它世界生成
+            if (!Arrays.asList(worlds).contains(world)){
+                event.setCanceled(true);
+                return;
             }
 
             if (entityPixelmon.isLegendary()){
@@ -84,14 +80,6 @@ public class PokemonEvent implements Listener {
             if (Arrays.asList(PokeBlackList).contains(entityPixelmon.getPokemonName())){
                 event.setCanceled(true);
             }
-
-//            //设置野外宝可梦MT
-//            if (entityPixelmon.getPokemonData().getAbilitySlot()>0){
-//                int a = new Random().nextInt(100);
-//                if (a<=30){
-//                    entityPixelmon.getPokemonData().setAbilitySlot(0);
-//                }
-//            }
 
             //设置野生宝可梦闪光
             if (entityPixelmon.getPokemonData().isShiny()){
@@ -111,25 +99,27 @@ public class PokemonEvent implements Listener {
 
             Pokemon pokemon = ((SpawnActionPokemon)event.action).getOrCreateEntity().getStoragePokemonData();
 
-//            //传奇宝可梦刷新概率降低
-//            if (PokemonAPI.isLegendaryMaxPokemon(pokemon)){
-//                int a = new Random().nextInt(100);
-//                if (a<=50){
-//                    event.setCanceled(true);
-//                    return;
-//                }
-//            }
+
 
             MutableLocation mutableLocation = event.action.spawnLocation.location;
             World w = Bukkit.getWorld(mutableLocation.world.func_72912_H().func_76065_j());
             double x = mutableLocation.pos.func_177958_n();
             double y = mutableLocation.pos.func_177956_o();
             double z = mutableLocation.pos.func_177952_p();
-
             Location location = new Location(w, x, y, z);
             Player player = PokemonAPI.getRandPlayer(location);
 
-            SpawnTime.getInstance().setSpawner(player,location,pokemon);
+            System.out.println(player.getWorld().getName());
+
+            //禁止传奇宝可梦在除了主世界的其它世界生成
+            if (!Arrays.asList(worlds).contains(player.getWorld().getName())){
+                event.setCanceled(true);
+                return;
+            }else {
+                SpawnTime.getInstance().setSpawner(player,location,pokemon);
+            }
+
+
         }
 
         //牧场孵化

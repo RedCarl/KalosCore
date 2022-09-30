@@ -156,7 +156,7 @@ public class OptionalGUI extends InventoryGUI {
 
                     if (Type.equals("RandomEeveeKit")){
 
-                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),32));
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),64*2));
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),12));
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_QUICK_BALL"),64*2));
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_GREAT_BALL"),64*3));
@@ -164,6 +164,8 @@ public class OptionalGUI extends InventoryGUI {
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.COOKED_BEEF,64*6));
                         Main.getEcon().depositPlayer(player,50000);
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),32));
+                        player.getInventory().addItem(CustomItem.SignCard,CustomItem.SignCard);
+
 
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7恭喜您,您获得了 &6伊布礼包 &7注意查看背包。"));
                         CustomItem.useEncryptionItem(player,player.getItemInHand());
@@ -171,7 +173,7 @@ public class OptionalGUI extends InventoryGUI {
 
                     if (Type.equals("RandomPikachuKit")){
 
-                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),10));
+                        player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),32));
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),4));
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_QUICK_BALL"),32));
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_GREAT_BALL"),64));
@@ -179,6 +181,7 @@ public class OptionalGUI extends InventoryGUI {
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.COOKED_BEEF,64*3));
                         Main.getEcon().depositPlayer(player,15000);
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("POKELUCKY_POKE_LUCKY"),10));
+                        player.getInventory().addItem(CustomItem.SignCard);
 
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7恭喜您,您获得了 &e皮卡丘礼包 &7注意查看背包。"));
                         CustomItem.useEncryptionItem(player,player.getItemInHand());

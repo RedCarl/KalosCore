@@ -2,6 +2,7 @@ package red.kalos.core.manager.item;
 
 import de.tr7zw.nbtapi.NBTItem;
 import red.kalos.core.Main;
+import red.kalos.core.configFile.Data;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.PokemonAPI;
 import red.kalos.core.util.gui.inventory.ItemFactoryAPI;
@@ -86,6 +87,27 @@ public class CustomItem {
             ColorParser.parse("&7请注意背包空位，礼包内容很多，尽量清空背包。")
     );
 
+
+    public static ItemStack SignCard = ItemFactoryAPI.getItemStack(Material.NAME_TAG,
+            ColorParser.parse("&3Kalos &f// &3补签卡"),
+            ColorParser.parse("&8消耗品"),
+            ColorParser.parse(""),
+            ColorParser.parse("&7您可以使用此补签卡在未签到的日期补签."),
+            ColorParser.parse(""),
+            ColorParser.parse("&f使用方法:"),
+            ColorParser.parse("&7将这个物品放入您的物品栏种,点击您以前"),
+            ColorParser.parse("&7未曾签到的日期,即可完成补签成功.")
+    );
+
+    public static ItemStack Armourers = ItemFactoryAPI.getItemStack(Material.PAPER,
+            ColorParser.parse("&c"+ Data.SERVER_NAME_CN+"の时装碎片"),
+            ColorParser.parse("&f范围: &a1~10 &f个"),
+            ColorParser.parse("&r"),
+            ColorParser.parse("&r  &e■ &7售 价:"),
+            ColorParser.parse("&r      &7(左键) &c" + -1 + " &7"+Data.SERVER_VAULT),
+            ColorParser.parse("&r      &7(右键) &c" + 3 + " &7"+Data.SERVER_POINTS),
+            ColorParser.parse("&r"),
+            ColorParser.parse("&7&o时装碎片可以去兑换时装，需要非常多哦!"));
 
     //对物品进行加密
     public static ItemStack getEncryptionItem(ItemStack itemStack,String type){
