@@ -186,6 +186,10 @@ public class OptionalGUI extends InventoryGUI {
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7恭喜您,您获得了 &e皮卡丘礼包 &7注意查看背包。"));
                         CustomItem.useEncryptionItem(player,player.getItemInHand());
                     }
+
+                    if (Type.equals("RandomStar")){
+                        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7请在 &c10月7日 &7过后再尝试开启宝箱。"));
+                    }
                 }
                 player.closeInventory();
             }));

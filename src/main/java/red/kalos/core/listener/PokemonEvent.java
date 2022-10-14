@@ -247,6 +247,9 @@ public class PokemonEvent implements Listener {
                                             System.out.println(" Boss:"+pixelmon.isBossPokemon());
                                             System.out.println(" Level:"+ pixelmon.getBossMode().getExtraLevels());
                                             System.out.println(" Shiny:"+ pixelmon.getPokemonData().isShiny());
+
+                                            //国庆节宝箱
+                                            PokemonAPI.sendRandomStarBox(player,pixelmon);
                                         }
                                     }
                                 }

@@ -32,7 +32,9 @@ import org.bukkit.inventory.ItemStack;
 import red.kalos.core.Main;
 import red.kalos.core.command.pokeaward.PokeFormCommand;
 import red.kalos.core.configFile.Data;
+import red.kalos.core.manager.item.CustomItem;
 import red.kalos.core.util.api.KalosUtil;
+import red.kalos.core.util.award.Award;
 import red.kalos.core.util.gui.inventory.ItemFactoryAPI;
 
 import java.util.*;
@@ -991,8 +993,6 @@ public class PokemonAPI {
         }
     }
 
-
-
     /**
      * 查询神兽
      * @param player 玩家
@@ -1074,4 +1074,58 @@ public class PokemonAPI {
         calendar.set(Calendar.SECOND, 0);
         return calendar.getTimeInMillis() / 1000;
     }
+
+    /**
+     * 国庆节活动宝箱
+     * 给玩家抽一个物品
+     * @param player
+     * @return
+     */
+    public static String getStarItem(Player player){
+
+        //其它
+        Map<Object, Award> items = new HashMap<>();
+        return null;
+    }
+    public static String sendRandomStarBox(Player player,EntityPixelmon pixelmon){
+
+        int i = new Random().nextInt(100);
+
+        int a = -1;
+
+        switch (pixelmon.getBossMode().getExtraLevels()){
+            case 5: //普通
+                a = 2;
+                break;
+            case 10: //优秀
+                a = 6;
+                break;
+            case 20: //罕见
+                a = 16;
+                break;
+            case 30: //史诗
+                a = 24;
+                break;
+            case 40: //传说
+                a = 33;
+                break;
+            case 50: //终极
+                a = 45;
+                break;
+            case 25: //幽魂
+                a = 1;
+                break;
+            case 75: //沉沦
+                a = 68;
+                break;
+        }
+
+        if (i<=a){
+            player.getInventory().addItem(CustomItem.getEncryptionItem(CustomItem.Star,"RandomStar"));
+            player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7BOSS宝可梦 &c"+pixelmon.getLocalizedName()+" &7掉落了一个 &c国庆节宝箱 &7注意查看背包。"));
+        }
+
+        return null;
+    }
+
 }

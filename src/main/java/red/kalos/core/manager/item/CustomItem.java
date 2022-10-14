@@ -87,6 +87,13 @@ public class CustomItem {
             ColorParser.parse("&7请注意背包空位，礼包内容很多，尽量清空背包。")
     );
 
+    public static ItemStack Star = SkullAPI.getSkullItem("7f9bc035cdc80f1ab5e1198f29f3ad3fdd2b42d9a69aeb64de990681800b98dc",
+            ColorParser.parse("&cKalos &f// &c国庆限定宝箱"),
+            ColorParser.parse("&8消耗品 (右键使用)"),
+            ColorParser.parse("&r"),
+            ColorParser.parse("&7需要花费 &c1 &7卡点来开启这个宝箱。"),
+            ColorParser.parse("&7请谨慎选择，手滑概不负责，使用后物品消失。")
+    );
 
     public static ItemStack SignCard = ItemFactoryAPI.getItemStack(Material.NAME_TAG,
             ColorParser.parse("&3Kalos &f// &3补签卡"),
