@@ -39,7 +39,7 @@ backger:
   width: "226"
   height: "150"
   alpha: "1.0"
-  texture: "http://api.kalos.red/kalos/authme/背景.png"
+  texture: "http://carl.ren:11185/kalos/authme/背景.png"
 ############################################
 value_images:
   type: "图片"
@@ -47,8 +47,8 @@ value_images:
   y: "h/2-25/2-20"
   width: "116"
   height: "25"
-  texture: "http://api.kalos.red/kalos/authme/编辑框.png"
-  textureHovered: "http://api.kalos.red/kalos/authme/编辑框.png"
+  texture: "http://carl.ren:11185/kalos/authme/编辑框.png"
+  textureHovered: "http://carl.ren:11185/kalos/authme/编辑框.png"
 value:
   type: "文本框"
   x: "w/2-116/2+5"
@@ -72,8 +72,8 @@ ok:
   actions:
     click_left: |-
       方法.发包('Dragon_Recharge_OK',方法.取组件值('value','text'),方法.取组件值('value','text'))
-  texture: "http://api.kalos.red/kalos/authme/确定.png"
-  textureHovered: "http://api.kalos.red/kalos/authme/确定_hover.png"
+  texture: "http://carl.ren:11185/kalos/authme/确定.png"
+  textureHovered: "http://carl.ren:11185/kalos/authme/确定_hover.png"
 ############################################
 no:
   type: "图片"
@@ -84,5 +84,5 @@ no:
   actions:
     click_left: |-
       方法.发包('Dragon_Recharge_Cancel')
-  texture: "http://api.kalos.red/kalos/authme/取消.png"
-  textureHovered: "http://api.kalos.red/kalos/authme/取消_hover.png"
+  texture: "http://carl.ren:11185/kalos/authme/取消.png"
+  textureHovered: "http://carl.ren:11185/kalos/authme/取消_hover.png"

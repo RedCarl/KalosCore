@@ -36,7 +36,7 @@ public class WorldTimeSynchronize {
 
         for (World w:Main.getInstance().getServer().getWorlds()) {
             w.getWorldBorder().setCenter(new Location(w,0,0,0));
-            w.getWorldBorder().setSize(40000);
+            w.getWorldBorder().setSize(10000);
         }
     }
 }

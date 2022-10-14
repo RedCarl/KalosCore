@@ -39,15 +39,15 @@ backger:
   width: "206"
   height: "186"
   alpha: "1.0"
-  texture: "http://api.kalos.red/kalos/nick/背景.png"
+  texture: "http://carl.ren:11185/kalos/nick/背景.png"
 password_images:
   type: "图片"
   x: "w/2-116/2"
   y: "h/2-25/2-30"
   width: "116"
   height: "25"
-  texture: "http://api.kalos.red/kalos/nick/编辑框.png"
-  textureHovered: "http://api.kalos.red/kalos/nick/编辑框.png"
+  texture: "http://carl.ren:11185/kalos/nick/编辑框.png"
+  textureHovered: "http://carl.ren:11185/kalos/nick/编辑框.png"
 password:
   type: "文本框"
   x: "w/2-116/2+5"
@@ -70,8 +70,8 @@ login:
   actions:
     click_left: |-
       方法.发包('Dragon_Nick_Change',方法.取组件值('password','text'))
-  texture: "http://api.kalos.red/kalos/nick/按钮.png"
-  textureHovered: "http://api.kalos.red/kalos/login/按钮_触发.png"
+  texture: "http://carl.ren:11185/kalos/nick/按钮.png"
+  textureHovered: "http://carl.ren:11185/kalos/login/按钮_触发.png"
 login_text:
   type: label
   x: "w/2-36/2-40+6"
@@ -87,8 +87,8 @@ logot:
   actions:
     click_left: |-
       方法.发包('Dragon_Nick_Cancel')
-  texture: "http://api.kalos.red/kalos/nick/按钮.png"
-  textureHovered: "http://api.kalos.red/kalos/login/按钮_触发.png"
+  texture: "http://carl.ren:11185/kalos/nick/按钮.png"
+  textureHovered: "http://carl.ren:11185/kalos/login/按钮_触发.png"
 logot_text:
   type: label
   x: "w/2-36/2+40+6"
@@ -101,4 +101,4 @@ logo:
   y: "h/2-12/2-70"
   width: "160"
   height: "12"
-  texture: "http://api.kalos.red/kalos/login/KalosNetwarok.png"
+  texture: "http://carl.ren:11185/kalos/login/KalosNetwarok.png"

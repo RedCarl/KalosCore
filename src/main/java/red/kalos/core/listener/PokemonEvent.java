@@ -240,17 +240,7 @@ public class PokemonEvent implements Listener {
                                         player.playSound(player.getLocation(),Sound.ENTITY_PLAYER_LEVELUP,1,1);
                                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您在战斗过程中获得了 &c"+money+" &7卡洛币。"));
                                         Main.getEcon().depositPlayer(player,money);
-                                        PokeDexManager.getInstance().addPokeDex(pixelmon.getPokemonData(),player);
-
-                                        if (pixelmon.isBossPokemon()){
-                                            System.out.println(player.getName()+" 击杀了 "+pixelmon.getLocalizedName());
-                                            System.out.println(" Boss:"+pixelmon.isBossPokemon());
-                                            System.out.println(" Level:"+ pixelmon.getBossMode().getExtraLevels());
-                                            System.out.println(" Shiny:"+ pixelmon.getPokemonData().isShiny());
-
-                                            //国庆节宝箱
-                                            PokemonAPI.sendRandomStarBox(player,pixelmon);
-                                        }
+                                        /*PokeDexManager.getInstance().addPokeDex(pixelmon.getPokemonData(),player);*/
                                     }
                                 }
                             }
