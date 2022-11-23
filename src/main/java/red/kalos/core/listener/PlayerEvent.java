@@ -212,6 +212,7 @@ public class PlayerEvent implements Listener {
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 &e卡洛斯の皮卡丘*30天 &7请注意查收."));
                     }
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                    VIPBuy.checkRank(player,"pikanium", Main.getLuckPerms().getServerName());
                     break;
                 case "45.0":
                     PlayerVIP EeveeVIP = VIPBuy.checkRank(player,"eevee", Main.getLuckPerms().getServerName());
@@ -230,6 +231,7 @@ public class PlayerEvent implements Listener {
                         player.sendMessage(ColorParser.parse("&8[&a&l!&8] &7您成功购买了 &6卡洛斯の伊布*30天 &7请注意查收."));
                     }
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                    VIPBuy.checkRank(player,"eevee", Main.getLuckPerms().getServerName());
                     break;
             }
             event.setCancelled(true);

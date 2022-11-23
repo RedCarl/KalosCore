@@ -12,6 +12,7 @@ import red.kalos.core.manager.pokedex.PokeDexManager;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.PokemonAPI;
 import red.kalos.core.manager.item.CustomItem;
+import red.kalos.core.util.api.KalosUtil;
 import red.kalos.core.util.api.PokemonPhotoAPI;
 import red.kalos.core.util.gui.Button;
 import red.kalos.core.util.gui.InventoryGUI;
@@ -156,6 +157,10 @@ public class OptionalGUI extends InventoryGUI {
 
                     if (Type.equals("RandomEeveeKit")){
 
+                        if (!KalosUtil.invIsNull(player,18)){
+                            return;
+                        }
+
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),64*2));
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),12));
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_QUICK_BALL"),64*2));
@@ -172,6 +177,10 @@ public class OptionalGUI extends InventoryGUI {
                     }
 
                     if (Type.equals("RandomPikachuKit")){
+
+                        if (!KalosUtil.invIsNull(player,10)){
+                            return;
+                        }
 
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_RARE_CANDY"),32));
                         player.getInventory().addItem(ItemFactoryAPI.getItemStack(Material.getMaterial("PIXELMON_MASTER_BALL"),4));

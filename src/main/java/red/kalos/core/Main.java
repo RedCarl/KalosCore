@@ -7,6 +7,7 @@ import com.intellectualcrafters.configuration.file.YamlConfiguration;
 import red.kalos.core.command.crazyauctions.CrazyAuctionsCommand;
 import red.kalos.core.command.menu.MenuCommand;
 import red.kalos.core.command.pokeaward.PokeFormCommand;
+import red.kalos.core.command.premium.PremiumCommand;
 import red.kalos.core.configFile.Data;
 import red.kalos.core.database.PlayerDataManager;
 import red.kalos.core.entity.PlayerData;
@@ -160,6 +161,7 @@ public class Main extends JavaPlugin {
         regCommand("Menu",new MenuCommand());
         regCommand("Kim",new CrazyAuctionsCommand());
         regCommand("PokeAward",new PokeFormCommand());
+        regCommand("Premium",new PremiumCommand());
 
         log("获取在线玩家信息...");
         getAllOnlinePlayerData();

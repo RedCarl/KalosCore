@@ -38,3 +38,7 @@ commands:
     aliases:
       - eb
     description: "宝可梦BUG，退出战斗。"
+  Premium:
+    aliases:
+      - premium
+    description: "会员管理指令。"

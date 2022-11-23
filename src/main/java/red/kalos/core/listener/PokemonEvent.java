@@ -306,14 +306,10 @@ public class PokemonEvent implements Listener {
 
             int i = new Random().nextInt(100)+1;
 
-            if (i<=3){
-                return;
+            if (i>3){
+                player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很遗憾，仪式失败并摧毁了所有的石板，可能需要多次尝试。"));
+                player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
             }
-
-            player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7很遗憾，仪式失败并摧毁了所有的石板，可能需要多次尝试。"));
-            player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
-            EntityItem item = event.getAzureFlute();
-            item.onRemovedFromWorld();
         }
 
         //极具巢穴

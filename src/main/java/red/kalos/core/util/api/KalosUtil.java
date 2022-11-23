@@ -108,4 +108,30 @@ public class KalosUtil {
         return pattern.matcher(str).matches();
     }
 
+
+    /**
+     * 检测玩家背包是否有足够的空位
+     * @param player 玩家
+     * @param amount 需要多少位置
+     * @return 是否可以
+     */
+    public static boolean invIsNull(Player player,int amount){
+
+        //默认空位
+        int a = 0;
+
+        for (int i = 0; i < 36; i++) {
+            if (player.getInventory().getItem(i) == null) {
+                a++;
+                if (a>=amount){
+                    return true;
+                }
+            }
+        }
+        player.closeInventory();
+        player.sendMessage(ColorParser.parse("&8[&c&l!&8] &7您的背包没有多余的位置来存放物品,请整理空位后再试!"));
+        player.playSound(player.getLocation(),Sound.ENTITY_VILLAGER_NO,1,1);
+        return false;
+    }
+
 }
