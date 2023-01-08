@@ -40,7 +40,11 @@ public class BuildGUI extends InventoryGUI {
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("WOOL"),(short) 14,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("STONE"),(short) 0,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("STONE"),(short) 1,64));
+        itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("STONE"),(short) 2,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("STONE"),(short) 3,64));
+        itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("STONE"),(short) 4,64));
+        itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("STONE"),(short) 5,64));
+        itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("STONE"),(short) 6,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("GRASS"),(short) 0,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("DIRT"),(short) 0,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("DIRT"),(short) 1,64));
@@ -131,6 +135,7 @@ public class BuildGUI extends InventoryGUI {
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("DARK_OAK_FENCE"),(short) 0,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("ACACIA_FENCE"),(short) 0,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.getMaterial("BONE"),(short) 0,64));
+        itemStacks.add(ItemFactoryAPI.getItemStack(Material.COBBLESTONE,(short) 0,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.GLOWSTONE,(short) 0,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.SEA_LANTERN,(short) 0,64));
         itemStacks.add(ItemFactoryAPI.getItemStack(Material.END_ROD,64));

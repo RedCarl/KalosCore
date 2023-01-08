@@ -2,8 +2,17 @@ package red.kalos.core;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.intellectualcrafters.configuration.file.FileConfiguration;
-import com.intellectualcrafters.configuration.file.YamlConfiguration;
+import net.luckperms.api.LuckPerms;
+import net.milkbowl.vault.economy.Economy;
+import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.PlayerPointsAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import red.kalos.core.command.crazyauctions.CrazyAuctionsCommand;
 import red.kalos.core.command.menu.MenuCommand;
 import red.kalos.core.command.pokeaward.PokeFormCommand;
@@ -36,20 +45,8 @@ import red.kalos.core.placeholder.PlaceHolder;
 import red.kalos.core.util.ColorParser;
 import red.kalos.core.util.api.PokemonPhotoAPI;
 import red.kalos.core.util.gui.listener.ButtonClickListener;
-import net.luckperms.api.LuckPerms;
-import net.milkbowl.vault.economy.Economy;
-import org.black_ixx.playerpoints.PlayerPoints;
-import org.black_ixx.playerpoints.PlayerPointsAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.util.Set;
 
 public class Main extends JavaPlugin {
 

@@ -10,6 +10,7 @@ import red.kalos.core.Main;
 import red.kalos.core.manager.menu.MainMenu;
 import red.kalos.core.manager.premium.VIPBuy;
 import red.kalos.core.manager.premium.entity.PlayerVIP;
+import red.kalos.core.util.ColorParser;
 
 import java.sql.Timestamp;
 
@@ -24,8 +25,6 @@ public class PremiumCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = Bukkit.getPlayer(commandSender.getName());
-        MainMenu mainMenu = new MainMenu(player);
-        mainMenu.openInventory();
 
         if (player.hasPermission("kalos.admin") && strings.length>=1){
             switch (strings[0]){
